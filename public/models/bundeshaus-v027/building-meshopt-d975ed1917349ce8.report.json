@@ -1,0 +1,47 @@
+{
+  "sourceSha256": "1c8b43fa00bab0410a50a02a9ef7c4fae0cc6a11ab3c9396d9e210d2d66cd08d",
+  "kind": "building",
+  "source": "v027 archive refit; stage41 prepared model",
+  "asset": "building-meshopt-d975ed1917349ce8.glb.gz",
+  "glb": {
+    "bytes": 196142192,
+    "sha256": "0b26a54870af34142c041a078104643adaca833940c42de738b6d3acc714e379",
+    "nodes": 10768,
+    "meshNodes": 10768,
+    "uniqueMeshes": 8026,
+    "renderedPrimitives": 10795,
+    "trianglesAcrossInstances": 6738839,
+    "materials": 186,
+    "embeddedImages": 92,
+    "taggedMeshNodes": 10768,
+    "dollhouseHiddenMeshNodes": 3588,
+    "extensionsUsed": [
+      "KHR_materials_clearcoat",
+      "KHR_materials_emissive_strength",
+      "KHR_materials_ior",
+      "KHR_materials_specular",
+      "KHR_materials_transmission",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "optimization": {
+    "originalAsset": "building.glb",
+    "originalSha256": "4fc108969a400f6b49e906a92a1e7caba661f9cf0d80b33542dc2b6702dcce7c",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 1958,
+    "verifiedViews": 21237,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 222732840,
+    "bytes": 196142192,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 83314888,
+    "gzipSha256": "0cfb91fbc50bc11c4e8a0be70e766a453247ac12fc955af9af349787dae9513d"
+  }
+}

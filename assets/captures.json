@@ -1,0 +1,44 @@
+{
+  "captured": "2026-09-09",
+  "model": "bundeshaus-v012",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "lighting": "Studio lighting",
+  "quality": "Automatic",
+  "surroundings": "On, muted grey; paused automatically in Floor plan; off for Room 301",
+  "baseURL": "http://localhost:8000/",
+  "images": [
+    {
+      "file": "preview-exterior.jpg",
+      "view": "Exterior",
+      "query": "?version=bundeshaus-v012&view=3d&floor=all&pos=79.16746%2C73.66085%2C-104.93562&target=0.90813%2C20.115%2C6.275&zoom=1&surroundings=1&muted=1&cut=2"
+    },
+    {
+      "file": "preview-dollhouse.jpg",
+      "view": "Dollhouse · Principal floor",
+      "query": "?version=bundeshaus-v012&view=dollhouse&floor=principal&pos=65%2C67.55%2C-90&target=0%2C7.55%2C3&zoom=1&surroundings=1&muted=1&cut=2"
+    },
+    {
+      "file": "preview-floorplan.jpg",
+      "view": "Floor plan · Principal floor",
+      "query": "?version=bundeshaus-v012&view=floorplan&floor=principal&pos=0.92058%2C159.55%2C7.325&target=0.92058%2C8.325%2C7.325&zoom=1&surroundings=1&muted=1&cut=2&height=90.5625&orbit=0.50642%2C0.46747%2C-0.72458"
+    },
+    {
+      "file": "preview-interior.jpg",
+      "view": "National Council · authored point of interest",
+      "query": "?version=bundeshaus-v012&view=dollhouse&floor=principal&pos=8%2C13.2%2C26&target=2.83258%2C12.42488%2C17.47375&zoom=1&surroundings=1&muted=1&cut=2"
+    },
+    {
+      "file": "preview-entrance.jpg",
+      "view": "Dollhouse · South public entrance",
+      "query": "?version=bundeshaus-v012&view=dollhouse&floor=entrance&pos=25%2C24%2C70&target=0%2C-2%2C26&zoom=1&surroundings=1&muted=1&cut=2"
+    },
+    {
+      "file": "preview-room301.jpg",
+      "view": "Dollhouse · Room 301",
+      "query": "?version=bundeshaus-v012&view=dollhouse&floor=upper&pos=24%2C40.4%2C4.2&target=0%2C20%2C-21&zoom=1&surroundings=0&muted=1&cut=2"
+    }
+  ]
+}

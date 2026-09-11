@@ -1,0 +1,1052 @@
+[
+  {
+    "id": "ART-N-ROOF-INDEPENDENCE",
+    "title": "Political Independence",
+    "artist": "Rodo de Niederhaeusern",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      0,
+      27.65,
+      28.2
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-6590369a-a1aa-53ed-b813-46b0f081b503"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-ROOF-EXECUTIVE",
+    "title": "Executive",
+    "artist": "Rodo de Niederhaeusern",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      2.2,
+      27.65,
+      27.48
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-2aa3ac57-85fe-5658-a408-1580b47a3095"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-ROOF-LEGISLATIVE",
+    "title": "Legislative",
+    "artist": "Rodo de Niederhaeusern",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -2.2,
+      27.65,
+      27.48
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-64e4f383-675d-50c9-b74b-fe96074b0b43"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-GRIFFIN--1",
+    "title": "Griffin west",
+    "artist": "Anselmo Laurenti",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -13.0,
+      27.75,
+      24.0
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-a6bfd345-add4-5487-9874-475c48590e6e"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-GRIFFIN-1",
+    "title": "Griffin east",
+    "artist": "Anselmo Laurenti",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      13.0,
+      27.75,
+      24.0
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-2d63b82f-2385-5973-9f71-db1ae38ae271"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-LIBERTY",
+    "title": "Liberty",
+    "artist": "James Andre Vibert",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      11.55,
+      27.66,
+      10.475
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-e71b4e44-24fd-506b-ae0d-097e45f78a2b"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-PEACE",
+    "title": "Peace",
+    "artist": "James Andre Vibert",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -11.55,
+      27.66,
+      10.475
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-d7d03d46-898b-5641-9150-ce1647867d60"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-HISTORIAN-OF-THE-PAST",
+    "title": "Historian of the past",
+    "artist": "Maurice Hippolyte Reymond",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      11.55,
+      27.66,
+      1.275
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-4f827c87-eb23-573c-84b5-6606f22d9cb3"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-N-HISTORIAN-OF-THE-PRESENT",
+    "title": "Historian of the present",
+    "artist": "Maurice Hippolyte Reymond",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -11.55,
+      27.66,
+      1.275
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-1b84d42a-2899-5483-8b49-1308fcfef158"
+    ],
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-1",
+    "title": "Warrior",
+    "artist": "Karl Alfred Lanz",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -18.38353846153846,
+      -34.05835334802008,
+      25.72
+    ],
+    "angle": -0.8026945122256137,
+    "object_ids": [
+      "d008-3f982b79-fffc-5fc3-a5a7-3524d94595c2"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-2",
+    "title": "Craftsman",
+    "artist": "Karl Alfred Lanz",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -11.839713611998858,
+      -38.952478486599404,
+      25.72
+    ],
+    "angle": -0.4816167073353682,
+    "object_ids": [
+      "d008-d81aff1d-b806-5709-85e0-31d970020ee7"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-3",
+    "title": "Artist",
+    "artist": "Karl Alfred Lanz",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -4.085771179762949,
+      -41.53133119489772,
+      25.72
+    ],
+    "angle": -0.16053890244512276,
+    "object_ids": [
+      "d008-6b845ce2-8508-5e02-93c9-90ae934e7c37"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-4",
+    "title": "Scholar",
+    "artist": "Natale Albisetti",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      4.085771179762949,
+      -41.53133119489772,
+      25.72
+    ],
+    "angle": 0.16053890244512276,
+    "object_ids": [
+      "d008-e62fa5a8-f64a-5f77-baca-c28e99b8c902"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-5",
+    "title": "Merchant",
+    "artist": "Natale Albisetti",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      11.839713611998858,
+      -38.952478486599404,
+      25.72
+    ],
+    "angle": 0.4816167073353682,
+    "object_ids": [
+      "d008-8ad363bc-3286-5260-94f6-d65c639ace8e"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-S-PROFESSION-6",
+    "title": "Farmer",
+    "artist": "Natale Albisetti",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      18.38353846153846,
+      -34.05835334802008,
+      25.72
+    ],
+    "angle": 0.8026945122256137,
+    "object_ids": [
+      "d008-394e8df7-6c9c-58fa-ba03-d6b1c5e0314f"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Profession order documented west to east; small tools are schematic.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-DRUM-NORTH",
+    "title": "Valley watch relief north",
+    "artist": "Richard Kissling",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      0,
+      9.71,
+      42.35
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-25972561-dd76-5781-a49e-52359c4b9cec"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Theme and wall identified; arrangement is deliberately schematic, not a count of real figures.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-DRUM-SOUTH",
+    "title": "Valley watch relief south",
+    "artist": "Richard Kissling",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      0,
+      -9.71,
+      42.35
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-5699f956-c75b-5147-8468-ea88e787c101"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Theme and wall identified; arrangement is deliberately schematic, not a count of real figures.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-DRUM-WEST",
+    "title": "High watch relief west",
+    "artist": "Richard Kissling",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -10.56,
+      0,
+      42.35
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-e2550adc-c044-5b81-96c7-2503377db741"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Theme and wall identified; arrangement is deliberately schematic, not a count of real figures.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-DRUM-EAST",
+    "title": "Hill watch relief east",
+    "artist": "Richard Kissling",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      10.56,
+      0,
+      42.35
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-f7350944-d731-5c30-8a05-d250f8a6de61"
+    ],
+    "evidence": "Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Theme and wall identified; arrangement is deliberately schematic, not a count of real figures.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-GUARD--1-north",
+    "title": "Landsknecht west north",
+    "artist": "James Andre Vibert",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      -6.05,
+      2.5,
+      6.29
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-c042f01d-43a1-5234-8dc1-a6169dff7fc9"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four language regions collectively; individual language/weapon mapping not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-GUARD--1-south",
+    "title": "Landsknecht west south",
+    "artist": "James Andre Vibert",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      -7.65,
+      -1.3,
+      6.29
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-a079fabb-5141-5c3a-ab31-a1127b29ee0c"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four language regions collectively; individual language/weapon mapping not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-BEAR--1",
+    "title": "Entrance bear west",
+    "artist": "Urs Eggenschwyler",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      -2.59,
+      9.64,
+      1.04
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-092ef60e-5adc-59c1-93b2-261c9726af74"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide; Zurich municipal teaching publication F2.2 / ETH e-periodica 1919",
+    "identification_confidence": "high",
+    "geometry": "rough approximation",
+    "notes": "Bern bears holding Swiss shields; paws and fur simplified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-GUARD-1-north",
+    "title": "Landsknecht east north",
+    "artist": "James Andre Vibert",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      6.05,
+      2.5,
+      6.29
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-be040f0c-c519-5bce-b5f3-3d15f9ea1f2f"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four language regions collectively; individual language/weapon mapping not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-GUARD-1-south",
+    "title": "Landsknecht east south",
+    "artist": "James Andre Vibert",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      7.65,
+      -1.3,
+      6.29
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-2f1a97e3-29f3-5511-818c-c9ed89205ec6"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four language regions collectively; individual language/weapon mapping not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-BEAR-1",
+    "title": "Entrance bear east",
+    "artist": "Urs Eggenschwyler",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      2.59,
+      9.64,
+      1.04
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-c3de833b-52a4-58e8-8de8-5352b1e27107"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide; Zurich municipal teaching publication F2.2 / ETH e-periodica 1919",
+    "identification_confidence": "high",
+    "geometry": "rough approximation",
+    "notes": "Bern bears holding Swiss shields; paws and fur simplified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-ARNOLD-WINKELRIED",
+    "title": "Arnold Winkelried",
+    "artist": "Hugo Siegwart",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      -4.65,
+      12.62,
+      8.25
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-0a6a7c11-3087-5938-9e7e-ed7e7c00da8d"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "North-wall position fitted between door axes; wall niche support added below.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-NICHE--4.65",
+    "title": "North hall niche mount -4.65",
+    "artist": "Architectural approximation",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      -4.65,
+      12.69,
+      8.25
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-d3738d2d-4b15-54e2-a110-80269f11ca56"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Surface mount follows existing wall; not a claimed wall opening.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-NIKLAUS-VON-FLUE",
+    "title": "Niklaus von Flue",
+    "artist": "Hugo Siegwart",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      4.65,
+      12.62,
+      8.25
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-9806db95-d78a-5f3c-824a-547f079e9647"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "North-wall position fitted between door axes; wall niche support added below.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-NICHE-4.65",
+    "title": "North hall niche mount 4.65",
+    "artist": "Architectural approximation",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      4.65,
+      12.69,
+      8.25
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-7362fc16-0c1f-5844-b49d-54d013169930"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Surface mount follows existing wall; not a claimed wall opening.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-ARRIVAL",
+    "title": "Arrival of the ancestors relief",
+    "artist": "Adolf Meyer",
+    "environment": "interior",
+    "room": "dome-hall",
+    "location": [
+      0,
+      12.22,
+      16.62
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-67be7fc1-1afc-5ad5-ad5a-79001e69ce92"
+    ],
+    "evidence": "Local tour pano1729 / pano223 / pano227; official Parliament building guide",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "19 simplified silhouettes suggest the procession on a continuous pale field. This is not the real figure count or exact composition.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-WILHELM-TELL",
+    "title": "Wilhelm Tell",
+    "artist": "Antonio Chiattone",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      -11.05,
+      -11.98,
+      11.94
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-fbb6401f-af34-52a3-8c98-b66a7b3ce0f6"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-GERTRUD-STAUFFACHER",
+    "title": "Gertrud Stauffacher",
+    "artist": "Giuseppe Chiattone",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      11.05,
+      -11.98,
+      11.94
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-e81f1d65-9ac8-5d32-9172-80b3d7d38591"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM--1-0",
+    "title": "Gallery sculpted term -1 0",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      -12.18,
+      -23.72,
+      14.47
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-b5a072d0-0e8a-5135-b0a1-7855b6e211ce"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM--1-1",
+    "title": "Gallery sculpted term -1 1",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      -12.18,
+      -21.24,
+      14.47
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-75ced48b-ab2a-59b8-a0e3-a16726d6b3d0"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM--1-2",
+    "title": "Gallery sculpted term -1 2",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      -12.18,
+      -18.76,
+      14.47
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-8589a3c8-295e-5032-8488-1190ef8cd209"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM--1-3",
+    "title": "Gallery sculpted term -1 3",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      -12.18,
+      -16.28,
+      14.47
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-00fa61a8-dc85-54df-9b61-ba997f7b78cc"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM-1-0",
+    "title": "Gallery sculpted term 1 0",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      12.18,
+      -23.72,
+      14.47
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-39c7a94e-da2c-5ad5-9c61-47acf2f73aa3"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM-1-1",
+    "title": "Gallery sculpted term 1 1",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      12.18,
+      -21.24,
+      14.47
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-8e0d1e6e-25a3-5f51-8fac-91d878f584c8"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM-1-2",
+    "title": "Gallery sculpted term 1 2",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      12.18,
+      -18.76,
+      14.47
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-3deee111-384c-582e-b16a-ce0ffc975261"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-TERM-1-3",
+    "title": "Gallery sculpted term 1 3",
+    "artist": "Attribution unresolved",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      12.18,
+      -16.28,
+      14.47
+    ],
+    "angle": -1.5707963267948966,
+    "object_ids": [
+      "d008-d0bdad12-7586-5a5b-91d6-e52ba73cf961"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Applied half figures on piers; precise individual identity is not asserted.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-NR-SAGE",
+    "title": "Sage with children",
+    "artist": "Aloys Brandenberg",
+    "environment": "interior",
+    "room": "national-council",
+    "location": [
+      0,
+      -11.72,
+      17.2
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-5f57d412-accc-5521-81c1-b4370e18f8bc"
+    ],
+    "evidence": "User nr_seats_booths screenshots 03-08; local tour79/81; official Parliament building description",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Central storyteller and schematic children; not a verified count of figures.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA-FOUNTAIN",
+    "title": "Berna fountain basin and column",
+    "artist": "Joseph Hubert Verbunt (fountain); simplified architecture",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -100.1497824200659,
+      13.568264578171412,
+      0.4327068328857422
+    ],
+    "angle": 0,
+    "object_ids": [
+      "d008-052fd5ad-845c-57ff-b0b7-5848eeb2061f",
+      "d008-5e74710a-195c-5837-9197-617b7fbb31db",
+      "d008-03e73ae3-efb4-5f06-a320-02a83934e346"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Published map coordinate; terrain-fitted base. Basin, shaft and proportions estimated from photographs.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA",
+    "title": "Berna",
+    "artist": "Raphael Christen",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -100.1497824200659,
+      13.568264578171412,
+      6.432706832885742
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-76f2d421-efb3-5fe5-bb15-68e656d9c163"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Standing crowned personification, lance and shield. Heraldry and face simplified; dimensions inferred.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA-SEASON-1",
+    "title": "Season allegory 1",
+    "artist": "Attribution not asserted individually",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -99.3397824200659,
+      13.568264578171412,
+      2.892706832885742
+    ],
+    "angle": 1.5707963267948966,
+    "object_ids": [
+      "d008-d23e1224-0d70-5430-925c-56049cea6e62"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four painted cast-iron figures (restoration architect); exact season-to-position mapping and attributes are not verified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA-SEASON-2",
+    "title": "Season allegory 2",
+    "artist": "Attribution not asserted individually",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -100.1497824200659,
+      14.378264578171413,
+      2.892706832885742
+    ],
+    "angle": 3.141592653589793,
+    "object_ids": [
+      "d008-97490650-d7d1-53e6-a445-02d98ee3d9f2"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four painted cast-iron figures (restoration architect); exact season-to-position mapping and attributes are not verified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA-SEASON-3",
+    "title": "Season allegory 3",
+    "artist": "Attribution not asserted individually",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -100.9597824200659,
+      13.568264578171412,
+      2.892706832885742
+    ],
+    "angle": 4.71238898038469,
+    "object_ids": [
+      "d008-559ab5e5-8152-5b32-bc7d-d108c4e8f24e"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four painted cast-iron figures (restoration architect); exact season-to-position mapping and attributes are not verified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-BERNA-SEASON-4",
+    "title": "Season allegory 4",
+    "artist": "Attribution not asserted individually",
+    "environment": "exterior",
+    "room": "exterior",
+    "location": [
+      -100.1497824200659,
+      12.758264578171412,
+      2.892706832885742
+    ],
+    "angle": 6.283185307179586,
+    "object_ids": [
+      "d008-9e1a49c3-0e3c-582d-b670-1005f267f92d"
+    ],
+    "evidence": "https://de.wikipedia.org/wiki/Bernabrunnen; https://commons.wikimedia.org/wiki/Category:Bernabrunnen_(Bronzestatue_Berna_-_Raphael_Christen_1863)",
+    "identification_confidence": "medium",
+    "geometry": "rough approximation",
+    "notes": "Four painted cast-iron figures (restoration architect); exact season-to-position mapping and attributes are not verified.",
+    "status": "modeled"
+  },
+  {
+    "id": "ART-H-CONFEDERATES",
+    "title": "Three Confederates",
+    "artist": "James Andre Vibert",
+    "object_ids": [
+      "bh-c6def16161164b1e9e6ec6e0071945df",
+      "bh-e1585f60249649629882654f606e7dfa",
+      "bh-f7f20d8eaecd4477a4bd19d3ee056e9d",
+      "bh-dd1755b88538477e89c8d179913518fe"
+    ],
+    "status": "retained",
+    "geometry": "unchanged",
+    "evidence": "Local source scene and parliamentary building guide"
+  },
+  {
+    "id": "ART-NR-GIRON",
+    "title": "The Cradle of the Confederation",
+    "artist": "Charles Giron",
+    "object_ids": [
+      "bh-79a328e97be341168aa6bc8559755705"
+    ],
+    "status": "retained",
+    "geometry": "unchanged",
+    "evidence": "Local source scene and parliamentary building guide"
+  },
+  {
+    "id": "ART-SR-WELTI",
+    "title": "Landsgemeinde",
+    "artist": "Albert Welti / Wilhelm Balmer",
+    "object_ids": [
+      "bh-000e97a8fbb8429e96c17038149fcd28"
+    ],
+    "status": "retained",
+    "geometry": "unchanged",
+    "evidence": "Local source scene and parliamentary building guide"
+  },
+  {
+    "id": "ART-H-GLASS",
+    "title": "Federal dome stained glass",
+    "artist": "Clement Heaton (central mosaic only); other parts not attributed here",
+    "object_ids": [
+      "bh-c098ea974361443cb6de01974e89bde4"
+    ],
+    "status": "retained",
+    "geometry": "unchanged",
+    "evidence": "Local source scene and parliamentary building guide"
+  },
+  {
+    "id": "ART-TILO-2023",
+    "title": "Tilo mosaic",
+    "artist": "Renee Levi / Marcel Schmid",
+    "status": "outside baseline period",
+    "evidence": "Current parliamentary building guide; installed 2023"
+  },
+  {
+    "id": "ART-SMALL-RELIEFS",
+    "title": "Minor facade heads, winged keystones and tower reliefs",
+    "status": "identified for later finer pass",
+    "evidence": "Official BBL north-art programme 2021 pp5-6; Commons north_facade.jpg; Federal heritage inventory; archived Wikipedia attribution lead; Commons south_facade.jpg",
+    "notes": "No unverified device or individual attribution added to geometry."
+  }
+]

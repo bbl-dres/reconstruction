@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v010-context",
+  "title": "Bundeshaus v010 context",
+  "asset": "surroundings-meshopt-2b94167cd679d257.glb.gz",
+  "source": {
+    "sha256": "4cc5d9c43b0b55c979cfb48983c3d9eacaea0d5a9681d085741411b74d2a51a8",
+    "file": "bundeshaus_bern.blend",
+    "bytes": 83789491
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 14047,
+    "meshes": 13984
+  },
+  "selection": {
+    "meshes": 4636,
+    "collections": {
+      "00 | Terrain and public realm": 11,
+      "01 | Measured surrounding buildings": 322,
+      "01b | Wing facade reconstruction": 4303
+    },
+    "boundsBlender": {
+      "min": [
+        -310.442626953125,
+        -263.2513732910156,
+        -44.272403717041016
+      ],
+      "max": [
+        321.29522705078125,
+        315.30126953125,
+        57.005332946777344
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 114931584,
+    "sha256": "676bc10eddc40866611bb6f50ff36230ecdeb8288c259901c414168b0ede6046",
+    "nodes": 4636,
+    "meshNodes": 4636,
+    "uniqueMeshes": 789,
+    "renderedPrimitives": 4958,
+    "trianglesAcrossInstances": 1773521,
+    "materials": 13,
+    "embeddedImages": 16,
+    "taggedMeshNodes": 4636,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "KHR_materials_transmission",
+      "KHR_materials_ior",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "site_orthophoto.jpg",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Paving basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Paving orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Paving normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Complete inventory from the versioned authoring model. Individual placement extras and linked local mesh geometry are preserved.",
+    "No EXT_mesh_gpu_instancing; linked meshes save asset storage but do not by themselves reduce all draw calls."
+  ],
+  "opticalMaterialApproximations": [],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "authoringSource": {
+    "sha256": "4cc5d9c43b0b55c979cfb48983c3d9eacaea0d5a9681d085741411b74d2a51a8",
+    "file": "bundeshaus_bern.blend"
+  },
+  "exportSource": {
+    "file": "web_export.blend",
+    "bytes": 134673805,
+    "sha256": "e06276b6f584d90ecbda479df004dd62c734dad5bb42d9633a971af8f0e22e9e"
+  },
+  "pbrMaterialBake": {
+    "record": "pbr_material_bake.json",
+    "materials": 36,
+    "source_master_unchanged": true
+  },
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "stage09/viewer/context.glb",
+    "packageReportSha256": "b3d20921a25edcbbd97cb30351af2d93712835c5e3d81a71413fed0fbf2e8cfa"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-4cc5d9c43b0b-597bfc497b95.glb",
+    "originalSha256": "597bfc497b958453c0f096c9ae54cebc208b40d43061ba146d7706538657786b",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 563,
+    "verifiedViews": 4033,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 128999268,
+    "bytes": 114931584,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 26364311,
+    "gzipSha256": "360e1dbb1bfa648d3f74fd2421cfd87ecac1d1bc3287e3aba23666cb9f1fbc2c"
+  }
+}

@@ -1,0 +1,1423 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v020",
+  "title": "Bundeshaus v020 building",
+  "asset": "building-meshopt-d6b7e2e77c689db7.glb.gz",
+  "source": {
+    "file": "bundeshaus_bern.blend",
+    "sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4",
+    "bytes": 101729155
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 14447,
+    "meshes": 14377
+  },
+  "selection": {
+    "meshes": 9734,
+    "collections": {
+      "02 | Parliament exterior": 1469,
+      "02b | Connecting galleries": 432,
+      "02d | South facade precision v009": 266,
+      "03 | Roofs and cupolas": 411,
+      "03b | Verified roof openings v006": 8,
+      "03c | Roof precision v009": 761,
+      "04 | Sculpture approximations": 4,
+      "04a | Identified exterior art v020": 27,
+      "05 | Nationalratssaal": 2326,
+      "05b | National Council rear gallery v011": 14,
+      "05c | National Council corrections v018": 85,
+      "05c | National Council corrections v019": 17,
+      "06 | Ständeratssaal": 527,
+      "06b | Council of States timber detail v011": 10,
+      "07 | Kuppelhalle and ceremonial stairs": 435,
+      "07a | Identified interior art v020": 22,
+      "07b | Principal-floor wall reconstruction": 18,
+      "07c | Conference room 301": 533,
+      "07c | Principal-floor room divisions v005": 72,
+      "07d | Principal-floor stair cores v005": 26,
+      "07e | Principal circulation corrections v007": 69,
+      "07f | Hall pier exterior continuation v008": 8,
+      "07g | Kuppelhalle detail correction v008": 13,
+      "07h | Hall glazed spiral lifts v008": 12,
+      "07i | Interior precision v009": 22,
+      "07j | Inner dome support arches v011": 10,
+      "07k | Final accuracy corrections v012": 24,
+      "07k | Secondary ceremonial flights v011": 12,
+      "08 | Side rooms and Wandelhalle": 150,
+      "08b | Bundesratszimmer reception room": 22,
+      "08c | Conference room 301": 7,
+      "08e | South public entrance v010": 1192,
+      "08e | Wandelhalle furnishings v008": 101,
+      "08f | Public entrance door layers v011": 94,
+      "08g | Bundesratszimmer detail v011": 16,
+      "08g | Entrances and anterooms v014": 183,
+      "08h | Door and threshold corrections v016": 32,
+      "08i | Side rooms and cafe v017": 279,
+      "09 | Removable interior ceilings": 25
+    },
+    "boundsBlender": {
+      "min": [
+        -103.6497802734375,
+        -46.70000076293945,
+        -4.690000057220459
+      ],
+      "max": [
+        44.384490966796875,
+        31.0,
+        60.82999801635742
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 139861500,
+    "sha256": "36c97ee96442e0dfccf71dcb66daade796df3720982b24a7deb3ad794bd2600c",
+    "nodes": 9734,
+    "meshNodes": 9734,
+    "uniqueMeshes": 2991,
+    "renderedPrimitives": 9749,
+    "trianglesAcrossInstances": 6246330,
+    "materials": 149,
+    "embeddedImages": 79,
+    "taggedMeshNodes": 9734,
+    "dollhouseHiddenMeshNodes": 3582,
+    "extensionsUsed": [
+      "KHR_materials_clearcoat",
+      "KHR_materials_transmission",
+      "KHR_materials_emissive_strength",
+      "KHR_materials_specular",
+      "KHR_materials_ior",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "oak_trim_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_trim_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "conference_walnut_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "conference_walnut_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_pale_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_pale_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_runner_pale_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_runner_pale_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_stair_dark_marble_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_stair_dark_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_warm_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_warm_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "giron_original",
+      "size": [
+        2048,
+        1329
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "warm_plaster_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "warm_plaster_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_parquet_basecolor",
+      "size": [
+        1254,
+        1254
+      ],
+      "packed": true
+    },
+    {
+      "name": "v009_roof_gravel_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v009_roof_gravel_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_vermilion_plaster_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_carrara_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_gris_de_roche_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_rouge_jaspe_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "pano227_up",
+      "size": [
+        2048,
+        2048
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_petit_granit_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "patinated_copper_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_solothurn_chamber_limestone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_dark_oak_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_oak_relief_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_walnut_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_cernier_gallery_limestone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_ivory_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_plaster_ground_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_skylight_glass_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_stone_column_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_grey_wall_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_bronze_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_3_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_3_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_2_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_5_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_5_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_0_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_0_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_4_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_1_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_bench_leather_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "05_lobby_reception_front",
+      "size": [
+        1024,
+        683
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_4_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_4_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_1_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_0_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_3_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_2_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_reception_red_polished_wood_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_walnut_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_dark_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_veined_red_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone.001_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_carrara_pale_capitals_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_arvel_limestone_bases_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_arzo_variegated_shafts_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sr_v011_carved_oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sr_v011_panel_recess_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_dark_portal_stone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v014_nr_olive_patterned_cloth_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v014_nr_olive_patterned_cloth_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_oak_wear_surface_v008_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_cafe_red_textile_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_cafe_red_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_east_blue_textile_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_east_blue_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_west_olive_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_ceiling_basecolor",
+      "size": [
+        2048,
+        683
+      ],
+      "packed": true
+    },
+    {
+      "name": "welti_original",
+      "size": [
+        2048,
+        736
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Complete inventory from the versioned authoring model. Individual placement extras and linked local mesh geometry are preserved.",
+    "No EXT_mesh_gpu_instancing; linked meshes save asset storage but do not by themselves reduce all draw calls."
+  ],
+  "identical_mesh_definitions_linked_in_export": 67,
+  "safety_disc_shading": "Identical untextured safety discs share retained flat-cap shading in the portable export; positions and topology are unchanged.",
+  "opticalMaterialApproximations": [
+    {
+      "material": "v007 inner dome non-emissive photographic glass",
+      "source": "65% diffuse transmission / 20% diffuse reflection / 15% dielectric BSDF; inferred painted-glass scattering, zero emission; photo color is not measured transmittance.",
+      "export": "Non-emissive Principled dielectric: transmission0.8, roughness0.35, IOR1.46. glTF has no equivalent diffuse-transmission shader in this contract; viewer appearance is approximate."
+    }
+  ],
+  "validation": "Geometry streams, mesh definitions and object placements match fresh v020 raw export exactly; metadata matches v020 master. See performance review for visual/runtime checks.",
+  "authoringSource": {
+    "file": "bundeshaus_bern.blend",
+    "sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4"
+  },
+  "exportSource": {
+    "file": "raw/building.glb",
+    "sha256": "c5d5d6b490c339d8e97e533c58a32624ca367ae02f12d1d29aac0ebbf446b19e",
+    "method": "Verified metadata patch and embedded texture repack; geometry streams preserved byte for byte"
+  },
+  "pbrMaterialBake": {
+    "record": "texture_optimization.json",
+    "baseline": "Fresh v020 source-node swatch bake",
+    "new_bakes": 58,
+    "master_materials_unchanged": true
+  },
+  "images": [
+    {
+      "name": "oak_trim_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_trim_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "conference_walnut_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "conference_walnut_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_pale_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_pale_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_runner_pale_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_runner_pale_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_stair_dark_marble_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_stair_dark_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_warm_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "marble_warm_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "giron_original",
+      "size": [
+        2048,
+        1329
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "warm_plaster_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "warm_plaster_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_parquet_basecolor",
+      "size": [
+        1254,
+        1254
+      ],
+      "packed": true
+    },
+    {
+      "name": "v009_roof_gravel_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v009_roof_gravel_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "hall_vermilion_plaster_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_carrara_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_gris_de_roche_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_rouge_jaspe_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "pano227_up",
+      "size": [
+        2048,
+        2048
+      ],
+      "packed": true
+    },
+    {
+      "name": "v008_marble_petit_granit_tone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "patinated_copper_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_solothurn_chamber_limestone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_dark_oak_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_oak_relief_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v011_walnut_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_cernier_gallery_limestone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_ivory_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_plaster_ground_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "nr_v018_skylight_glass_basecolor",
+      "size": [
+        64,
+        64
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_stone_column_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_grey_wall_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_bronze_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_3_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_3_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_2_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_5_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_5_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_0_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_0_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_4_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_textured_ceiling_disc_1_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_bench_leather_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "05_lobby_reception_front",
+      "size": [
+        1024,
+        683
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_4_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_4_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_1_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_0_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_3_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v010_floor_stone_2_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_reception_red_polished_wood_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_walnut_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_dark_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v011_reception_veined_red_marble_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone.001_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_carrara_pale_capitals_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_arvel_limestone_bases_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_arzo_variegated_shafts_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sr_v011_carved_oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sr_v011_panel_recess_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v012_dark_portal_stone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v014_nr_olive_patterned_cloth_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v014_nr_olive_patterned_cloth_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_oak_wear_surface_v008_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_cafe_red_textile_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_cafe_red_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_east_blue_textile_normal",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_east_blue_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "v017_west_olive_textile_basecolor",
+      "size": [
+        768,
+        768
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_ceiling_basecolor",
+      "size": [
+        2048,
+        683
+      ],
+      "packed": true
+    },
+    {
+      "name": "welti_original",
+      "size": [
+        2048,
+        736
+      ],
+      "packed": true
+    }
+  ],
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/building.glb",
+    "packageReportSha256": "4bd9f6848ba803141cf019367a829d634e349b4155ab90b31527cac060482b56"
+  },
+  "optimization": {
+    "originalAsset": "building-75f93353af3a-3192deb3a15f.glb",
+    "originalSha256": "3192deb3a15f0a04f88a4dfe38257a38e4f844a6781f983acbb647334524efaa",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 1101,
+    "verifiedViews": 10102,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 163787936,
+    "bytes": 139861500,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 51743117,
+    "gzipSha256": "918e11f5154a7f9fa416ccc7fcefd355315a56830828b8b989f39c23089cfcd2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "2.0.2",
+  "integrity": "sha512-cedP91TuhxggoERke/jLkUVr/VMUifEMz1OkxfBZezvOFQdk8LSe9CFv7/Ov0Frn2tc2YUs+44oSrXeNEyTyGQ==",
+  "files": [
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ]
+}

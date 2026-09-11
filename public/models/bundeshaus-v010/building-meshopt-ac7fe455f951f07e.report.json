@@ -1,0 +1,1026 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v010",
+  "title": "Bundeshaus v010 building",
+  "asset": "building-meshopt-ac7fe455f951f07e.glb.gz",
+  "source": {
+    "sha256": "4cc5d9c43b0b55c979cfb48983c3d9eacaea0d5a9681d085741411b74d2a51a8",
+    "file": "bundeshaus_bern.blend",
+    "bytes": 83789491
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 14047,
+    "meshes": 13984
+  },
+  "selection": {
+    "meshes": 9341,
+    "collections": {
+      "02 | Parliament exterior": 1540,
+      "02b | Connecting galleries": 432,
+      "02d | South facade precision v009": 266,
+      "03 | Roofs and cupolas": 411,
+      "03b | Verified roof openings v006": 8,
+      "03c | Roof precision v009": 761,
+      "04 | Sculpture approximations": 22,
+      "05 | Nationalratssaal": 2362,
+      "06 | Ständeratssaal": 527,
+      "07 | Kuppelhalle and ceremonial stairs": 496,
+      "07b | Principal-floor wall reconstruction": 18,
+      "07c | Conference room 301": 545,
+      "07c | Principal-floor room divisions v005": 96,
+      "07d | Principal-floor stair cores v005": 26,
+      "07e | Principal circulation corrections v007": 69,
+      "07f | Hall pier exterior continuation v008": 8,
+      "07g | Kuppelhalle detail correction v008": 75,
+      "07h | Hall glazed spiral lifts v008": 12,
+      "07i | Interior precision v009": 22,
+      "08 | Side rooms and Wandelhalle": 157,
+      "08b | Bundesratszimmer reception room": 32,
+      "08c | Conference room 301": 8,
+      "08e | South public entrance v010": 1312,
+      "08e | Wandelhalle furnishings v008": 101,
+      "09 | Removable interior ceilings": 35
+    },
+    "boundsBlender": {
+      "min": [
+        -42.568233489990234,
+        -46.70000076293945,
+        -4.690000057220459
+      ],
+      "max": [
+        44.384490966796875,
+        31.0,
+        60.82999801635742
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 127549276,
+    "sha256": "34567a65dcc793fd51d56066e217b6d258ced8c0d5e6ba7838a9066f8aa6835c",
+    "nodes": 9341,
+    "meshNodes": 9341,
+    "uniqueMeshes": 2519,
+    "renderedPrimitives": 9344,
+    "trianglesAcrossInstances": 5098541,
+    "materials": 96,
+    "embeddedImages": 108,
+    "taggedMeshNodes": 9341,
+    "dollhouseHiddenMeshNodes": 3615,
+    "extensionsUsed": [
+      "KHR_materials_transmission",
+      "KHR_materials_emissive_strength",
+      "KHR_materials_ior",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "PBR Sandstone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Sandstone trim normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Tree leaves normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble pale basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble pale orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble pale normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble warm basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble warm orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble warm normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall vermilion plaster basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall vermilion plaster orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall vermilion plaster normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak trim basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak trim orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Oak trim normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall runner pale basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall runner pale orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall runner pale normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall stair dark marble basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall stair dark marble orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Hall stair dark marble normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Patinated copper basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Patinated copper orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Patinated copper normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "giron_original.jpg",
+      "size": [
+        2048,
+        1329
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Warm plaster basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Warm plaster orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Warm plaster normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "welti_original.jpg",
+      "size": [
+        5000,
+        1796
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble red basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble red orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Marble red normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "pano227_up.jpg",
+      "size": [
+        2048,
+        2048
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Conference walnut basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Conference walnut orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Conference walnut normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Wandelhalle oak wear surface v008 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Wandelhalle oak wear surface v008 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR Wandelhalle oak wear surface v008 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_parquet_basecolor.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "packed": true
+    },
+    {
+      "name": "wandelhalle_ceiling_basecolor.png",
+      "size": [
+        2172,
+        724
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Petit Granit tone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Petit Granit tone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Petit Granit tone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Carrara tone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Carrara tone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Carrara tone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Gris de Roche tone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Gris de Roche tone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Gris de Roche tone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Rouge Jaspe tone basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Rouge Jaspe tone orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v008 marble Rouge Jaspe tone normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v009 roof gravel basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v009 roof gravel orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v009 roof gravel normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 4 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 4 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 4 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 1 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 1 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 1 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 0 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 0 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 0 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 3 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 3 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 3 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 2 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 2 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 floor stone 2 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 grey wall basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 grey wall orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 grey wall normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 3 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 3 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 3 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 2 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 2 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 2 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 5 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 5 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 5 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 0 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 0 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 0 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 4 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 4 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 4 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 1 basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 1 orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 textured ceiling disc 1 normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bronze basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bronze orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bronze normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 stone column basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 stone column orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 stone column normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bench leather basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bench leather orm",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "PBR v010 bench leather normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "05_lobby_reception_front.png",
+      "size": [
+        1024,
+        683
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Complete inventory from the versioned authoring model. Individual placement extras and linked local mesh geometry are preserved.",
+    "No EXT_mesh_gpu_instancing; linked meshes save asset storage but do not by themselves reduce all draw calls."
+  ],
+  "opticalMaterialApproximations": [
+    {
+      "material": "v007 inner dome non-emissive photographic glass",
+      "source": "65% diffuse transmission / 20% diffuse reflection / 15% dielectric BSDF; inferred painted-glass scattering, zero emission; photo color is not measured transmittance.",
+      "export": "Non-emissive Principled dielectric: transmission0.8, roughness0.35, IOR1.46. glTF has no equivalent diffuse-transmission shader in this contract; viewer appearance is approximate."
+    }
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "authoringSource": {
+    "sha256": "4cc5d9c43b0b55c979cfb48983c3d9eacaea0d5a9681d085741411b74d2a51a8",
+    "file": "bundeshaus_bern.blend"
+  },
+  "exportSource": {
+    "file": "web_export.blend",
+    "bytes": 134673805,
+    "sha256": "e06276b6f584d90ecbda479df004dd62c734dad5bb42d9633a971af8f0e22e9e"
+  },
+  "pbrMaterialBake": {
+    "record": "pbr_material_bake.json",
+    "materials": 36,
+    "source_master_unchanged": true
+  },
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "stage09/viewer/building.glb",
+    "packageReportSha256": "c226a661d02689fdc03fe74ef4b6b2e1d32c34fa641e80f263f4b156e471e61a"
+  },
+  "optimization": {
+    "originalAsset": "building-4cc5d9c43b0b-576c2abbc6d0.glb",
+    "originalSha256": "576c2abbc6d007b0e8f48067c8c52b3a4b5dae540f834ff7a16377fd4aa04f4e",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 788,
+    "verifiedViews": 8406,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 143990344,
+    "bytes": 127549276,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 61174142,
+    "gzipSha256": "c64f50f315c757072697fc8cf956c90e07ffafece29bdc1b42f039f881c5aeda"
+  }
+}

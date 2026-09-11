@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "source_model_sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4",
+  "new_mesh_objects": 49,
+  "modeled_art_and_support_groups": 47,
+  "retired_mesh_objects": 28,
+  "unrelated_meshes_unchanged": 9696,
+  "support_probes": 24,
+  "whole_building_walking": false,
+  "verified_route_samples": 2532,
+  "compressed_sizes": {
+    "building": 51743117,
+    "surroundings": 25366195,
+    "metadata": 2061031
+  },
+  "viewer_zip_bytes": 77247802,
+  "pdf_sha256": "80e4053da9754b84af42457d72bcdec9eeb4e610ee030f62328aceb3434e86f1",
+  "browser_views": 7
+}

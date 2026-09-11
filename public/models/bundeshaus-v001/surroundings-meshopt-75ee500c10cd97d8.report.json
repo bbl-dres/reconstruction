@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v001-surroundings",
+  "title": "Bundeshaus Bern - v001 surroundings",
+  "asset": "surroundings-meshopt-75ee500c10cd97d8.glb",
+  "source": {
+    "file": "bundeshaus_bern.blend",
+    "bytes": 38990574,
+    "sha256": "e656ffdda8d3561368142fb3581f414238fa9f2297ed09ff04f72d50b4d991b8"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 969,
+    "meshes": 943
+  },
+  "selection": {
+    "meshes": 340,
+    "collections": {
+      "00 | Terrain and public realm": 11,
+      "01 | Measured surrounding buildings": 322,
+      "01b | Wing facade reconstruction": 7
+    },
+    "boundsBlender": {
+      "min": [
+        -310.442626953125,
+        -263.2513732910156,
+        -44.272403717041016
+      ],
+      "max": [
+        321.29522705078125,
+        315.30126953125,
+        57.005332946777344
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 45892032,
+    "sha256": "0a6b481223a8baaed27cfd51ba3c61e8e1da17df7740b0adc718b59a5bf85841",
+    "nodes": 340,
+    "meshNodes": 340,
+    "uniqueMeshes": 340,
+    "renderedPrimitives": 662,
+    "trianglesAcrossInstances": 1122604,
+    "materials": 12,
+    "embeddedImages": 1,
+    "taggedMeshNodes": 340,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "site_orthophoto.jpg",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [
+    {
+      "material": "Paving",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Sandstone trim",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Tree leaves",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Oak",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    }
+  ],
+  "notes": [
+    "Terrain, public realm, neighboring measured buildings and reconstructed wing facades from the same v003 source as building.glb.",
+    "Coordinates and scale are unchanged so the two GLBs align without repositioning.",
+    "The terrain includes its embedded aerial image; procedural materials use constant Principled fallbacks.",
+    "This asset is optional visual context. Neighboring interiors and walking collisions are not supplied.",
+    "Source geometry and image attribution remain in the original model's research/SOURCE_REGISTER.md."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "optimization": {
+    "originalAsset": "surroundings-e656ffdda8d3.glb",
+    "originalSha256": "e4f8e5e1bab2880e7b0573e8a26dad37385ef9f843f9601b57ceecd4df997115",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "3627a5847b83e5f656d1f93b8aca3082004dfec76bcd831d10f05048f5ee2635",
+      "gzipLevel": 6
+    },
+    "compressedViews": 569,
+    "verifiedViews": 1983,
+    "lossless": true,
+    "originalBytes": 65261568,
+    "bytes": 45892032,
+    "gzipBytes": 6719272,
+    "gzipSha256": "43cbed5fa1b18ef28ecfdd5e2a35b53c8b9d1bdfbd7319d032ab1b85c9075fe8"
+  }
+}

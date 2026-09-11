@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Explore the Bundeshaus in 3D, as a dollhouse, in plan, or on foot.">
+  <title>Bundeshaus · Building explorer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8'/%3E%3Cpath d='m16 5 11 6v12l-11 6L5 23V11Zm0 12v12M5 11l11 6 11-6M16 5v12' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./public/css/token.css?v=20260909-review-4">
+  <link rel="stylesheet" href="./public/css/main.css?v=20260909-review-4">
+  <script type="importmap">
+    {"imports":{"three":"./public/vendor/three/build/three.module.js","three/addons/":"./public/vendor/three/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8Zm0 10v8M3 8l9 5 9-5M12 3v10"/></symbol>
+    <symbol id="i-dollhouse" viewBox="0 0 24 24"><path d="m3 7 9 5 9-5M3 7v10l9 5 9-5V7M12 12v10M3 7l9-5 9 5M8 10v7l4 2 4-2v-7"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24"><path d="M3 3h18v18H3ZM3 12h8m4 0h6M12 3v5m0 8v5M7 12v9"/></symbol>
+    <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="m7 12 3-4 4 1 3 4h3M12 9l-2 7-4 5m5-8 4 3 1 5"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 6M4 3v6h6"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h7m4 0h5M4 17h3m4 0h9"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v1"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 5 7 7-7 7"/></symbol>
+    <symbol id="i-context" viewBox="0 0 24 24"><path d="M2 21h20M3 21V9h5v12M8 21V3h8v18m0-9h5v9M11 7h2m-2 4h2m-2 4h2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m10 5-7 7 7 7M3 12h18"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14M10 3H3v18h18v-7"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4s-1.2-.4-4.1 1.5a14 14 0 0 0-7.4 0C4.7-.3 3.5.1 3.5.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.6v4" transform="translate(1 1) scale(.9)"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+  </svg>
+
+  <main id="viewer" aria-label="Interactive building viewer">
+    <canvas id="scene" tabindex="0" aria-label="3D building. Drag to orbit, right-drag to pan, scroll to zoom." aria-describedby="canvas-help">Interactive 3D reconstruction of the Bundeshaus. Use the view controls or open Help for navigation instructions and model coverage.</canvas>
+    <p id="canvas-help" class="sr-only">With the viewer focused: arrow keys rotate, Shift and arrows pan, plus and minus zoom, R fits the building. In floor plan, arrows pan. Tab moves to the controls.</p>
+    <div id="viewer-header" class="viewer-header">
+    <header class="masthead">
+      <div class="building-mark"><svg><use href="#i-cube"/></svg></div>
+      <div><h1>Bundeshaus</h1><p>Bern, Switzerland <span class="dot">·</span> <span id="mode-label">Dollhouse</span></p></div>
+    </header>
+
+    <div class="top-actions">
+      <button id="lighting-toggle" class="tool-button lighting-toggle" popovertarget="lighting" aria-controls="lighting" aria-haspopup="dialog" aria-expanded="false" aria-describedby="lighting-state" disabled><svg class="lighting-icon" aria-hidden="true"><use href="#i-sun"/></svg><span>Lighting</span><svg class="dropdown-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+      <span id="lighting-state" class="sr-only">Studio lighting</span>
+      <div class="surroundings-control">
+        <label class="tool-button surroundings-toggle"><svg aria-hidden="true"><use href="#i-context"/></svg><span>Surroundings</span><input id="surroundings" type="checkbox" role="switch" aria-describedby="surroundings-status" checked><span class="switch" aria-hidden="true"></span></label>
+        <p id="surroundings-status" class="surroundings-status">Shown after the building loads</p>
+        <button id="retry-surroundings" class="text-button" hidden>Retry surroundings</button>
+      </div>
+    </div>
+      <div class="utility-actions">
+        <button id="settings-toggle" class="tool-button" aria-label="View settings" aria-haspopup="dialog" aria-controls="settings" title="View settings"><svg aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></button>
+        <button id="help-toggle" class="tool-button" aria-label="Help and model information" aria-haspopup="dialog" aria-controls="help" title="Help and controls"><svg aria-hidden="true"><use href="#i-info"/></svg><span>Help</span></button>
+        <a class="tool-button repository-link" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub (opens in a new tab)" title="View on GitHub (opens in a new tab)"><svg aria-hidden="true"><use href="#i-github"/></svg><span>View on GitHub</span></a>
+      </div>
+    </div>
+
+    <dialog id="settings" class="panel" aria-labelledby="settings-heading">
+      <div class="panel-heading"><h2 id="settings-heading">View settings</h2><button data-close class="icon-button" aria-label="Close view settings" autofocus><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <label class="switch-row"><span>Muted surroundings</span><input id="muted-surroundings" type="checkbox" role="switch" aria-describedby="muted-description" checked><span class="switch" aria-hidden="true"></span></label>
+      <p id="muted-description" class="panel-note">Keep the site in subtle grey. Turn off to show its original colors and aerial imagery.</p>
+      <div class="panel-divider"></div>
+      <label class="field-label" for="render-quality">Rendering quality</label>
+      <select id="render-quality" aria-describedby="quality-description"><option value="auto">Automatic</option><option value="high">Higher detail</option><option value="low">Lower power</option></select>
+      <p id="quality-description" class="panel-note">Automatic balances screen resolution, shadows and glass detail for your device. Lower power reduces rendering work; model geometry stays the same.</p>
+      <div class="panel-divider"></div>
+      <button id="copy-view-link" class="secondary-button" disabled>Copy view link</button>
+      <p class="panel-note">Share this version, camera, view mode and floor. The address also updates as you explore.</p>
+      <p id="share-status" class="panel-note" role="status" hidden></p>
+      <label id="view-link-fallback" class="field-label" hidden>View link<input id="view-link-text" type="text" readonly aria-label="View link"></label>
+    </dialog>
+
+    <section id="lighting" class="panel lighting-panel" popover="auto" role="dialog" aria-labelledby="lighting-heading" hidden>
+      <div class="lighting-header">
+      <div class="panel-heading"><h2 id="lighting-heading">Lighting</h2><button class="icon-button" popovertarget="lighting" popovertargetaction="hide" aria-label="Close lighting" autofocus><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <label class="switch-row"><span>Sun &amp; sky</span><input id="daylight" type="checkbox" role="switch" aria-controls="daylight-options" aria-describedby="daylight-description" disabled><span class="switch" aria-hidden="true"></span></label>
+      </div>
+      <p id="daylight-description" class="panel-note">Studio lighting is on. Enable Sun &amp; sky to explore daylight in Bern.</p>
+      <div id="daylight-options" hidden>
+        <div class="daylight-date-row">
+          <label for="daylight-date">Date<input id="daylight-date" type="date" min="1900-01-01" max="2100-12-31" required aria-describedby="daylight-status"></label>
+          <label for="daylight-hour">Hour in Bern<input id="daylight-hour" type="time" step="60" value="12:00" required aria-describedby="daylight-time-value"></label>
+        </div>
+        <div class="daylight-clock-row"><output id="daylight-time-value" for="daylight-time daylight-hour">12:00</output><button id="daylight-now" class="secondary-button">Now</button></div>
+        <p id="daylight-sun-times" class="panel-note"></p>
+        <div class="panel-divider"></div>
+        <label class="switch-row"><span>Shadows</span><input id="shadows" type="checkbox" role="switch"><span class="switch" aria-hidden="true"></span></label>
+        <label class="range-label" for="brightness">Brightness <output id="brightness-value" for="brightness">1.0</output></label>
+        <input id="brightness" type="range" min="0.5" max="2" step="0.1" value="1">
+        <details class="daylight-sliders"><summary>Time &amp; season sliders</summary>
+        <input id="daylight-time" type="range" min="0" max="1439" step="1" value="720" aria-label="Time of day">
+        <div class="range-ticks" aria-hidden="true"><span>00:00</span><span>12:00</span><span>23:59</span></div>
+        <label class="range-label" for="daylight-day">Season <output id="daylight-date-value" for="daylight-day"></output></label>
+        <input id="daylight-day" type="range" min="1" max="365" step="1" value="1">
+        <div class="range-ticks" aria-hidden="true"><span>January</span><span>December</span></div>
+        <p id="daylight-direction" class="panel-note"></p>
+        </details>
+        <p id="daylight-status" class="panel-note" role="status" hidden></p>
+        <button id="reset-lighting" class="secondary-button">Reset lighting</button>
+      </div>
+    </section>
+
+    <dialog id="help" class="panel help-panel" aria-labelledby="help-heading">
+      <div class="panel-heading"><h2 id="help-heading">Explore the building</h2><button data-close class="icon-button" aria-label="Close help" autofocus><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <h3>Building &amp; site</h3>
+      <p class="panel-note">Bern’s <a href="https://www.parlament.ch/en/%C3%BCber-das-parlament/parliament-building" target="_blank" rel="noopener noreferrer">Parliament Building<span class="sr-only"> (opens in a new tab)</span></a>, designed by Hans Wilhelm Auer and completed in 1902, stands between the Federal Palace’s east and west wings. In front, <a href="https://www.bern.ch/zu-gast-in-bern/sehenswurdigkeiten/bundesplatz/die-neugestaltung" target="_blank" rel="noopener noreferrer">Bundesplatz<span class="sr-only"> (opens in a new tab)</span></a> has 26 water jets representing Switzerland’s cantons.</p>
+      <div class="help-modes">
+        <p><strong>Exterior</strong> View the full building.</p>
+        <p><strong>Dollhouse</strong> Reveal the interior. Choose a level to focus on it.</p>
+        <p><strong>Floor plan</strong> View a level from above; adjust the cut height.</p>
+        <p><strong>Walk</strong> Explore at eye level with mouse or touch controls.</p>
+      </div>
+      <h3>Move around</h3>
+      <dl class="control-guide">
+        <dt>Mouse</dt><dd>Drag to orbit, right-drag to pan, scroll to zoom. In Floor plan, drag to pan.</dd>
+        <dt>Touch</dt><dd>One finger rotates; two fingers pan or pinch to zoom. In Floor plan, one finger pans.</dd>
+        <dt>Keyboard</dt><dd>Tab to focus the viewer. Arrows rotate, Shift + arrows pan, + / − zoom, R fits. In Floor plan, arrows pan.</dd>
+        <dt>Walking</dt><dd>WASD/arrows move, mouse looks, Shift speeds up, Space jumps, Esc pauses. On touch screens, use the movement pad and drag to look.</dd>
+      </dl>
+      <p class="panel-note"><strong>Explore building</strong> opens saved Places and searchable Elements. Select an element in Exterior, Dollhouse or Floor plan to inspect its properties and available sources.</p>
+      <p class="panel-note"><strong>Lighting</strong> controls sun, sky and shadows. Toggle <strong>Surroundings</strong> to show the site; View settings controls their colors. Floor plan hides the site.</p>
+      <div class="project-links">
+        <a class="tool-button project-link" href="https://www.parlamentsgebaeude-tour.ch/Bundeshaus_D/V1.html" target="_blank" rel="noopener noreferrer">View original tour<svg aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="tool-button project-link" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer">View on GitHub<svg aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="tool-button project-link" href="https://maps.app.goo.gl/WfqHyPgo7Vb1DdKj8" target="_blank" rel="noopener noreferrer">Google Maps<svg aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+      </div>
+      <p class="panel-note">Download model files from <a href="https://github.com/bbl-dres/reconstruction/tree/main/public" target="_blank" rel="noopener noreferrer">GitHub<svg aria-hidden="true" width="14" height="14"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span></a>.</p>
+      <p id="model-stats" class="model-stats">Loading model…</p>
+    </dialog>
+
+    <div id="loading" class="loading-card" role="status" aria-live="polite" aria-atomic="true">
+      <span class="eyebrow">BUILDING EXPLORER</span>
+      <h2 id="loading-title">Opening Bundeshaus</h2>
+      <p id="loading-detail">Finding available model versions…</p>
+      <progress id="load-progress" max="100" aria-label="Building download progress"></progress>
+      <button id="retry" class="primary-button" hidden>Try again</button>
+    </div>
+
+    <div class="building-tools">
+    <details id="model-tools" open>
+      <summary><span><strong>Model &amp; floors</strong><span id="model-summary" class="model-summary">Loading versions</span></span><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+      <div class="building-tools-content">
+      <label class="version-label" for="model-version">Model version</label>
+      <select id="model-version" disabled><option>Loading versions…</option></select>
+      <div id="section-controls" class="section-controls" hidden>
+      <label for="floor">Explore a level</label>
+      <select id="floor">
+        <option value="all">All levels</option>
+        <option value="entrance">South public entrance</option>
+        <option value="lower">Lower hall</option>
+        <option value="principal">Principal floor</option>
+        <option value="upper">Room 301</option>
+      </select>
+      <div id="cut-control" hidden><label for="cut-height">Cut height <output id="cut-value" for="cut-height">2.0 m</output></label><input id="cut-height" type="range" min="0.5" max="8" step="0.1" value="2" aria-describedby="cut-description"><p id="cut-description" class="panel-note">Above the selected floor.</p></div>
+      </div>
+      </div>
+    </details>
+      <button id="explore-toggle" class="tool-button" aria-controls="explore" aria-haspopup="dialog"><svg aria-hidden="true"><use href="#i-search"/></svg><span>Explore building</span></button>
+    </div>
+
+    <dialog id="explore" class="panel explore-panel" aria-labelledby="explore-heading">
+      <div class="explore-navigation">
+      <div class="panel-heading"><h2 id="explore-heading">Explore building</h2><button data-close class="icon-button" aria-label="Close explorer" autofocus><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <div class="panel-tabs" role="tablist" aria-label="Explore category">
+        <button id="places-tab" role="tab" aria-selected="true" aria-controls="places-panel">Places</button>
+        <button id="elements-tab" role="tab" aria-selected="false" aria-controls="elements-panel" tabindex="-1">Elements</button>
+      </div>
+      </div>
+      <div id="places-panel" role="tabpanel" aria-labelledby="places-tab">
+      <p id="explore-note" class="panel-note">Loading saved places…</p>
+      <h3>Saved views</h3><div id="saved-views" class="place-list"></div>
+      <h3>Points of interest</h3><div id="places-list" class="place-list"></div>
+      </div>
+      <div id="elements-panel" role="tabpanel" aria-labelledby="elements-tab" hidden>
+      <details class="element-reference" id="model-inventory"><summary>Object inventory</summary>
+        <p id="inventory-status" class="panel-note" role="status">This version has no whole-object inventory.</p>
+        <dl id="inventory-values" class="element-properties"></dl>
+        <button id="inventory-download" hidden>Download inventory JSON</button>
+      </details>
+      <label class="field-label" for="element-search">Find a building element</label>
+      <div class="search-field"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="element-search" type="search" placeholder="Name, category, family…" autocomplete="off" aria-describedby="element-count"><button id="clear-element-search" class="icon-button" aria-label="Clear element search" hidden><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <div class="search-suggestions" role="group" aria-label="Suggested element searches"><button data-element-query="Door">Doors</button><button data-element-query="Window">Windows</button><button data-element-query="Furniture">Furniture</button><button data-element-query="Wall">Walls</button></div>
+      <p id="element-count" class="panel-note" role="status">The element list is available when the building loads.</p>
+      <div id="element-list" class="place-list"></div>
+      </div>
+    </dialog>
+
+    <dialog id="inspector" class="panel inspector-panel" aria-labelledby="element-title">
+      <div class="panel-heading"><button id="element-back" class="icon-button" aria-label="Back to element results" hidden><svg aria-hidden="true"><use href="#i-back"/></svg></button><h2 id="element-title">Building element</h2><button data-close class="icon-button" aria-label="Close element information" autofocus><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <p class="panel-note">Model information and estimates. Inferred properties are educated guesses, not verified facts.</p>
+      <p id="selection-key" class="selection-key">Selected element · cyan fill and frame</p>
+      <p id="element-visibility" class="panel-note" hidden>This element is hidden in the current view.</p>
+      <dl id="element-properties" class="element-properties"></dl>
+      <details id="element-sources" class="element-reference"><summary>Sources &amp; methods</summary><dl id="element-source-list" class="source-properties"></dl></details>
+      <details class="element-reference"><summary>Model reference</summary><p id="element-source"></p><code id="element-id"></code></details>
+    </dialog>
+
+    <section id="walk-panel" class="walk-panel" aria-labelledby="walk-heading" hidden>
+      <span class="eyebrow">EXPLORE ON FOOT</span>
+      <h2 id="walk-heading">Step inside</h2>
+      <p id="walk-intro">Choose a room to begin.</p>
+      <label for="walk-start">Go to room</label>
+      <select id="walk-start"><option value="" disabled selected>Choose a room…</option><option value="hall">Dome hall</option><option value="national">National Council</option><option value="states">Council of States</option></select>
+      <label id="walk-input-row" class="field-label" for="walk-input">Controls</label>
+      <select id="walk-input"><option value="mouse">Keyboard &amp; mouse</option><option value="touch">Touch controls</option></select>
+      <p id="walk-instructions"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · mouse looks<br><kbd>Shift</kbd> faster · <kbd>Space</kbd> jump<br><kbd>Esc</kbd> pauses and releases the mouse</p>
+      <label class="switch-row fly-row"><span>Fly through gaps</span><input id="fly" type="checkbox" role="switch"><span class="switch" aria-hidden="true"></span></label>
+      <p class="fly-hint" id="fly-hint" hidden>Pass through walls. E rises, Q descends. Turn off to return to your last safe walking position.</p>
+      <button id="enter-walk" class="primary-button">Enter building <svg><use href="#i-chevron"/></svg></button>
+      <span id="walk-message" class="walk-message" role="status"></span>
+    </section>
+    <div id="crosshair" aria-hidden="true" hidden></div>
+    <div id="walk-hud" class="walk-hud" hidden><span id="walk-state">Walking</span><span id="walk-exit-hint"><kbd>Esc</kbd> to pause</span><button id="pause-walk" class="tool-button">Pause</button></div>
+    <div id="touch-walk" class="touch-walk" hidden>
+      <div id="move-pad" class="move-pad" role="group" aria-label="Walking direction">
+        <button data-walk-key="KeyW" class="move-forward" aria-label="Walk forward">↑</button><button data-walk-key="KeyA" class="move-left" aria-label="Walk left">←</button><button data-walk-key="KeyS" class="move-back" aria-label="Walk backward">↓</button><button data-walk-key="KeyD" class="move-right" aria-label="Walk right">→</button>
+      </div>
+      <div class="touch-walk-actions"><p>Drag the view to look</p><button id="touch-jump" class="tool-button" data-walk-key="Space">Jump</button><div id="touch-fly" hidden><button class="tool-button" data-walk-key="KeyE">Rise</button><button class="tool-button" data-walk-key="KeyQ">Descend</button></div></div>
+    </div>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+
+    <div id="camera-tools" class="camera-tools" role="group" aria-label="Camera controls">
+      <div class="zoom-buttons"><button id="zoom-in" class="icon-button" aria-label="Zoom in" title="Zoom in (+)" disabled><svg aria-hidden="true"><use href="#i-plus"/></svg></button><button id="zoom-out" class="icon-button" aria-label="Zoom out" title="Zoom out (−)" disabled><svg aria-hidden="true"><use href="#i-minus"/></svg></button></div>
+      <button id="reset" class="tool-button" aria-label="Fit building" title="Fit building (R)" disabled><svg aria-hidden="true"><use href="#i-reset"/></svg><span>Fit building</span></button>
+      <button id="fit-surroundings" class="tool-button" aria-label="Fit site" title="Fit site" hidden><svg aria-hidden="true"><use href="#i-context"/></svg><span>Fit site</span></button>
+    </div>
+
+    <footer class="bottom-bar">
+      <div id="navigation-hint" class="navigation-hint"><span>Drag to orbit</span><span>Scroll to zoom</span></div>
+      <nav class="mode-bar" aria-label="View mode">
+        <button data-mode="orbit" aria-pressed="false" disabled><svg><use href="#i-cube"/></svg><span>Exterior</span></button>
+        <button data-mode="dollhouse" aria-pressed="true" disabled><svg><use href="#i-dollhouse"/></svg><span>Dollhouse</span></button>
+        <button data-mode="plan" aria-pressed="false" disabled><svg><use href="#i-plan"/></svg><span>Floor plan</span></button>
+        <button data-mode="walk" aria-pressed="false" disabled><svg><use href="#i-walk"/></svg><span>Walk</span></button>
+      </nav>
+      <div class="view-actions">
+        <button id="fullscreen" class="icon-button" aria-label="Enter fullscreen" title="Fullscreen"><svg><use href="#i-full"/></svg></button>
+      </div>
+    </footer>
+  </main>
+  <noscript>This viewer needs JavaScript enabled.</noscript>
+  <script>
+    if (location.protocol === 'file:') {
+      document.getElementById('loading-title').textContent = 'Open with a local server';
+      document.getElementById('loading-detail').textContent = 'Right-click index.html in VS Code and choose Open with Live Server, or run “python scripts/serve.py” and open http://localhost:8000. No build is needed.';
+      document.getElementById('load-progress').hidden = true;
+    }
+  </script>
+  <script type="module">
+    import('./public/js/main.js?v=20260911-top-floor-1').catch(error => {
+      console.error(error);
+      if (location.protocol === 'file:') return;
+      document.getElementById('loading-title').textContent = 'The viewer could not start';
+      document.getElementById('loading-detail').textContent = 'A required viewer file could not be loaded. Refresh the page and check that the public folder is alongside index.html.';
+      document.getElementById('load-progress').hidden = true;
+      const retry = document.getElementById('retry');
+      retry.hidden = false;
+      retry.onclick = () => location.reload();
+    });
+  </script>
+</body>
+</html>

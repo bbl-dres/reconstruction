@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scope": "Full central-building source geometry; surroundings excluded",
+  "sourceSha256": "1c8b43fa00bab0410a50a02a9ef7c4fae0cc6a11ab3c9396d9e210d2d66cd08d",
+  "ifcSha256": "262077094e265419fccafcb0908d95fb3d411ad8bfb5829227e64ff42ecc9431",
+  "reviewedProducts": 1795,
+  "unclassifiedReferenceComponents": 2858,
+  "sourceComponentsCovered": 10768,
+  "sourceComponentsTotal": 10768,
+  "addedRepresentationMaps": 2771,
+  "schemaValidation": "PASS",
+  "addedGeometryChecked": 2858,
+  "maximumBoundsErrorM": 0,
+  "failures": [],
+  "ifcBytes": 306581437,
+  "ifczipBytes": 45709166,
+  "retainedReviewedGlobalIds": 1795,
+  "receiver": {
+    "engine": "web-ifc",
+    "version": "0.0.77",
+    "schema": "IFC4",
+    "productsWithGeometry": 4653,
+    "triangles": 6738778,
+    "maximumBoundsErrorM": 7.743492941969521e-06,
+    "toleranceM": 0.001,
+    "missing": [],
+    "failures": []
+  }
+}

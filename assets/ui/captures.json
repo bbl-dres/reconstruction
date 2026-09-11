@@ -1,0 +1,42 @@
+{
+  "captured": "2026-09-09",
+  "model": "bundeshaus-v012",
+  "method": "Unedited local browser screenshots. JPEG pixel dimensions can round fractional CSS viewport sizes.",
+  "screenshots": [
+    {
+      "file": "inspector-phone.jpg",
+      "pixels": [
+        320,
+        568
+      ]
+    },
+    {
+      "file": "lighting-desktop.jpg",
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "lighting-landscape.jpg",
+      "pixels": [
+        568,
+        320
+      ]
+    },
+    {
+      "file": "lighting-phone.jpg",
+      "pixels": [
+        390,
+        843
+      ]
+    },
+    {
+      "file": "phone-viewer.jpg",
+      "pixels": [
+        320,
+        568
+      ]
+    }
+  ]
+}

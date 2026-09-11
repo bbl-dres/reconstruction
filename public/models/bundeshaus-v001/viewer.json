@@ -1,0 +1,169 @@
+{
+  "$schema": "../../../docs/viewer-metadata.schema.json",
+  "schemaVersion": 1,
+  "modelId": "bundeshaus-v001",
+  "coordinates": "gltf-y-up-meters",
+  "views": [
+    {
+      "id": "building-overview",
+      "title": "Building overview",
+      "description": "The complete Bundeshaus, framed from outside.",
+      "camera": {
+        "mode": "orbit",
+        "frame": "building"
+      }
+    },
+    {
+      "id": "neighborhood",
+      "title": "The wider neighborhood",
+      "description": "Show the surrounding buildings and terrain.",
+      "camera": {
+        "mode": "orbit",
+        "frame": "site"
+      }
+    },
+    {
+      "id": "whole-dollhouse",
+      "title": "Inside the building",
+      "description": "Remove the outer shell and inspect all modeled levels.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "all",
+        "frame": "building"
+      }
+    },
+    {
+      "id": "principal-plan",
+      "title": "Principal floor plan",
+      "description": "A top-down model slice through the principal floor.",
+      "camera": {
+        "mode": "plan",
+        "level": "principal",
+        "frame": "level"
+      }
+    }
+  ],
+  "pointsOfInterest": [
+    {
+      "id": "dome-hall",
+      "title": "Dome hall",
+      "description": "Provisional viewpoint adapted from v003. Model coverage may differ in this iteration.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "lower",
+        "position": [
+          30,
+          30,
+          -42
+        ],
+        "target": [
+          0,
+          3,
+          -7
+        ]
+      }
+    },
+    {
+      "id": "national-council",
+      "title": "National Council",
+      "description": "Provisional viewpoint adapted from v003. Model coverage may differ in this iteration.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "principal",
+        "position": [
+          23,
+          33,
+          2
+        ],
+        "target": [
+          0,
+          9,
+          24
+        ]
+      }
+    },
+    {
+      "id": "council-of-states",
+      "title": "Council of States",
+      "description": "Provisional viewpoint adapted from v003. Model coverage may differ in this iteration.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "principal",
+        "position": [
+          24,
+          32,
+          -3
+        ],
+        "target": [
+          0,
+          9,
+          -24
+        ]
+      }
+    },
+    {
+      "id": "room-301",
+      "title": "Room 301",
+      "description": "Provisional viewpoint adapted from v003. Model coverage may differ in this iteration.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "upper",
+        "frame": "level"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "legacy-e4d9b50f908ded622192",
+      "title": "Room 301 · parquet floor",
+      "properties": [
+        {
+          "label": "Category",
+          "value": "Floor finish",
+          "basis": "inferred",
+          "confidence": "high",
+          "source": "Object is named '301 parquet floor'."
+        },
+        {
+          "label": "Likely material",
+          "value": "Wood parquet",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "Inferred from the modeled object's name; species and construction are unverified."
+        },
+        {
+          "label": "Room",
+          "value": "301",
+          "basis": "authored",
+          "source": "Source object name and upper-room collection in model v003."
+        }
+      ]
+    },
+    {
+      "id": "legacy-909708be7bea79fadf71",
+      "title": "National Council · chamber floor",
+      "properties": [
+        {
+          "label": "Likely space",
+          "value": "National Council chamber",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "NR floor naming and chamber grouping in model v003."
+        }
+      ]
+    },
+    {
+      "id": "legacy-8a3eb0453d6c5662a432",
+      "title": "Council of States · chamber floor",
+      "properties": [
+        {
+          "label": "Likely space",
+          "value": "Council of States chamber",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "SR floor naming and chamber grouping in model v003."
+        }
+      ]
+    }
+  ]
+}

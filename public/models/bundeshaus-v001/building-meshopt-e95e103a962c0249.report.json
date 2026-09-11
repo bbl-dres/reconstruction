@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v001",
+  "title": "Bundeshaus Bern - v001 building",
+  "asset": "building-meshopt-e95e103a962c0249.glb",
+  "source": {
+    "file": "bundeshaus_bern.blend",
+    "bytes": 38990574,
+    "sha256": "e656ffdda8d3561368142fb3581f414238fa9f2297ed09ff04f72d50b4d991b8"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 969,
+    "meshes": 943
+  },
+  "selection": {
+    "meshes": 600,
+    "collections": {
+      "02 | Parliament exterior": 118,
+      "03 | Roofs and cupolas": 53,
+      "04 | Sculpture approximations": 22,
+      "05 | Nationalratssaal": 169,
+      "06 | Ständeratssaal": 97,
+      "07 | Kuppelhalle and ceremonial stairs": 49,
+      "08 | Side rooms and Wandelhalle": 22,
+      "08b | Bundesratszimmer reception room": 18,
+      "08c | Conference room 301": 35,
+      "09 | Removable interior ceilings": 17
+    },
+    "boundsBlender": {
+      "min": [
+        -43.29999923706055,
+        -42.81999969482422,
+        -4.599999904632568
+      ],
+      "max": [
+        43.29999923706055,
+        31.0,
+        60.82999801635742
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 22640084,
+    "sha256": "336708c58aa6ab9a52bb070584229a93db791ada625bde7ba8d18697bfd02c81",
+    "nodes": 600,
+    "meshNodes": 600,
+    "uniqueMeshes": 600,
+    "renderedPrimitives": 600,
+    "trianglesAcrossInstances": 814931,
+    "materials": 30,
+    "embeddedImages": 3,
+    "taggedMeshNodes": 600,
+    "dollhouseHiddenMeshNodes": 261,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "giron_original.jpg",
+      "size": [
+        2048,
+        1329
+      ],
+      "packed": true
+    },
+    {
+      "name": "welti_original.jpg",
+      "size": [
+        5000,
+        1796
+      ],
+      "packed": true
+    },
+    {
+      "name": "pano227_up.jpg",
+      "size": [
+        2048,
+        2048
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [
+    {
+      "material": "Sandstone",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Sandstone trim",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Tree leaves",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Oak",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Oak trim",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Marble pale",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Warm plaster",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Marble red",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Patinated copper",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Marble warm",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Hall vermilion plaster",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    },
+    {
+      "material": "Conference walnut",
+      "proceduralNodes": [
+        "TEX_NOISE"
+      ],
+      "constantFallbackInputs": [
+        "Base Color",
+        "Normal"
+      ]
+    }
+  ],
+  "notes": [
+    "Main parliament building only; terrain, surrounding buildings and wing facades are excluded.",
+    "Cutaway rules mirror the v003 render_views.py recipe; these are object-level legacy hints, not verified wall or floor semantics.",
+    "Floor IDs, collision geometry and walk spawn points have not been authored for this export.",
+    "Procedural materials are exported as their authored constant Principled values; detailed texture baking is still required.",
+    "Research reconstruction with incomplete interiors; model and photographic assets retain their original provenance and licensing."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "optimization": {
+    "originalAsset": "building-e656ffdda8d3.glb",
+    "originalSha256": "57c570e2bca13c564c4bcb4cd8d4e0197d5355112e98829a2588c275b159dfcd",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "3627a5847b83e5f656d1f93b8aca3082004dfec76bcd831d10f05048f5ee2635",
+      "gzipLevel": 6
+    },
+    "compressedViews": 507,
+    "verifiedViews": 1507,
+    "lossless": true,
+    "originalBytes": 30165148,
+    "bytes": 22640084,
+    "gzipBytes": 7180406,
+    "gzipSha256": "45aa477bc5b3626b762f293525904efcdbabed0b554681cbe210c0f404c076e2"
+  }
+}

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.work/
+node_modules/
+dist/
+*.blend1
+
+# Original conversion intermediates: only catalog-referenced Meshopt assets ship.
+/public/models/**/building.glb
+/public/models/**/surroundings.glb
+/public/models/**/building-[0-9a-f]*.glb
+/public/models/**/surroundings-[0-9a-f]*.glb

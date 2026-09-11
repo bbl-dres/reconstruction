@@ -1,0 +1,233 @@
+SunCalc
+=======
+
+SunCalc is a tiny, dependency-free JavaScript library for calculating **sun position**,
+**sunlight phases** (sunrise, sunset, dusk, etc.), **moon position**, **moonrise** and **moonset**
+times, and **lunar phase** for any location and time.
+
+It matches the accuracy and conventions of [timeanddate.com](https://www.timeanddate.com/)
+and the [U.S. Naval Observatory](https://aa.usno.navy.mil/).
+Calculations are based on the formulas from Jean Meeus' *Astronomical Algorithms*.
+You can read about different twilight phases calculated by SunCalc
+in the [Twilight article on Wikipedia](http://en.wikipedia.org/wiki/Twilight).
+
+[![Build Status](https://github.com/mourner/suncalc/actions/workflows/test.yml/badge.svg)](https://github.com/mourner/suncalc/actions) [![Simply Awesome](https://img.shields.io/badge/simply-awesome-brightgreen.svg)](https://github.com/mourner/projects)
+
+## Example
+
+```javascript
+import * as SunCalc from 'suncalc';
+
+const times = SunCalc.getTimes(new Date(), 51.5, -0.1); // get today's sunlight times for London
+console.log(`Sunrise time: ${times.sunrise.toLocaleString()}`);
+
+const sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1); // get Sun position at today's sunrise
+console.log(`Sunrise direction: ${sunrisePos.azimuth} degrees`);
+```
+
+## Install
+
+Install with npm: `npm install suncalc`, then import it as a module:
+
+```js
+import * as SunCalc from 'suncalc';
+```
+
+Or use it directly in the browser via [jsDelivr](https://www.jsdelivr.com/esm):
+
+```html
+<script type="module">
+    import * as SunCalc from 'https://cdn.jsdelivr.net/npm/suncalc/+esm';
+</script>
+```
+
+Alternatively, there's a browser bundle that exposes a `SunCalc` global variable:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/suncalc"></script>
+```
+
+## Reference
+
+### Sun position
+
+```javascript
+SunCalc.getPosition(date, lat, lng)
+```
+
+Returns an object with the following properties:
+
+ * `altitude`: apparent (refraction-corrected) sun altitude above the horizon in
+   degrees, e.g. `0` at the horizon and `90` at the zenith (straight overhead)
+ * `azimuth`: sun azimuth in degrees, clockwise from north
+   (`0` = N, `90` = E, `180` = S, `270` = W)
+
+### Sunlight times
+
+```javascript
+SunCalc.getTimes(date, lat, lng, height = 0)
+```
+
+Returns sunlight times for the solar day containing `date`, at the given latitude,
+longitude and (optional) observer `height` above the horizon in meters.
+
+The result is an object whose properties are `Date` objects (or `null` when the
+event doesn't occur that day). Listed in the order they occur over the solar day,
+with example times for Kyiv (50.45°N, 30.52°E) on 24 August 2026, shown in local
+time (EEST, UTC+3):
+
+| Property        | Description                                                              | Kyiv example |
+| --------------- | ------------------------------------------------------------------------ | -----------: |
+| `nadir`         | nadir (darkest moment of the night, sun is in the lowest position)       |       01:00  |
+| `nightEnd`      | night ends (morning astronomical twilight starts)                        |       03:51  |
+| `nauticalDawn`  | nautical dawn (morning nautical twilight starts)                         |       04:41  |
+| `dawn`          | dawn (morning nautical twilight ends, morning civil twilight starts)     |       05:24  |
+| `sunrise`       | sunrise (top edge of the sun appears on the horizon)                     |       05:59  |
+| `sunriseEnd`    | sunrise ends (bottom edge of the sun touches the horizon)                |       06:03  |
+| `goldenHourEnd` | morning golden hour (soft light, best time for photography) ends         |       06:44  |
+| `solarNoon`     | solar noon (sun is in the highest position)                              |       13:00  |
+| `goldenHour`    | evening golden hour starts                                               |       19:15  |
+| `sunsetStart`   | sunset starts (bottom edge of the sun touches the horizon)               |       19:56  |
+| `sunset`        | sunset (sun disappears below the horizon, evening civil twilight starts) |       19:59  |
+| `dusk`          | dusk (evening nautical twilight starts)                                  |       20:34  |
+| `nauticalDusk`  | nautical dusk (evening astronomical twilight starts)                     |       21:18  |
+| `night`         | night starts (dark enough for astronomical observations)                 |       22:06  |
+
+`solarNoon` and `nadir` are always present. At high latitudes, when the sun stays
+above or below the rise/set altitude for the whole day, the rise/set-related times
+are `null` and one of these flags is set:
+
+ * `alwaysUp`: `true` when the sun never sets that day (polar day)
+ * `alwaysDown`: `true` when the sun never rises that day (polar night)
+
+The returned `Date`s are absolute UTC instants with no time zone of their own (as
+everywhere in SunCalc). To show one in a specific zone, format it with an explicit
+`timeZone` — daylight saving time is then applied for you:
+
+```javascript
+times.sunset.toLocaleString('en-GB', {timeZone: 'Europe/Kyiv'}); // → "24/08/2026, 19:59:00"
+```
+
+With no `timeZone`, `toLocaleString` uses the machine's local zone, so the same code
+prints different clock times on different machines.
+
+```javascript
+SunCalc.addTime(angleInDegrees, morningName, eveningName)
+```
+
+Adds a custom time when the sun reaches the given altitude angle (in degrees) to
+the results returned by `SunCalc.getTimes`. The `morningName` is used for the
+ascending (morning) crossing and `eveningName` for the descending (evening) one.
+
+`SunCalc.times` contains all currently defined times as
+`[angleInDegrees, morningName, eveningName]` rows.
+
+For example, to add the [blue hour](https://en.wikipedia.org/wiki/Blue_hour)
+(roughly −4° to −8°) with your own preferred angles:
+
+```javascript
+SunCalc.addTime(-4, 'morningBlueHourEnd', 'blueHour');
+SunCalc.addTime(-8, 'morningBlueHour', 'blueHourEnd');
+```
+
+### Moon position
+
+```javascript
+SunCalc.getMoonPosition(date, lat, lng)
+```
+
+Returns an object with the following properties:
+
+ * `altitude`: apparent moon altitude above the horizon in degrees
+ * `azimuth`: moon azimuth in degrees, clockwise from north
+ * `distance`: distance to the moon in kilometers
+ * `parallacticAngle`: parallactic angle of the moon in degrees
+
+### Moon illumination
+
+```javascript
+SunCalc.getMoonIllumination(date)
+```
+
+Returns an object with the following properties:
+
+ * `fraction`: illuminated fraction of the moon; varies from `0.0` (new moon) to
+   `1.0` (full moon). It reaches the exact extremes only at perfect syzygy
+   (eclipses), so a "full" moon typically peaks a hair under `1.0`
+ * `phase`: moon phase; varies from `0.0` to `1.0`, described below
+ * `angle`: position angle of the bright limb in degrees, reckoned eastward from
+   the north point of the disk
+ * `waxing`: `true` while the moon is waxing (new → full), `false` while waning
+   (full → new)
+
+The `phase` value maps to the named phases like this:
+
+| Phase | Name            |
+| -----:| --------------- |
+| 0     | New Moon        |
+|       | Waxing Crescent |
+| 0.25  | First Quarter   |
+|       | Waxing Gibbous  |
+| 0.5   | Full Moon       |
+|       | Waning Gibbous  |
+| 0.75  | Last Quarter    |
+|       | Waning Crescent |
+
+The four named values (0, 0.25, 0.5, 0.75) are exact instants; any other value falls in
+one of the crescent/gibbous ranges between them. So `phase: 0.4945…` is **not** "Full
+Moon" — it's late Waxing Gibbous, just shy of full. To map a value to one of the eight
+names, snap it to the nearest one-eighth:
+
+```javascript
+const names = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
+               'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
+const {phase} = SunCalc.getMoonIllumination(new Date());
+const name = names[Math.round(phase * 8) % 8];
+```
+
+Use `phase` for the name and `fraction` for how lit the disk is — and since `fraction`
+only reaches an exact `0` or `1` at an eclipse, don't test it for equality with those.
+
+By subtracting `getMoonPosition().parallacticAngle` from `angle` (both in degrees)
+you get the zenith angle of the moon's bright limb (anticlockwise). The zenith
+angle can be used to draw the moon's shape from the observer's perspective
+(e.g. moon lying on its back).
+
+### Moon rise and set times
+
+```js
+SunCalc.getMoonTimes(date, lat, lng)
+```
+
+Returns an object with the following properties:
+
+ * `rise`: moonrise time as a `Date`
+ * `set`: moonset time as a `Date`
+ * `alwaysUp`: `true` if the moon is always _above_ the horizon during the day
+ * `alwaysDown`: `true` if the moon is always _below_ the horizon
+
+Unlike the sun, the moon can rise and set zero, one, or two times within a single
+day, so this function scans a fixed 24-hour window: the **UTC calendar day** of the
+given date (consistent with the rest of the API, which treats dates as UTC
+instants). If you want the window to follow an observer's local civil day, pass a
+`date` set to their local midnight.
+
+## Accuracy
+
+Every function is built on higher-order astronomical models from Jean Meeus'
+*Astronomical Algorithms* and validated against [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/)
+and the [U.S. Naval Observatory](https://aa.usno.navy.mil/). Typical errors:
+
+| | Position | Rise/set times | Distance |
+| --- | --- | --- | --- |
+| Sun | ~0.08° | ~15 s | — |
+| Moon | ~0.09° | ~15 s | ~20 km |
+
+Rise and set times are accurate to ~15 seconds — at the floor of what the USNO's
+whole-minute reference data can even measure.
+
+## Changelog
+
+See the [Releases page](https://github.com/mourner/suncalc/releases) for the full
+changelog. Note that **v2.0** is a precision-focused rewrite with breaking changes
+to units and conventions — see its release notes before upgrading.

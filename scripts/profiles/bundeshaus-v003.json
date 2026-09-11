@@ -1,0 +1,32 @@
+{
+  "id": "bundeshaus-v003",
+  "title": "Bundeshaus Bern — v003",
+  "includeCollectionPrefixes": ["02 |", "02b |", "03 |", "04 |", "05 |", "06 |", "07 |", "07b |", "07c |", "07d |", "08 |", "08b |", "08c |", "09 |"],
+  "requireCollectionGroupCoverage": [2, 3, 4, 5, 6, 7, 8, 9],
+  "nameRoleRules": [{ "pattern": "^Connector .* (roof|attic|upper cornice|upper entablature)", "role": "roof" }],
+  "collectionRoles": {
+    "02 |": "exterior",
+    "02b |": "connector",
+    "03 |": "roof",
+    "04 |": "exterior-decoration",
+    "05 |": "interior",
+    "06 |": "interior",
+    "07 |": "interior",
+    "07b |": "interior",
+    "07c |": "interior",
+    "07d |": "interior",
+    "08 |": "interior",
+    "08b |": "interior",
+    "08c |": "interior",
+    "09 |": "ceiling"
+  },
+  "dollhouseHideCollectionPrefixes": ["02 |", "03 |", "04 |", "08c |", "09 |"],
+  "dollhouseHideNameFragments": ["rear enclosure", "mural wall", "side enclosure", "side wall", "Hall upper enclosure", "Hall great lunette", "Lunette glazing", "Hall lunette coffers"],
+  "notes": [
+    "Main parliament building plus the four connecting galleries and newer principal-floor walls/rooms/stair cores; terrain, surrounding buildings and wing facades are separate.",
+    "Cutaway rules mirror the v003 render_views.py recipe; these are object-level legacy hints, not verified wall or floor semantics.",
+    "Floor IDs, collision geometry and walk spawn points have not been authored for this export.",
+    "Procedural materials are exported as their authored constant Principled values; detailed texture baking is still required.",
+    "Research reconstruction with incomplete interiors; model and photographic assets retain their original provenance and licensing."
+  ]
+}

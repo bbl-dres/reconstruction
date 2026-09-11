@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "modelId": "bundeshaus-v020",
+  "sourceAnnotationSha256": "4ee9a15ca1ce059557fb4c75a87d86f2ae7acd24d282a5f8f188f37e805c0423",
+  "retainedObjectNotes": 3528,
+  "corrections": [],
+  "omittedObjects": [
+    {
+      "id": "d008-15ea1e94-1bf4-5233-958c-ca9b35e01ad7",
+      "title": "NR v011 balcony ornamental rail | Gilding",
+      "properties": [
+        {
+          "label": "Geometry basis",
+          "value": "Reference photographs; dimensions and detailed ornament are fitted.",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "v011 findings and archived user references"
+        }
+      ]
+    },
+    {
+      "id": "d008-fccd21cb-5cce-5acf-8336-02839baaf49e",
+      "title": "NR v011 balcony ornamental rail | NR v011 gallery crimson",
+      "properties": [
+        {
+          "label": "Geometry basis",
+          "value": "Reference photographs; dimensions and detailed ornament are fitted.",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "v011 findings and archived user references"
+        }
+      ]
+    },
+    {
+      "id": "d008-b3aaeaa0-ef91-53b1-932f-99f00a330a33",
+      "title": "NR v011 recessed gallery floor | Oak",
+      "properties": [
+        {
+          "label": "Geometry basis",
+          "value": "Reference photographs; dimensions and detailed ornament are fitted.",
+          "basis": "inferred",
+          "confidence": "medium",
+          "source": "v011 findings and archived user references"
+        }
+      ]
+    }
+  ],
+  "omissionReason": "No exported building mesh has this ID; original notes retained here for author review."
+}

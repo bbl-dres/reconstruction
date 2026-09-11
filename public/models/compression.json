@@ -1,0 +1,57 @@
+{
+  "recipe": {
+    "codec": "meshoptimizer-1.2.0",
+    "extension": "EXT_meshopt_compression",
+    "lossless": true,
+    "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+    "gzipLevel": 6
+  },
+  "recipeScope": "Current importer recipe. Historical pipeline hashes are recorded per version; assets are unchanged and their delivery hashes verified.",
+  "models": [
+    {
+      "version": "v027",
+      "originalBytes": 351489176,
+      "meshoptBytes": 310676560,
+      "transferBytes": 108780937,
+      "pipelineSha256": [
+        "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc"
+      ]
+    },
+    {
+      "version": "v020",
+      "originalBytes": 291862796,
+      "meshoptBytes": 253880476,
+      "transferBytes": 77109312,
+      "pipelineSha256": [
+        "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc"
+      ]
+    },
+    {
+      "version": "v010",
+      "originalBytes": 272989612,
+      "meshoptBytes": 242480860,
+      "transferBytes": 87538453,
+      "pipelineSha256": [
+        "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc"
+      ]
+    },
+    {
+      "version": "v003",
+      "originalBytes": 96283788,
+      "meshoptBytes": 69167964,
+      "transferBytes": 14028255,
+      "pipelineSha256": [
+        "3627a5847b83e5f656d1f93b8aca3082004dfec76bcd831d10f05048f5ee2635"
+      ]
+    },
+    {
+      "version": "v001",
+      "originalBytes": 95426716,
+      "meshoptBytes": 68532116,
+      "transferBytes": 13899678,
+      "pipelineSha256": [
+        "3627a5847b83e5f656d1f93b8aca3082004dfec76bcd831d10f05048f5ee2635"
+      ]
+    }
+  ]
+}

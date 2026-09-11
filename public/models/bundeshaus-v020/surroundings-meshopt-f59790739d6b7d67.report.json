@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v020-surroundings",
+  "title": "Bundeshaus v020 context",
+  "asset": "surroundings-meshopt-f59790739d6b7d67.glb.gz",
+  "source": {
+    "file": "bundeshaus_bern.blend",
+    "sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4",
+    "bytes": 101729155
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 14447,
+    "meshes": 14377
+  },
+  "selection": {
+    "meshes": 4636,
+    "collections": {
+      "00 | Terrain and public realm": 11,
+      "01 | Measured surrounding buildings": 322,
+      "01b | Wing facade reconstruction": 4303
+    },
+    "boundsBlender": {
+      "min": [
+        -310.442626953125,
+        -263.2513732910156,
+        -44.272403717041016
+      ],
+      "max": [
+        321.29522705078125,
+        315.30126953125,
+        57.005332946777344
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 114018976,
+    "sha256": "27ae4dc15f4cd6598051fe37da515a741193870520849efe14a2a901789b6a94",
+    "nodes": 4636,
+    "meshNodes": 4636,
+    "uniqueMeshes": 789,
+    "renderedPrimitives": 4958,
+    "trianglesAcrossInstances": 1773521,
+    "materials": 13,
+    "embeddedImages": 9,
+    "taggedMeshNodes": 4636,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "KHR_materials_transmission",
+      "KHR_materials_ior",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "paving_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "paving_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "site_orthophoto",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Complete inventory from the versioned authoring model. Individual placement extras and linked local mesh geometry are preserved.",
+    "No EXT_mesh_gpu_instancing; linked meshes save asset storage but do not by themselves reduce all draw calls."
+  ],
+  "identical_mesh_definitions_linked_in_export": 0,
+  "safety_disc_shading": "Identical untextured safety discs share retained flat-cap shading in the portable export; positions and topology are unchanged.",
+  "opticalMaterialApproximations": [],
+  "validation": "Geometry streams, mesh definitions and object placements match fresh v020 raw export exactly; metadata matches v020 master. See performance review for visual/runtime checks.",
+  "authoringSource": {
+    "file": "bundeshaus_bern.blend",
+    "sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4"
+  },
+  "exportSource": {
+    "file": "raw/context.glb",
+    "sha256": "b0780df96e81a941946ad1d090cc4917cec29238b383d7e230af262692ccc1dc",
+    "method": "Verified metadata patch and embedded texture repack; geometry streams preserved byte for byte"
+  },
+  "pbrMaterialBake": {
+    "record": "texture_optimization.json",
+    "baseline": "Fresh v020 source-node swatch bake",
+    "new_bakes": 58,
+    "master_materials_unchanged": true
+  },
+  "images": [
+    {
+      "name": "paving_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "paving_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "site_orthophoto",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/context.glb",
+    "packageReportSha256": "41641108aeb2f504e15065a6fd118c38b36b3938401067d43f881c9a8d6cbd13"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-75f93353af3a-36337127c5b9.glb",
+    "originalSha256": "36337127c5b99db1b6a1bb99e68ffe8fdb4e129f649a0be81b930adbe5cf4b1f",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 563,
+    "verifiedViews": 4026,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 128074860,
+    "bytes": 114018976,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 25366195,
+    "gzipSha256": "684a1d684d6039c77e2254afddb6d211c2dc8ca6fb5b6759b1356a678f4b8448"
+  }
+}

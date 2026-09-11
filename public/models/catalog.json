@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "models": [
+    {
+      "id": "bundeshaus-v027",
+      "label": "v027",
+      "version": 27,
+      "building": "./bundeshaus-v027/building-meshopt-d975ed1917349ce8.glb.gz",
+      "surroundings": "./bundeshaus-v027/surroundings-meshopt-e09e0d0f0f469caa.glb.gz",
+      "metadata": "./bundeshaus-v027/viewer.json",
+      "sourceSha256": "1c8b43fa00bab0410a50a02a9ef7c4fae0cc6a11ab3c9396d9e210d2d66cd08d",
+      "levels": [
+        "all",
+        "entrance",
+        "tiefparterre",
+        "lower",
+        "principal",
+        "second",
+        "upper"
+      ],
+      "meshCount": 10768,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      },
+      "bim": "./bundeshaus-v027/bim-d679356146b75df0.json",
+      "ifc": "./bundeshaus-v027/reference-0d94f87438470c0d.ifczip",
+      "levelDefinitions": {
+        "entrance": {
+          "label": "South public entrance",
+          "elevation": -4.2,
+          "min": -4.9,
+          "max": -2.35
+        },
+        "tiefparterre": {
+          "label": "Tiefparterre",
+          "elevation": -2.14,
+          "min": -2.4,
+          "max": -0.1
+        },
+        "lower": {
+          "label": "Hochparterre and lower hall",
+          "elevation": 2.16,
+          "min": -0.1,
+          "max": 6.9
+        },
+        "principal": {
+          "label": "Principal floor",
+          "elevation": 7.16,
+          "min": 6.9,
+          "max": 13.05
+        },
+        "second": {
+          "label": "2. Obergeschoss",
+          "elevation": 13.31,
+          "min": 13.05,
+          "max": 17.85
+        },
+        "upper": {
+          "label": "3. Obergeschoss",
+          "elevation": 18.11,
+          "min": 17.85,
+          "max": 30.8
+        }
+      }
+    },
+    {
+      "id": "bundeshaus-v020",
+      "label": "v020",
+      "version": 20,
+      "building": "./bundeshaus-v020/building-meshopt-d6b7e2e77c689db7.glb.gz",
+      "surroundings": "./bundeshaus-v020/surroundings-meshopt-f59790739d6b7d67.glb.gz",
+      "metadata": "./bundeshaus-v020/viewer.json",
+      "sourceSha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4",
+      "levels": [
+        "all",
+        "entrance",
+        "lower",
+        "principal",
+        "upper"
+      ],
+      "meshCount": 9734,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      }
+    },
+    {
+      "id": "bundeshaus-v010",
+      "label": "v010",
+      "version": 10,
+      "building": "./bundeshaus-v010/building-meshopt-ac7fe455f951f07e.glb.gz",
+      "surroundings": "./bundeshaus-v010/surroundings-meshopt-2b94167cd679d257.glb.gz",
+      "metadata": "./bundeshaus-v010/viewer.json",
+      "sourceSha256": "4cc5d9c43b0b55c979cfb48983c3d9eacaea0d5a9681d085741411b74d2a51a8",
+      "levels": [
+        "all",
+        "entrance",
+        "lower",
+        "principal",
+        "upper"
+      ],
+      "meshCount": 9341,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      }
+    },
+    {
+      "id": "bundeshaus-v003",
+      "label": "v003",
+      "version": 3,
+      "building": "./bundeshaus-v003/building-meshopt-3b1da5b3ffb8262d.glb",
+      "surroundings": "./bundeshaus-v003/surroundings-meshopt-6045c5af8579f48e.glb",
+      "metadata": "./bundeshaus-v003/viewer.json",
+      "sourceSha256": "dee13e098556ee2da5f64b661b30a6525e91ff6b4191a6afc2e170002f19d0f7",
+      "levels": [
+        "all",
+        "lower",
+        "principal",
+        "upper"
+      ],
+      "meshCount": 662,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      }
+    },
+    {
+      "id": "bundeshaus-v001",
+      "label": "v001",
+      "version": 1,
+      "building": "./bundeshaus-v001/building-meshopt-e95e103a962c0249.glb",
+      "surroundings": "./bundeshaus-v001/surroundings-meshopt-75ee500c10cd97d8.glb",
+      "metadata": "./bundeshaus-v001/viewer.json",
+      "sourceSha256": "e656ffdda8d3561368142fb3581f414238fa9f2297ed09ff04f72d50b4d991b8",
+      "levels": [
+        "all",
+        "lower",
+        "principal",
+        "upper"
+      ],
+      "meshCount": 600,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      }
+    }
+  ],
+  "default": "bundeshaus-v027"
+}
