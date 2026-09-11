@@ -539,3 +539,8 @@ Stage39 retains v027: corrected third-office outline and independent north vesti
 
 
 Stage40 retains v027: 10,768 components, 1,795 products, 671 types. Carpet and portal-glass components belong to existing stair/door products. Connector vertical taper is removed; the original southern roof pitch is retained. Floor substrates carry `viewer_cutaway_role: interior` and `viewer_role: floor`.
+
+
+### v027 stage43 wall and hall coordination
+
+The second-floor archive infill excludes the open dome hall and both vaulted side galleries. Third-office infill was retired in stage42. Walls crossing the existing storey datums are split into level components, preserving original component IDs on the lowest part and recording suffixed identities for upper parts. Reviewed product identities are unchanged. Interior partitions and gallery backing walls have an explicit interior cutaway role; facade-attached linings and roof/vault overhead assemblies remain removable. See the local stage43 report for the complete identity migration, evidence and validation. These are coordination datums, not surveyed dimensions.

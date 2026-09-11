@@ -10,9 +10,9 @@
   "models": [
     {
       "version": "v027",
-      "originalBytes": 351489176,
-      "meshoptBytes": 310676560,
-      "transferBytes": 108780937,
+      "originalBytes": 368854440,
+      "meshoptBytes": 325163964,
+      "transferBytes": 111217215,
       "pipelineSha256": [
         "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc"
       ]

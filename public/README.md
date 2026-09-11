@@ -4,7 +4,7 @@ Original models can be downloaded here. The viewer has no separate IFC download 
 
 ## Full-building IFC
 
-[Download v027 IFCZIP](models/bundeshaus-v027/reference-0d94f87438470c0d.ifczip) (about 45 MB). Unzip it to obtain `bundeshaus-v027.ifc` (about 300 MB); rename `.ifczip` to `.zip` if your extraction tool needs that extension. The large plain IFC stays outside this repository.
+[Download v027 IFCZIP](models/bundeshaus-v027/reference-5ac65c0b87a25885.ifczip) (about 45 MB). Unzip it to obtain `bundeshaus-v027.ifc` (about 300 MB); rename `.ifczip` to `.zip` if your extraction tool needs that extension. The large plain IFC stays outside this repository.
 
 The export covers all **10,768 modeled building components**: 1,795 reviewed products and 2,858 explicitly unclassified reference components. All 4,653 represented objects passed the web-ifc geometry check. Unclassified reference components are not additional reviewed physical-product counts. See [IFC validation](models/bundeshaus-v027/reference-0d94f87438470c0d.report.json).
 

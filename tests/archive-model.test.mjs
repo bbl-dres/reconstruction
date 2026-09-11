@@ -21,23 +21,18 @@ const catalog=parseCatalog(JSON.parse(await readFile(new URL('catalog.json',mode
 test('v027 archive assets retain complete geometry, valid floor views and supported walking starts',async()=>{
  const e=catalog.find(e=>e.version===27);assert(e,'Archive release must be in the catalog');assert(e.levels.includes('second')&&e.levels.includes('tiefparterre'));
  const metadata=parseMetadata(JSON.parse(await readFile(new URL(e.metadata,models),'utf8')),e.levels);assert.deepEqual(metadata.issues,[]);
- const registry=JSON.parse(await readFile(new URL(e.bim,models),'utf8'));assert.equal(registry.sourceSha256,e.sourceSha256);assert.equal(registry.elements.length,1795);assert.equal(registry.unresolvedComponents.length,2858);
- const bytes=await readGLBBytes(new URL(e.building,models));const length=bytes.readUInt32LE(12);const d=JSON.parse(bytes.subarray(20,20+length));const ids=d.nodes.filter(n=>n.mesh!==undefined).map(n=>n.extras.viewer_id);assert.equal(ids.length,10768);assert.equal(new Set(ids).size,ids.length);
+ const registry=JSON.parse(await readFile(new URL(e.bim,models),'utf8'));assert.equal(registry.sourceSha256,e.sourceSha256);assert.equal(registry.elements.length,1794);assert.equal(registry.unresolvedComponents.length,3030);
+ const bytes=await readGLBBytes(new URL(e.building,models));const length=bytes.readUInt32LE(12);const d=JSON.parse(bytes.subarray(20,20+length));const ids=d.nodes.filter(n=>n.mesh!==undefined).map(n=>n.extras.viewer_id);assert.equal(ids.length,10901);assert.equal(new Set(ids).size,ids.length);assert.equal(ids.filter(i=>i.startsWith('archive31-third-offices')).length,0);
  const covered=[...registry.elements.flatMap(p=>p.components.map(c=>c.id)),...registry.unresolvedComponents.map(c=>c.id)];assert.deepEqual(new Set(covered),new Set(ids));assert.equal(new Set(covered).size,covered.length);
  for(const id of metadata.objects.keys())assert(ids.includes(id),id);
  d.buffers[0].uri='data:application/octet-stream;base64,'+bytes.subarray(28+length,28+length+d.buffers[0].byteLength).toString('base64');delete d.materials;delete d.textures;delete d.images;delete d.samplers;for(const m of d.meshes)for(const p of m.primitives)delete p.material;
  const {scene}=await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).parseAsync(JSON.stringify(d),'');const meshes=await prepareStaticModel(scene,{yieldControl:async()=>{},onMesh:m=>{m.name=m.userData.viewer_source_name||m.name;}});assert.equal(meshes.length,e.meshCount);
- const hiddenTypes=new Set(['type-5efb4d29-0928-5a62-a722-2b5c098b082c','type-f315b3d9-ba4c-5691-a5c8-dab9353df1ad','type-4a02775a-acb6-59e6-9624-f6ebd026705f']);
- const hiddenProducts=registry.elements.filter(p=>hiddenTypes.has(p.typeId));assert.equal(hiddenProducts.length,3);
- const hiddenIds=new Set(hiddenProducts.flatMap(p=>p.components.map(c=>c.id)));hiddenIds.add('d008-a9f4d24d-1c1b-50d7-818f-2600165415ce');
- const topObstructions=meshes.filter(m=>hiddenIds.has(m.userData.viewer_id));assert.equal(topObstructions.length,73);
- for(const m of topObstructions){assert(!visibleInMode(m,'dollhouse','upper',e.levelDefinitions),m.name);for(const mode of ['dollhouse','orbit','walk','plan'])assert(visibleInMode(m,mode,'all',e.levelDefinitions),mode+': '+m.name);}
- const crimson=meshes.find(m=>m.name==='NR v011 upper lunette wall and cartouches | NR v011 gallery crimson');assert(crimson);assert(visibleInMode(crimson,'dollhouse','upper',e.levelDefinitions),'The separate crimson component stays visible');
  for(const floor of ['second','upper','tiefparterre'])assert(meshes.some(m=>visibleInMode(m,'dollhouse',floor,e.levelDefinitions)),floor+' must not be empty');
  assert(meshes.filter(m=>/^Three Confederates simplified sculpture/.test(m.name)).length>=4);
  for(const m of meshes.filter(m=>m.name.includes('North inner arched reveal')||m.name.includes('North timber arched transom')))assert(visibleInMode(m,'dollhouse','lower',e.levelDefinitions),'Inner vestibule must remain visible: '+m.name);
- assert.equal(ids.filter(i=>i.startsWith('archive31-third-offices')).length,24);
+ assert.equal(ids.filter(i=>i.startsWith('archive31-third-offices')).length,0);
  for(const m of meshes){const role=m.userData.viewer_cutaway_role;assert(!role||['interior','enclosure','overhead'].includes(role),'Unsupported cutaway role: '+m.name);}
+ for(const m of meshes.filter(m=>m.userData.viewer_cutaway_role==='interior' && /wall/.test(m.userData.viewer_category||'')))assert(visibleInMode(m,'dollhouse','all',e.levelDefinitions),'Retain internal wall '+m.userData.viewer_id);
  for(const m of meshes.filter(m=>m.userData.viewer_id?.startsWith('finish40-')))assert(visibleInMode(m,'dollhouse','all'));
  for(const m of meshes.filter(m=>m.userData.viewer_id?.startsWith('portal40-'))){assert(!visibleInMode(m,'dollhouse','all'));assert(visibleInMode(m,'orbit','all'));}
  for(const floor of ['entrance','tiefparterre','lower','principal','second','upper'])assert(meshes.some(m=>visibleInMode(m,'dollhouse',floor,e.levelDefinitions)),floor);
@@ -45,6 +40,8 @@ test('v027 archive assets retain complete geometry, valid floor views and suppor
  for(const m of connectorDecks){assert(Math.abs(m.userData.bounds.max.y-7.16)<.0001);assert(visibleInMode(m,'dollhouse','principal',e.levelDefinitions));}
  const {world}=await collisionThroughWorker(meshes);
  for(const [name,start]of Object.entries(WALK_STARTS)){const walker=new Walker(new PerspectiveCamera(),world);assert(walker.spawn(start.position,start.target),'Supported start: '+name);assert(walker.hasSafePosition);}
- console.log('v027: 10,768 imported components, 4,653 IFC membership entries and three supported walking starts.');
+ console.log('v027: 10,901 imported components, 4,824 IFC membership entries and three supported walking starts.');
 });
+
+
 

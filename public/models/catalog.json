@@ -5,10 +5,10 @@
       "id": "bundeshaus-v027",
       "label": "v027",
       "version": 27,
-      "building": "./bundeshaus-v027/building-meshopt-d975ed1917349ce8.glb.gz",
+      "building": "./bundeshaus-v027/building-meshopt-8f0d1462c52409bd.glb.gz",
       "surroundings": "./bundeshaus-v027/surroundings-meshopt-e09e0d0f0f469caa.glb.gz",
       "metadata": "./bundeshaus-v027/viewer.json",
-      "sourceSha256": "1c8b43fa00bab0410a50a02a9ef7c4fae0cc6a11ab3c9396d9e210d2d66cd08d",
+      "sourceSha256": "fee985d0480c62510e92bdc2850e8fd0a724d2ac560fe1068caf186103c1da6e",
       "levels": [
         "all",
         "entrance",
@@ -18,7 +18,7 @@
         "second",
         "upper"
       ],
-      "meshCount": 10768,
+      "meshCount": 10901,
       "location": {
         "latitude": 46.946495525973354,
         "longitude": 7.444211945710425,
@@ -26,8 +26,8 @@
         "enuToModelDegrees": -7,
         "source": "research/model_georeference.json; ENU rotated into Blender XY"
       },
-      "bim": "./bundeshaus-v027/bim-d679356146b75df0.json",
-      "ifc": "./bundeshaus-v027/reference-0d94f87438470c0d.ifczip",
+      "bim": "./bundeshaus-v027/bim-be972bc53ace741e.json",
+      "ifc": "./bundeshaus-v027/reference-5ac65c0b87a25885.ifczip",
       "levelDefinitions": {
         "entrance": {
           "label": "South public entrance",
