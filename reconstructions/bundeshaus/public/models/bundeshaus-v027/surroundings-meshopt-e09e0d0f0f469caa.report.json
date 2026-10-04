@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus-v026-surroundings",
+  "title": "Bundeshaus v026 context",
+  "asset": "surroundings-meshopt-e09e0d0f0f469caa.glb.gz",
+  "source": {
+    "file": "bundeshaus_bern.blend",
+    "bytes": 107281413,
+    "sha256": "ec30696f69332cd113687e23e0ae445687104cc7281b3ac569e095f6ca8d407b"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 16786,
+    "meshes": 14927,
+    "textObjects": 3
+  },
+  "selection": {
+    "meshes": 4644,
+    "collections": {
+      "00 | Terrain and public realm": 11,
+      "01 | Measured surrounding buildings": 322,
+      "01b | Wing facade reconstruction": 4303,
+      "01s | Surroundings Berna fountain v024": 8
+    }
+  },
+  "glb": {
+    "bytes": 114534368,
+    "sha256": "928992c9427a6a55c2097720ac4073ea9c2532cefa67eb3ec5b64fdca6f029be",
+    "nodes": 4644,
+    "meshNodes": 4644,
+    "uniqueMeshes": 801,
+    "renderedPrimitives": 4966,
+    "trianglesAcrossInstances": 1788101,
+    "materials": 15,
+    "embeddedImages": 9,
+    "taggedMeshNodes": 4644,
+    "dollhouseHiddenMeshNodes": 8,
+    "extensionsUsed": [
+      "KHR_materials_ior",
+      "KHR_materials_transmission",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "paving_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "paving_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "site_orthophoto",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Complete inventory from the versioned authoring model. Individual placement extras and linked local mesh geometry are preserved.",
+    "No EXT_mesh_gpu_instancing; linked meshes save asset storage but do not by themselves reduce all draw calls."
+  ],
+  "identical_mesh_definitions_linked_in_export": 0,
+  "safety_disc_shading": "Identical untextured safety discs share retained flat-cap shading in the portable export; positions and topology are unchanged.",
+  "opticalMaterialApproximations": [],
+  "validation": "Source-bound native delta; all existing image buffers retained. Single assembly ownership and world transforms validated.",
+  "authoringSource": {
+    "file": "bundeshaus_bern.blend",
+    "sha256": "75f93353af3a4a086ab9a5cdf5400e25ecb641aae960ea7db9081d9bfe67f6a4"
+  },
+  "exportSource": {
+    "file": "raw/context.glb",
+    "sha256": "b0780df96e81a941946ad1d090cc4917cec29238b383d7e230af262692ccc1dc",
+    "method": "Verified metadata patch and embedded texture repack; geometry streams preserved byte for byte"
+  },
+  "pbrMaterialBake": {
+    "record": "texture_optimization.json",
+    "baseline": "Fresh v020 source-node swatch bake",
+    "new_bakes": 58,
+    "master_materials_unchanged": true
+  },
+  "images": [
+    {
+      "name": "paving_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "paving_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_trim_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "oak_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "site_orthophoto",
+      "size": [
+        2240,
+        1920
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_normal",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "tree_leaves_basecolor",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "semanticMigration": {
+    "sourceVersion": "v020",
+    "productRoots": 937,
+    "partitionBatchSplit": "Four existing partitions separated, all 196 source triangles preserved",
+    "sourceGeometry": "Unchanged; original binary plus partition accessor copies",
+    "validation": "research/native_validation.json and registry-validation.json"
+  },
+  "conversion": {
+    "method": "v025 unchanged geometry buffers; eight whole chair product roots rotated 180 degrees",
+    "scriptSha256": "98cd6033bbfa200094ef09ee2c3f147a9d161006d754e55622f9c64b170c5c31"
+  },
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/context.glb",
+    "packageReportSha256": "3ae7b3d7f91d7f058caa33b42c3173f29440ef32284d3f22350b1748386266ea"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-ec30696f6933-c4a0479cb359.glb",
+    "originalSha256": "c4a0479cb359e8edcd9ae15c2c8d56498d7c0583f88b1df35d60e2caad4376bb",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+      "gzipLevel": 6
+    },
+    "compressedViews": 579,
+    "verifiedViews": 4062,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 128756336,
+    "bytes": 114534368,
+    "deliveryEncoding": "gzip",
+    "gzipBytes": 25466049,
+    "gzipSha256": "5f8911aee7d821e519ebb12de21a364fa671856c5102e15cf04435f82b195a0d"
+  }
+}

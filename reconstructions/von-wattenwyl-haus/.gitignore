@@ -1,0 +1,16 @@
+# Local only: the downloaded tour, third-party tools, datasets and trained
+# splats. The repository root is published to GitHub Pages, so everything
+# committed is public.
+output/
+matterport/tools/
+brush/bin/
+brush/target/
+alignment/tools/
+cloud/tools/
+*.ply
+*.splat
+*.spz
+*.sog
+
+# Published: the standalone splat viewers built by viewer/make_viewer.py.
+!/viewer/output/

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "models": [
+    {
+      "id": "bundeshaus-v027",
+      "label": "v027",
+      "version": 27,
+      "building": "./bundeshaus-v027/building-meshopt-8f0d1462c52409bd.glb.gz",
+      "surroundings": "./bundeshaus-v027/surroundings-meshopt-e09e0d0f0f469caa.glb.gz",
+      "metadata": "./bundeshaus-v027/viewer.json",
+      "sourceSha256": "fee985d0480c62510e92bdc2850e8fd0a724d2ac560fe1068caf186103c1da6e",
+      "levels": [
+        "all",
+        "entrance",
+        "tiefparterre",
+        "lower",
+        "principal",
+        "second",
+        "upper"
+      ],
+      "meshCount": 10901,
+      "location": {
+        "latitude": 46.946495525973354,
+        "longitude": 7.444211945710425,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": -7,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      },
+      "bim": "./bundeshaus-v027/bim-be972bc53ace741e.json",
+      "ifc": "./bundeshaus-v027/reference-5ac65c0b87a25885.ifczip",
+      "levelDefinitions": {
+        "entrance": {
+          "label": "South public entrance",
+          "elevation": -4.2,
+          "min": -4.9,
+          "max": -2.35
+        },
+        "tiefparterre": {
+          "label": "Tiefparterre",
+          "elevation": -2.14,
+          "min": -2.4,
+          "max": -0.1
+        },
+        "lower": {
+          "label": "Hochparterre and lower hall",
+          "elevation": 2.16,
+          "min": -0.1,
+          "max": 6.9
+        },
+        "principal": {
+          "label": "Principal floor",
+          "elevation": 7.16,
+          "min": 6.9,
+          "max": 13.05
+        },
+        "second": {
+          "label": "2. Obergeschoss",
+          "elevation": 13.31,
+          "min": 13.05,
+          "max": 17.85
+        },
+        "upper": {
+          "label": "3. Obergeschoss",
+          "elevation": 18.11,
+          "min": 17.85,
+          "max": 30.8
+        }
+      }
+    }
+  ],
+  "default": "bundeshaus-v027"
+}

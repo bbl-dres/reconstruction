@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Beatrice von Wattenwyl-Haus · Reconstructions</title>
+  <script>
+    // Open the best available splat viewer straight away. Viewers are built by
+    // viewer/make_viewer.py; where none exists, this page shows a note.
+    const viewers = ['viewer/output/lichtfeld-loma.html', 'viewer/output/lichtfeld.html', 'viewer/output/brush.html'];
+    // Opened from disk, the page can neither check files nor stream levels of
+    // detail: go to the viewer with the embedded splat.
+    if (location.protocol === 'file:') location.replace('viewer/output/brush.html');
+    else (async () => {
+      for (const viewer of viewers) {
+        try { if ((await fetch(viewer, { method: 'HEAD' })).ok) return location.replace(viewer); } catch { /* try the next */ }
+      }
+      document.documentElement.dataset.missing = '';
+    })();
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; background: #000; color: #f2f2f3; font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    html:not([data-missing]) main { visibility: hidden; }
+    main { max-width: 640px; margin: 0 auto; padding: 48px 24px; }
+    h1 { margin: 0 0 8px; font-size: 1.75rem; line-height: 1.2; }
+    p { color: #a3a3aa; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Beatrice von Wattenwyl-Haus</h1>
+    <p>The splat viewer for this reconstruction is not available here. It is built from the archived tour with <code>viewer/make_viewer.py</code>; the method, tools and results are documented <a href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus">on GitHub</a>.</p>
+    <noscript><p><a href="viewer/output/lichtfeld-loma.html">Open the splat viewer</a>.</p></noscript>
+  </main>
+</body>
+</html>

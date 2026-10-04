@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100" width="960" height="600" role="img" aria-label="Cube map of a 360° panorama">
+  <rect width="160" height="100" fill="#0c0c0e"/>
+  <g fill="none" stroke="#8a8a92" stroke-width="0.9" transform="translate(20 9)">
+    <path d="M30 5h30v30H30zM0 35h30v30H0zM30 35h30v30H30zM60 35h30v30H60zM90 35h30v30H90zM30 65h30v20H30z"/>
+    <circle cx="45" cy="50" r="3"/><circle cx="75" cy="47" r="2"/><circle cx="16" cy="53" r="2.5"/><circle cx="104" cy="49" r="2"/>
+  </g>
+</svg>

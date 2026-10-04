@@ -1,0 +1,6 @@
+# dataset/, lichtfeld/score.py and matterport/fill_tiles.py; download.py and the
+# training wrappers need the standard library alone, make_viewer.py --lod Node.js.
+numpy>=2.0
+Pillow>=10.0
+opencv-python>=4.8
+psutil>=5.9  # alignment/align_test.py: memory guard

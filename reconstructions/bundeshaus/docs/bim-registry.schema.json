@@ -1,0 +1,692 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reconstruction.local/schema/bim-registry-v1.json",
+  "title": "BIM product registry v1",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "modelId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "projectNamespace": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "units": {
+      "const": "m"
+    },
+    "coordinateSystem": {
+      "const": "glTF-Y-up"
+    },
+    "conversionTolerance": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 0.001
+    },
+    "storeys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "elevation": {
+            "type": "number"
+          },
+          "provisional": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "elevation",
+          "provisional"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "category"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "familyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "prototypeElementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "id",
+          "familyId",
+          "name",
+          "revision",
+          "prototypeElementId"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "typeId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "rootMatrix": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 16,
+            "maxItems": 16
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "localMatrix": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 16,
+                  "maxItems": 16
+                },
+                "slot": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "id",
+                "localMatrix",
+                "slot"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 100000
+          },
+          "primaryStorey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "storeyRefs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "roomIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "environment": {
+            "enum": [
+              "interior",
+              "exterior",
+              "boundary",
+              "unknown"
+            ]
+          },
+          "ifcClass": {
+            "enum": [
+              "IfcFurniture",
+              "IfcWindow",
+              "IfcDoor",
+              "IfcColumn",
+              "IfcWall",
+              "IfcStair",
+              "IfcBuildingElementProxy",
+              "IfcSlab",
+              "IfcRamp",
+              "IfcRailing"
+            ]
+          },
+          "bounds": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "quantities": {
+            "type": "object",
+            "properties": {
+              "openingArea": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "enum": [
+                          "m2",
+                          "m",
+                          "count"
+                        ]
+                      },
+                      "method": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "source": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "confidence": {
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "method",
+                      "source",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "outerFrameArea": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "enum": [
+                          "m2",
+                          "m",
+                          "count"
+                        ]
+                      },
+                      "method": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "source": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "confidence": {
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "method",
+                      "source",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "netGlazingArea": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "enum": [
+                          "m2",
+                          "m",
+                          "count"
+                        ]
+                      },
+                      "method": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "source": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "confidence": {
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "method",
+                      "source",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "floorArea": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "enum": [
+                          "m2",
+                          "m",
+                          "count"
+                        ]
+                      },
+                      "method": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "source": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "confidence": {
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "method",
+                      "source",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "properties": {
+            "type": "object",
+            "maxProperties": 40,
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "basis": {
+                "enum": [
+                  "authored",
+                  "inferred"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "geometry": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            },
+            "required": [
+              "basis",
+              "confidence",
+              "source",
+              "geometry"
+            ],
+            "additionalProperties": false
+          },
+          "membership": {
+            "const": "reviewed"
+          },
+          "parentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "openingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "category",
+          "typeId",
+          "rootMatrix",
+          "components",
+          "primaryStorey",
+          "storeyRefs",
+          "roomIds",
+          "environment",
+          "ifcClass",
+          "bounds",
+          "quantities",
+          "properties",
+          "evidence",
+          "membership"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "openings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "hostId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "fillingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "profile": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "minItems": 3,
+            "maxItems": 1000
+          },
+          "rootMatrix": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 16,
+            "maxItems": 16
+          },
+          "depth": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "id",
+          "hostId",
+          "fillingId",
+          "profile",
+          "rootMatrix",
+          "depth",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "unresolvedComponents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "status": {
+            "enum": [
+              "complete-modeled-category",
+              "partial"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "category",
+          "status",
+          "scope"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 4000
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "modelId",
+    "projectId",
+    "projectNamespace",
+    "sourceSha256",
+    "units",
+    "coordinateSystem",
+    "conversionTolerance",
+    "storeys",
+    "families",
+    "types",
+    "elements",
+    "openings",
+    "unresolvedComponents",
+    "coverage",
+    "caveats"
+  ],
+  "additionalProperties": false
+}

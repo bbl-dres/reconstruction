@@ -1,0 +1,46 @@
+__pycache__/
+*.pyc
+.work/
+node_modules/
+dist/
+*.blend1
+
+# Original conversion intermediates: only catalog-referenced Meshopt assets ship.
+/reconstructions/bundeshaus/public/models/**/building.glb
+/reconstructions/bundeshaus/public/models/**/surroundings.glb
+/reconstructions/bundeshaus/public/models/**/building-[0-9a-f]*.glb
+/reconstructions/bundeshaus/public/models/**/surroundings-[0-9a-f]*.glb
+# Retired model versions stay local: only the latest version is published.
+/reconstructions/bundeshaus/archive/
+
+# This repository is published to GitHub Pages: everything committed is public.
+# Local outputs, downloads and tools stay out; each reconstruction may add more
+# rules or exceptions (von-wattenwyl-haus publishes its viewer/output/).
+output/
+venv/
+.venv/
+
+# Large or derived formats that are never published as-is: trained splats and
+# point clouds, raw scans and source scenes, plain IFC (the .ifczip is the
+# published form), Matterport meshes, archives and partial downloads.
+*.ply
+*.splat
+*.spz
+*.sog
+*.ksplat
+*.e57
+*.las
+*.laz
+*.ifc
+*.blend
+*.dam
+*.zip
+*.7z
+*.tgz
+*.tar.gz
+*.part
+
+# Operating system and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
