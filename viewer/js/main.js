@@ -676,7 +676,6 @@ function startInRoom() {
 
 async function prepareWalk(request) {
   closeDropdowns();
-  closeInspector();
   if (!state.collision) {
     const preparing = 'Preparing walking surfaces…';
     notify(preparing, 60000);
@@ -1193,11 +1192,12 @@ async function zoomToNode(node) {
 
 function selectFromTree(node) {
   if (!state.ready) return;
-  if (state.mode === 'walk') return notify('Choose Orbit to inspect elements.', 2600);
   revealLevel(node);
   if (sidebar.isCompact()) sidebar.dismiss();
   inspectElement(node.meshes[0]);
-  // Frame elements that are out of view; leave the camera alone otherwise.
+  // Frame elements that are out of view; leave the camera alone otherwise. Fly and Walk
+  // never move the visitor for a selection; Zoom to does that.
+  if (state.mode === 'walk') return;
   const center = nodeBounds(node).getCenter(new THREE.Vector3()).project(camera);
   if (center.z < -1 || center.z > 1 || Math.abs(center.x) > 0.9 || Math.abs(center.y) > 0.9) frameBounds(nodeBounds(node));
 }
@@ -1467,7 +1467,7 @@ function wireControls() {
   wireTree();
   touchWalk = wireTouchWalk({ canvas, buttons: document.querySelectorAll('[data-walk-key]'), camera: walkCamera, keys, invalidate });
   wirePicking({ canvas, camera: () => camera, meshes: () => state.meshes,
-    enabled: () => state.ready && state.mode !== 'walk' && !dropdownOpen(),
+    enabled: () => state.ready && !dropdownOpen(),
     onPick: (mesh, hit) => inspectElement(mesh, hit), onMiss: closeInspector });
   $('close-inspector').addEventListener('click', closeInspector);
   $('element-details').addEventListener('toggle', placeInspector);
