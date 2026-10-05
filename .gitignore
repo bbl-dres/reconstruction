@@ -6,12 +6,14 @@ dist/
 *.blend1
 
 # Original conversion intermediates: only catalog-referenced Meshopt assets ship.
-/reconstructions/bundeshaus/public/models/**/building.glb
-/reconstructions/bundeshaus/public/models/**/surroundings.glb
-/reconstructions/bundeshaus/public/models/**/building-[0-9a-f]*.glb
-/reconstructions/bundeshaus/public/models/**/surroundings-[0-9a-f]*.glb
-# Retired model versions stay local: only the latest version is published.
-/reconstructions/bundeshaus/archive/
+/reconstructions/*/public/models/**/building.glb
+/reconstructions/*/public/models/**/surroundings.glb
+/reconstructions/*/public/models/**/building-[0-9a-f]*.glb
+/reconstructions/*/public/models/**/surroundings-[0-9a-f]*.glb
+# Each reconstruction's authoring workspace (references, research, stages, frozen
+# versions, retired models) lives in work/ and is never published. It is tracked in
+# a separate private repository instead (see docs/adding-a-building.md).
+/reconstructions/*/work/
 
 # This repository is published to GitHub Pages: everything committed is public.
 # Local outputs, downloads and tools stay out; each reconstruction may add more

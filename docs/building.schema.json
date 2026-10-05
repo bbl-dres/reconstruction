@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bbl-dres.github.io/reconstruction/docs/building.schema.json",
+  "title": "Reconstruction building configuration (public/building.json)",
+  "description": "Read by the shared viewer (viewer/js/building-config.js) and the model pipeline (tools/model-pipeline/import_versions.py).",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "place"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "Folder name under reconstructions/ and catalog model ID prefix" },
+    "name": { "type": "string", "minLength": 1, "description": "Display name, e.g. Bundeshaus" },
+    "place": { "type": "string", "minLength": 1, "description": "Shown under the name, e.g. Bern, Switzerland" },
+    "models": { "type": "string", "default": "models/", "description": "Catalog folder, relative to building.json" },
+    "about": { "type": "string", "description": "HTML fragment for the help panel, relative to building.json" },
+    "links": {
+      "type": "array",
+      "items": { "type": "object", "required": ["label", "href"], "properties": { "label": { "type": "string" }, "href": { "type": "string", "pattern": "^https://" } }, "additionalProperties": false }
+    },
+    "downloads": { "type": "string", "pattern": "^https://", "description": "Where model files can be downloaded" },
+    "walkStarts": {
+      "type": "object",
+      "description": "Walk-mode room starts in glTF metres (Y up). Used when the building policy exports no WALK_STARTS.",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9-]*$" },
+      "additionalProperties": {
+        "type": "object", "required": ["label", "position", "target"],
+        "properties": {
+          "label": { "type": "string" },
+          "position": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "target": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+        }
+      }
+    },
+    "pipeline": {
+      "type": "object",
+      "description": "Settings for tools/model-pipeline/import_versions.py --building <id>",
+      "properties": {
+        "modelIdPrefix": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "Defaults to id" },
+        "title": { "type": "string", "description": "Export report title prefix" },
+        "timeZone": { "type": "string", "default": "Europe/Zurich" },
+        "ifcName": { "type": "string", "description": "Pass to export_ifc.py --name" },
+        "profiles": {
+          "type": "object", "required": ["building", "surroundings"],
+          "properties": { "building": { "type": "string" }, "surroundings": { "type": "string" } }
+        },
+        "levels": {
+          "type": "array",
+          "description": "Viewer floors written to the catalog as levels/levelDefinitions. Elevations and slices in glTF metres.",
+          "items": {
+            "type": "object", "required": ["id", "label", "elevation", "min", "max"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "label": { "type": "string" },
+              "elevation": { "type": "number" }, "min": { "type": "number" }, "max": { "type": "number" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "bundeshaus",
+  "name": "Bundeshaus",
+  "place": "Bern, Switzerland",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    {
+      "label": "View original tour",
+      "href": "https://www.parlamentsgebaeude-tour.ch/Bundeshaus_D/V1.html"
+    },
+    {
+      "label": "View on GitHub",
+      "href": "https://github.com/bbl-dres/reconstruction"
+    },
+    {
+      "label": "Google Maps",
+      "href": "https://maps.app.goo.gl/WfqHyPgo7Vb1DdKj8"
+    }
+  ],
+  "downloads": "https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/bundeshaus/public",
+  "walkStarts": {},
+  "pipeline": {
+    "modelIdPrefix": "bundeshaus",
+    "title": "Bundeshaus Bern",
+    "timeZone": "Europe/Zurich",
+    "ifcName": "Bundeshaus",
+    "profiles": {
+      "building": "profiles/bundeshaus-v003.json",
+      "surroundings": "profiles/bundeshaus-v003-surroundings.json"
+    }
+  }
+}

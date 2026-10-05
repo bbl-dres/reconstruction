@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-building="public/building.json">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Explore Landgut Lohn in 3D, as a dollhouse, in plan, or on foot.">
+  <title>Landgut Lohn · Building explorer</title>
+  <link rel="stylesheet" href="../../viewer/css/token.css">
+  <link rel="stylesheet" href="../../viewer/css/main.css">
+  <script type="importmap">
+    {"imports":{"three":"../../viewer/vendor/three/build/three.module.js","three/addons/":"../../viewer/vendor/three/examples/jsm/","building-policy":"../../viewer/js/policy-default.js"}}
+  </script>
+</head>
+<body>
+  <!-- Thin entry page: the shared viewer (../../viewer) builds the interface from public/building.json. -->
+  <p id="boot-status" class="boot-status" hidden></p>
+  <noscript>This viewer needs JavaScript enabled.</noscript>
+  <script type="module" src="../../viewer/js/boot.js"></script>
+</body>
+</html>

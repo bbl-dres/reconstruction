@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "REPLACE-BUILDING-ID",
+  "namespace": null,
+  "latestRelease": null,
+  "activeStage": null,
+  "publicFolder": "../public",
+  "contracts": "../../../docs",
+  "units": "meters",
+  "coordinateSystem": null
+}

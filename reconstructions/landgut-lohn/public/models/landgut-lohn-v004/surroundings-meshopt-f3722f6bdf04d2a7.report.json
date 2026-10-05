@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "id": "landgut-lohn-v004-surroundings",
+  "title": "Landgut Lohn - v004 surroundings",
+  "asset": "surroundings-meshopt-f3722f6bdf04d2a7.glb",
+  "source": {
+    "file": "landgut-lohn.blend",
+    "bytes": 13150375,
+    "sha256": "f9f6fa0e93f2ca13ddf5cf0f6df60e547fbe16d902d6087de88a3fd601285fce"
+  },
+  "conversion": {
+    "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
+    "profileSha256": "9796fb6506c3f9d72fa926b3dcf45a7f97c179287886ae5f6a52f027e6f3f6c2"
+  },
+  "blenderVersion": "5.2.2 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 2804,
+    "meshes": 2782,
+    "textObjects": 0
+  },
+  "evaluatedText": [],
+  "selection": {
+    "meshes": 1833,
+    "collections": {
+      "Context": 1833
+    },
+    "boundsBlender": {
+      "min": [
+        -348.01849365234375,
+        -348.01849365234375,
+        -54.321998596191406
+      ],
+      "max": [
+        348.01849365234375,
+        348.01849365234375,
+        98.86000061035156
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 8950588,
+    "sha256": "7a0989d2f36027bd96776dd30b9d8cd3d208b8d2b8dd85a9edaa0bcd8b154682",
+    "nodes": 1833,
+    "meshNodes": 1833,
+    "uniqueMeshes": 246,
+    "renderedPrimitives": 1833,
+    "trianglesAcrossInstances": 291779,
+    "materials": 28,
+    "embeddedImages": 13,
+    "taggedMeshNodes": 1833,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "lc-asphalt.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-asphalt-light.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-ballast.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-bed.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-cobbles.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-field-crop.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-field-soil.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-forest-floor.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-gravel.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-lawn.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-meadow.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "lc-shrubbery.png",
+      "size": [
+        512,
+        512
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Terrain from swissALTI3D 2025 and neighbouring buildings from swissBUILDINGS3D 3.0 (© swisstopo, open government data)."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/context.glb",
+    "packageReportSha256": "50654716925ea16311a759d393c62a9a9bdccaca543702754b2499ef88c40d8e"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-f9f6fa0e93f2-c2ebdae7dc81.glb",
+    "originalSha256": "c2ebdae7dc8145ebc5b6d90952effadac99c672061a703e4d6e2e78c360678df",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 79,
+    "verifiedViews": 749,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 9967144,
+    "bytes": 8950588,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 5935543,
+    "gzipSha256": "7dea90b5ca5921cb096eee2849fa5dc2937ed32b94109e42466deb77f147e511"
+  }
+}

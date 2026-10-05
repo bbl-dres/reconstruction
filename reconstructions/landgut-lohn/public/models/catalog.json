@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "models": [
+    {
+      "id": "landgut-lohn-v004",
+      "label": "v004",
+      "version": 4,
+      "building": "./landgut-lohn-v004/building-meshopt-eb8cc470744ba398.glb",
+      "surroundings": "./landgut-lohn-v004/surroundings-meshopt-f3722f6bdf04d2a7.glb",
+      "metadata": "./landgut-lohn-v004/viewer.json",
+      "sourceSha256": "f9f6fa0e93f2ca13ddf5cf0f6df60e547fbe16d902d6087de88a3fd601285fce",
+      "levels": [
+        "all",
+        "eg",
+        "og1",
+        "dg"
+      ],
+      "meshCount": 784,
+      "location": {
+        "latitude": 46.90861792676888,
+        "longitude": 7.4747328725895095,
+        "timeZone": "Europe/Zurich",
+        "enuToModelDegrees": 34.84847491739849,
+        "source": "research/model_georeference.json; ENU rotated into Blender XY"
+      },
+      "levelDefinitions": {
+        "eg": {
+          "label": "EG",
+          "elevation": 1.45,
+          "min": -0.6,
+          "max": 5.35
+        },
+        "og1": {
+          "label": "1. OG",
+          "elevation": 5.54,
+          "min": 3.9,
+          "max": 8.8
+        },
+        "dg": {
+          "label": "Dachgeschoss",
+          "elevation": 8.84,
+          "min": 8.8,
+          "max": 18.0
+        }
+      },
+      "bim": "./landgut-lohn-v004/bim-b033ddf4bb95cf5b.json",
+      "ifc": "./landgut-lohn-v004/reference-acefca737b6ec5dd.ifczip"
+    }
+  ]
+}

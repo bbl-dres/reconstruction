@@ -1,0 +1,8 @@
+{
+  "id": "replace-building-id",
+  "title": "BUILDING-NAME",
+  "includeCollectionPrefixes": ["Site", "Building"],
+  "notes": [
+    "Every exported object should carry authored viewer_role, viewer_cutaway_role, viewer_floor_ids and stable viewer_id properties (docs/model-handoff.md). Collection rules here are only a fallback."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "landgut-lohn",
+  "title": "Landgut Lohn",
+  "includeCollectionPrefixes": [
+    "Site",
+    "Main_House",
+    "Dependency",
+    "Passage"
+  ],
+  "notes": [
+    "Every exported object carries authored viewer_id, viewer_role, viewer_cutaway_role and viewer_floor_ids (docs/model-handoff.md); the default viewer policy needs nothing else.",
+    "Types (shared prototypes) and Reference (panorama camera rigs) are deliberately excluded."
+  ]
+}

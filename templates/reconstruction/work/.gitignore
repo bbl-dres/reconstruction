@@ -1,0 +1,7 @@
+# Private work repository. Large or re-downloadable material stays out even here.
+__pycache__/
+*.pyc
+*.blend1
+catalog/thumbnails/
+downloads/
+cache/

@@ -1,0 +1,13 @@
+{
+  "id": "landgut-lohn-surroundings",
+  "title": "Landgut Lohn surroundings",
+  "includeCollectionPrefixes": [
+    "Context"
+  ],
+  "collectionRoles": {
+    "Context": "context"
+  },
+  "notes": [
+    "Terrain from swissALTI3D 2025 and neighbouring buildings from swissBUILDINGS3D 3.0 (\u00a9 swisstopo, open government data)."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "projectId": "replace-building-id",
+  "updated": "2026-09-11",
+  "coordinateConvention": "Source-native; never assume model coordinates",
+  "assets": [],
+  "policy": {
+    "allowedContent": "Real-building photographs, drawings, sections, plans and contextual documents, plus faithful 2D derivatives. No reconstruction screenshots or renders.",
+    "reviewArtifacts": "../review/",
+    "secondaryIllustrations": "../research/secondary-illustrations/",
+    "geodata": "../research/geodata/",
+    "unknownValues": "null or empty lists; do not infer survey facts from model geometry."
+  }
+}

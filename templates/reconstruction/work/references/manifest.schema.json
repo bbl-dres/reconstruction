@@ -1,0 +1,490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Building research evidence manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "updated",
+    "coordinateConvention",
+    "assets"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "coordinateConvention": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "object"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "aliases",
+          "path",
+          "originalFileNames",
+          "ingestedFileName",
+          "title",
+          "description",
+          "kind",
+          "collectionId",
+          "sha256",
+          "bytes",
+          "location",
+          "dates",
+          "orientation",
+          "scale",
+          "rights",
+          "provenance",
+          "derivation",
+          "legacyPaths",
+          "tags",
+          "review"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^ref-[a-f0-9]{16}$"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+          },
+          "originalFileNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "ingestedFileName": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "aerial-photograph",
+              "document",
+              "drawing-extract",
+              "elevation",
+              "extracted-text",
+              "floor-plan",
+              "historic-illustration",
+              "navigation-diagram",
+              "photo-contact-sheet",
+              "photograph",
+              "seating-plan",
+              "section",
+              "site-plan"
+            ]
+          },
+          "collectionId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "location": {
+            "type": "object",
+            "required": [
+              "buildingId",
+              "spaces",
+              "levels",
+              "facades",
+              "basis",
+              "confidence"
+            ],
+            "properties": {
+              "buildingId": {
+                "type": "string"
+              },
+              "spaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "levels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "facades": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "basis": {
+                "type": "string"
+              },
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "unknown"
+                ]
+              },
+              "levelBasis": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "dates": {
+            "type": "object",
+            "required": [
+              "created",
+              "createdBasis",
+              "acquired"
+            ],
+            "properties": {
+              "created": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "createdBasis": {
+                "type": "string"
+              },
+              "acquired": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            },
+            "additionalProperties": false
+          },
+          "orientation": {
+            "type": "object",
+            "required": [
+              "north",
+              "view",
+              "note"
+            ],
+            "properties": {
+              "north": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "view": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "scale": {
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "basis"
+            ],
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "rights": {
+            "type": "object",
+            "required": [
+              "license",
+              "status",
+              "publicationAllowed",
+              "notes"
+            ],
+            "properties": {
+              "license": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "type": "string"
+              },
+              "publicationAllowed": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            },
+            "additionalProperties": false
+          },
+          "provenance": {
+            "type": "object",
+            "required": [
+              "urls",
+              "originalPaths",
+              "legacyRecords"
+            ],
+            "properties": {
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "originalPaths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "legacyRecords": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "derivation": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "sourceAssetIds",
+                  "operation",
+                  "parameters"
+                ],
+                "properties": {
+                  "sourceAssetIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true
+                  },
+                  "operation": {
+                    "type": "string"
+                  },
+                  "parameters": {
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "legacyPaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "review": {
+            "type": "object",
+            "required": [
+              "status",
+              "reviewedOn",
+              "limitations"
+            ],
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "reviewedOn": {
+                "type": "string"
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            },
+            "additionalProperties": false
+          },
+          "media": {
+            "type": "object"
+          },
+          "drawing": {
+            "type": "object",
+            "required": [
+              "archiveId",
+              "sheetNumber",
+              "revisionDate",
+              "revisionIndex",
+              "author",
+              "scope",
+              "datum",
+              "basis"
+            ],
+            "properties": {
+              "archiveId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sheetNumber": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "revisionDate": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "revisionIndex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "author": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "datum": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "sourceRole": {
+            "type": "object",
+            "required": [
+              "value",
+              "basis"
+            ],
+            "properties": {
+              "value": {
+                "enum": [
+                  "photographic-record",
+                  "historic-record",
+                  "alteration-drawing",
+                  "seating-snapshot",
+                  "contextual-document",
+                  "navigation-aid",
+                  "unknown"
+                ]
+              },
+              "basis": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
