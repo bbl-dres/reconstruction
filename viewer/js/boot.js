@@ -32,7 +32,7 @@ async function start() {
   const configUrl = new URL(document.documentElement.dataset.building || 'public/building.json', location.href);
   const [config, shell] = await Promise.all([
     fetch(configUrl).then(r => { if (!r.ok) throw new Error('The building configuration could not be loaded.'); return r.json(); }),
-    text(new URL('../shell.html?v=20261005-tree-panel', import.meta.url)),
+    text(new URL('../shell.html?v=20261005-mobile-1', import.meta.url)),
   ]);
   const building = parseBuilding(config, configUrl);
   const about = building.about ? await text(new URL(building.about, configUrl)) : '';
@@ -41,7 +41,7 @@ async function start() {
   document.getElementById('boot-status')?.remove();
   document.body.insertAdjacentHTML('afterbegin', markup);
   setBuilding(building);
-  await import('./main.js?v=20261005-tree-panel');
+  await import('./main.js?v=20261005-mobile-1');
 }
 
 start().catch(error => {

@@ -24,6 +24,8 @@
     <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4s-1.2-.4-4.1 1.5a14 14 0 0 0-7.4 0C4.7-.3 3.5.1 3.5.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.6v4" transform="translate(1 1) scale(.9)"/></symbol>
     <symbol id="i-gallery" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-levels" viewBox="0 0 24 24"><path d="m12 3 9 4.5-9 4.5-9-4.5Zm-9 9 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
   </svg>
 
   <main id="viewer" aria-label="Interactive building viewer">
@@ -33,7 +35,7 @@
         <h1>{{name}}</h1>
         <button id="sidebar-toggle" class="ghost-button sidebar-toggle" aria-label="Model and places" title="Collapse panel" aria-controls="sidebar-body" aria-expanded="true"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
       </div>
-      <button id="sheet-toggle" class="sheet-summary" aria-controls="sidebar-body" aria-expanded="false"><span class="sheet-handle" aria-hidden="true"></span><strong>Model</strong><span id="sheet-level">All levels</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
+      <div id="sheet-grabber" class="sheet-grabber" aria-hidden="true"></div>
       <div id="sidebar-body" class="sidebar-body">
         <div class="sidebar-tabbar">
           <div class="sidebar-tabs" role="tablist" aria-label="Explore the building">
@@ -57,8 +59,8 @@
 
     <div id="stage" class="stage">
       <canvas id="scene" tabindex="0" aria-label="3D building. Drag to orbit, right-drag to pan, scroll to zoom." aria-describedby="canvas-help">Interactive 3D reconstruction of the {{name}}. Use the view controls or open Help for navigation instructions and model coverage.</canvas>
-      <p id="canvas-help" class="sr-only">With the viewer focused: arrow keys rotate, Shift and arrows pan, plus and minus zoom, R fits the building. In floor plan, arrows pan. Tab moves to the controls.</p>
-      <p class="stage-title" aria-hidden="true">{{name}}</p>
+      <p id="canvas-help" class="sr-only">With the viewer focused: arrow keys rotate, Shift and arrows pan, plus and minus zoom, R fits the building, Page Up and Page Down change the level. In floor plan, arrows pan. Tab moves to the controls.</p>
+      <button id="sheet-toggle" class="stage-title" aria-controls="sidebar-body" aria-expanded="false" aria-label="{{name}}: model and places"><span>{{name}}</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
 
       <div class="toolbar" role="group" aria-label="Lighting, surroundings and help">
         <button id="lighting-toggle" class="toolbar-button lighting-toggle" aria-label="Lighting" popovertarget="lighting" aria-controls="lighting" aria-haspopup="dialog" aria-expanded="false" aria-describedby="lighting-state" disabled><svg class="lighting-icon" aria-hidden="true"><use href="#i-sun"/></svg><span>Lighting</span></button>
@@ -70,6 +72,7 @@
       </div>
 
       <section id="lighting" class="dropdown lighting-panel" popover="auto" role="dialog" aria-label="Lighting" hidden>
+        <div class="panel-head"><h2>Lighting</h2><button class="ghost-button panel-close" popovertarget="lighting" popovertargetaction="hide" aria-label="Close lighting"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
         <label class="switch-row"><span>Sun &amp; sky</span><input id="daylight" type="checkbox" role="switch" aria-controls="daylight-options" aria-describedby="daylight-description" disabled autofocus><span class="switch" aria-hidden="true"></span></label>
         <p id="daylight-description" class="panel-note" hidden>Daylight needs a location and north orientation for this model.</p>
         <div id="daylight-options" hidden>
@@ -88,6 +91,7 @@
       </section>
 
       <section id="surroundings-panel" class="dropdown surroundings-panel" popover="auto" role="dialog" aria-label="Surroundings" hidden>
+        <div class="panel-head"><h2>Surroundings</h2><button class="ghost-button panel-close" popovertarget="surroundings-panel" popovertargetaction="hide" aria-label="Close surroundings"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
         <label class="switch-row"><span>Show surroundings</span><input id="surroundings" type="checkbox" role="switch" checked autofocus><span class="switch" aria-hidden="true"></span></label>
         <label id="muted-row" class="switch-row"><span>Grey</span><input id="muted-surroundings" type="checkbox" role="switch" aria-describedby="muted-description" checked><span class="switch" aria-hidden="true"></span></label>
         <p id="muted-description" class="sr-only">Grey keeps the site quiet behind the building; turn it off to show the surroundings in colour.</p>
@@ -96,6 +100,7 @@
       </section>
 
       <section id="help" class="dropdown help-panel" popover="auto" role="dialog" aria-label="Help and model information" hidden>
+        <div class="panel-head"><h2>Help</h2><button class="ghost-button panel-close" popovertarget="help" popovertargetaction="hide" aria-label="Close help"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
         <div class="segmented" role="tablist" aria-label="Help">
           <button id="controls-tab" role="tab" aria-selected="true" aria-controls="controls-panel" autofocus>Controls</button>
           <button id="about-tab" role="tab" aria-selected="false" aria-controls="about-panel" tabindex="-1">About this model</button>
@@ -105,16 +110,17 @@
           <dl class="guide">
             <dt>Exterior</dt><dd>The full building and its surroundings.</dd>
             <dt>Dollhouse</dt><dd>Roofs and outer walls removed to show the interior.</dd>
-            <dt>Floor plan</dt><dd>One level from above; the cut height slider appears in the dock.</dd>
+            <dt>Floor plan</dt><dd>One level from above, cut at the height set with the Cut slider.</dd>
+            <dt>Level</dt><dd>The level button at the bottom left shows one level in any view<span class="for-pointer">; <kbd>Page Up</kbd> and <kbd>Page Down</kbd> step through the levels</span>.</dd>
           </dl>
           <h3 class="eyebrow">Navigate</h3>
           <dl class="guide">
-            <dt>Orbit</dt><dd>Drag to orbit · right-drag to pan · scroll to zoom. Arrows rotate, <kbd>R</kbd> fits the building.</dd>
-            <dt>Fly</dt><dd><kbd>WASD</kbd> move · drag to look · <kbd>Q</kbd> <kbd>E</kbd> down and up. Passes through walls.</dd>
-            <dt>Walk</dt><dd>Eye level with collisions. <kbd>WASD</kbd> move · drag to look · <kbd>Space</kbd> jump.</dd>
-            <dt>Touch</dt><dd>One finger rotates, two pan or pinch. Walking uses the on-screen pad.</dd>
+            <dt>Orbit</dt><dd><span class="for-pointer">Drag to orbit · right-drag to pan · scroll to zoom. Arrows rotate, <kbd>R</kbd> fits the building.</span><span class="for-touch">Drag to orbit · two fingers pan and pinch to zoom. The fit button reframes the building.</span></dd>
+            <dt class="fly-help">Fly</dt><dd class="fly-help"><span class="for-pointer"><kbd>WASD</kbd> move · drag to look · <kbd>Q</kbd> <kbd>E</kbd> down and up.</span><span class="for-touch">Hold the arrows to move · drag to look · Rise and Descend.</span> Passes through walls.</dd>
+            <dt>Walk</dt><dd>Eye level with collisions. <span class="for-pointer"><kbd>WASD</kbd> move · drag to look · <kbd>Space</kbd> jump.</span><span class="for-touch">Hold the arrows to move · drag to look · Jump.</span></dd>
+            <dt class="for-pointer">Touch</dt><dd class="for-pointer">One finger rotates, two pan or pinch. Walking uses the on-screen pad.</dd>
           </dl>
-          <p class="panel-note">Click any element to see what it is. In the model tree, choose a level to show only what belongs to it, or show, hide and isolate parts of the model.</p>
+          <p class="panel-note"><span class="for-pointer">Click</span><span class="for-touch">Tap</span> any element to see what it is. The building name opens the model tree and saved places: show, hide or isolate parts of the model there.</p>
         </div>
         <div id="about-panel" class="help-body about-body" role="tabpanel" aria-labelledby="about-tab" hidden>
           {{about}}
@@ -130,6 +136,7 @@
       </section>
 
       <div id="menu" class="dropdown menu" popover="auto" role="group" aria-label="More" hidden>
+        <div class="panel-head"><h2>More</h2><button class="ghost-button panel-close" popovertarget="menu" popovertargetaction="hide" aria-label="Close more"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
         <button id="copy-view-link" class="menu-item" disabled><svg aria-hidden="true"><use href="#i-link"/></svg><span>Copy view link</span></button>
         <p id="share-status" class="menu-note" role="status" hidden></p>
         <input id="view-link-text" class="menu-input" type="text" readonly aria-label="View link" hidden>
@@ -145,6 +152,8 @@
         <a class="menu-item" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span>View on GitHub</span><span class="sr-only"> (opens in a new tab)</span></a>
         <a class="menu-item" href="../../"><svg aria-hidden="true"><use href="#i-gallery"/></svg><span>All reconstructions</span></a>
       </div>
+
+      <div id="level-menu" class="dropdown level-menu" popover="auto" role="menu" aria-label="Level" hidden></div>
 
       <div id="loading" class="loading-card" role="status" aria-live="polite" aria-atomic="true">
         <span class="eyebrow">BUILDING EXPLORER</span>
@@ -192,6 +201,9 @@
         <button id="fit-surroundings" aria-label="Fit site" title="Fit site" hidden><svg aria-hidden="true"><use href="#i-context"/></svg></button>
       </div>
       <footer class="controls">
+        <div id="level-picker" class="level-picker" hidden>
+          <button id="level-toggle" class="level-toggle" popovertarget="level-menu" aria-controls="level-menu" aria-haspopup="menu" aria-expanded="false" disabled><svg aria-hidden="true"><use href="#i-levels"/></svg><span class="level-name"><span class="sr-only">Level: </span><span id="level-current">All levels</span></span><svg class="level-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+        </div>
         <nav class="dock" aria-label="View">
           <button data-mode="orbit" aria-pressed="true" disabled><svg aria-hidden="true"><use href="#i-cube"/></svg><span>Exterior</span></button>
           <button data-mode="dollhouse" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-dollhouse"/></svg><span>Dollhouse</span></button>

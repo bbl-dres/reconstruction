@@ -8,7 +8,7 @@ import { prepareCollisionWorld } from './collision-loader.js?v=v019-galleries';
 import { restoreView, navigateView, settle, toPlan, fromPlan, copyPerspective } from './view-navigation.js?v=lens-2';
 import { readViewURL, writeViewURL } from './view-url.js?v=exterior-default';
 import { createRenderInstances } from './render-instances.js?v=bim-1';
-import { wirePanelTabs, wireDropdowns, wireSidebar, wireResponsiveLayout, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=tree-panel-1';
+import { wirePanelTabs, wireDropdowns, wireSidebar, wireMenuKeys, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=mobile-1';
 import { createSurroundingsStyle } from './surroundings-style.js?v=sky-ibl-1';
 import { parseMetadata, describeElement } from './model-metadata.js?v=archive-levels-1';
 import { wirePicking, highlightElement, highlightElements } from './inspection.js?v=redesign-1';
@@ -17,7 +17,8 @@ import { parseCatalog, chooseModel } from './model-catalog.js?v=archive-levels-1
 import { Daylight } from './daylight.js?v=sky-ibl-1';
 import { STUDIO, studioSunDirection, applyStudioLights, createSkyEnvironment } from './lighting.js?v=sky-ibl-1';
 import { localParts, dayOfYear, calendarSelection, calendarDate } from './solar-time.js?v=calendar-2';
-import { renderBudget, calloutPlacement } from './view-layout.js?v=redesign-1';
+import { renderBudget, calloutPlacement } from './view-layout.js?v=mobile-1';
+import { orderedLevels, adjacentLevel } from './levels.js?v=mobile-1';
 import { wireTouchWalk } from './touch-walk.js';
 import { createFrameLoop } from './frame-loop.js';
 import { fitDirectionalShadow, shadowCoverage } from './shadow-fit.js?v=lens-2';
@@ -57,6 +58,7 @@ let selectedElement = null;
 let inspectorAnchor = null;
 let pendingSiteView = false;
 let daylightMinutes = 720;
+let levelMenuMarkup = '';
 const config = building();
 const modelBase = new URL(config.models, config.baseUrl);
 const walkStarts = Object.keys(WALK_STARTS).length ? WALK_STARTS : config.walkStarts;
@@ -112,7 +114,7 @@ function showError(error) {
   collisionAbort.abort(error);
   frameLoop?.stop();
   [...modeButtons, ...navButtons].forEach(button => { button.disabled = true; });
-  for (const id of ['reset', 'lighting-toggle', 'copy-view-link']) $(id).disabled = true;
+  for (const id of ['reset', 'lighting-toggle', 'copy-view-link', 'level-toggle']) $(id).disabled = true;
   closeDropdowns();
   closeInspector();
   stopWalking();
@@ -264,6 +266,7 @@ async function loadCatalog() {
     $('loading-title').textContent = `Opening ${config.name} · ${activeModel.label}`;
     // Levels are usable as soon as the building is; elements follow with the registry.
     buildTree(null, []);
+    renderLevelPicker();
     if (requested && activeModel.id !== requested) notify(`That version is no longer published. Opened ${activeModel.label}.`);
     loadMetadata();
     loadModel();
@@ -328,7 +331,7 @@ async function loadModel() {
     renderPlaces();
     loadBim();
     [...modeButtons, ...navButtons].forEach(button => { button.disabled = false; });
-    for (const id of ['reset', 'surroundings', 'lighting-toggle', 'copy-view-link']) $(id).disabled = false;
+    for (const id of ['reset', 'surroundings', 'lighting-toggle', 'copy-view-link', 'level-toggle']) $(id).disabled = false;
     updateInterface();
     if (state.mode === 'walk') prepareWalk(++state.modeRequest);
     // Give the actual building a paint opportunity before optional context work.
@@ -616,6 +619,7 @@ async function setMode(mode) {
   }
   applyVisibility();
   updateInterface();
+  if (mode === 'plan') noteEmptyLevel();
   if (mode === 'walk') {
     await prepareWalk(request);
     if (state.mode !== mode || request !== state.modeRequest || !state.ready) return;
@@ -647,6 +651,8 @@ async function chooseNavigation(nav) {
     return;
   }
   state.navIntent = nav;
+  // On narrower screens the floating panel would cover the view and the movement pad.
+  sidebar.dismiss();
   if (state.mode !== 'walk') { await setMode('walk'); return; }
   if (!state.walker) { updateNavButtons(); return; }
   applyNavigation();
@@ -731,11 +737,11 @@ function updateInterface() {
   for (const button of modeButtons) button.setAttribute('aria-pressed', String(button.dataset.mode === view));
   $('cut-control').hidden = view !== 'plan';
   $('navigation-hint').textContent = navigationHint();
-  $('sheet-level').textContent = levelLabel();
+  renderLevelPicker();
   canvas.setAttribute('aria-label', mode === 'plan' ? 'Building floor plan. Drag to pan and pinch or scroll to zoom.' : mode === 'walk' ? 'First person building view. Drag to look around; WASD, arrows or the direction buttons move.' : '3D building. Drag to orbit; pinch or scroll to zoom.');
   $('canvas-help').textContent = mode === 'walk'
-    ? 'With the viewer focused: WASD or arrows move, dragging looks around and Shift speeds up. Walking, Space jumps; flying, E rises and Q descends. On touch screens, hold the direction buttons. Tab moves to the controls.'
-    : `With the viewer focused: ${mode === 'plan' ? 'arrow keys pan' : 'arrow keys rotate, Shift and arrows pan'}, plus and minus zoom, R fits the building. H opens Help. Tab moves to the controls.`;
+    ? 'With the viewer focused: WASD or arrows move, dragging looks around and Shift speeds up. Walking, Space jumps; flying, E rises and Q descends. Page Up and Page Down change the level. On touch screens, hold the direction buttons. Tab moves to the controls.'
+    : `With the viewer focused: ${mode === 'plan' ? 'arrow keys pan' : 'arrow keys rotate, Shift and arrows pan'}, plus and minus zoom, R fits the building, Page Up and Page Down change the level. H opens Help. Tab moves to the controls.`;
   updateNavButtons();
   updateWalkPad();
   updateSurroundings();
@@ -919,6 +925,54 @@ function setLevel(level) {
   }
   updateInterface();
   $('announcer').textContent = `${levelLabel()} · ${modeNames[displayMode()]}`;
+  noteEmptyLevel();
+}
+
+// A level with nothing on it in this view would otherwise leave an unexplained empty screen.
+function noteEmptyLevel() {
+  const empty = state.level !== 'all' && !tree.loading && !tree.hidden.size && !tree.isolated && !state.meshes.some(mesh => mesh.visible);
+  if (empty) notify(`Nothing is modelled on ${levelLabel()} in this view.`, 4000);
+  else if (!$('notice').hidden && $('notice').textContent.startsWith('Nothing is modelled')) $('notice').hidden = true;
+}
+
+// ── Level picker ──
+
+// Every published level, highest first; the picker is hidden for models without levels.
+function levelChoices() {
+  return orderedLevels(activeModel?.levels || [], activeLevels);
+}
+
+function renderLevelPicker() {
+  const levels = levelChoices();
+  $('level-picker').hidden = !levels.length;
+  if (!levels.length) return;
+  const plan = displayMode() === 'plan';
+  $('level-current').textContent = levelLabel();
+  $('level-toggle').title = `Level: ${levelLabel()}`;
+  // In Floor plan one level is always shown; elsewhere a chosen level filters the model.
+  $('level-toggle').dataset.filtered = String(state.level !== 'all' && !plan);
+  const item = (level, label, note = '') => {
+    const checked = state.level === level;
+    return `<button class="menu-item level-item" role="menuitemradio" data-level="${escapeHTML(level)}" aria-checked="${checked}" tabindex="${checked ? 0 : -1}"${checked ? ' autofocus' : ''}${note ? ' disabled' : ''}>`
+      + `${icon('i-check')}<span>${escapeHTML(label)}</span>${note ? `<span class="level-note">${note}</span>` : ''}</button>`;
+  };
+  const markup = item('all', 'All levels', plan ? 'Not in floor plan' : '')
+    + '<span class="menu-divider" role="separator"></span>'
+    + levels.map(level => item(level, activeLevels[level].label)).join('');
+  // Interface updates are frequent; rebuilding an unchanged open menu would drop its focus.
+  if (markup !== levelMenuMarkup) $('level-menu').innerHTML = levelMenuMarkup = markup;
+}
+
+function pickLevel(level) {
+  closeDropdowns();
+  if (level !== state.level) setLevel(level);
+}
+
+// Page Up and Page Down move through the picker's list: All levels, then top to bottom.
+function stepLevel(direction) {
+  if (!state.ready || !levelChoices().length) return;
+  const next = adjacentLevel(state.level, direction, levelChoices(), displayMode() === 'plan');
+  if (next !== state.level) setLevel(next);
 }
 
 async function loadMetadata() {
@@ -1229,7 +1283,9 @@ function wireTree() {
     const row = button?.closest('.tree-row');
     const node = row && tree.model.nodes.get(row.dataset.id);
     if (!node) return;
-    setActiveRow(row);
+    // Focus the row in use, as keyboards do: touch screens reveal its Zoom to and Isolate
+    // with it, and Safari does not focus a tapped button by itself.
+    setActiveRow(row, true);
     switch (button.dataset.action) {
       case 'toggle': toggleExpanded(node); break;
       case 'select':
@@ -1398,12 +1454,14 @@ function placeInspector() {
   if (onScreen) { marker.style.left = `${x}px`; marker.style.top = `${y}px`; }
   if (sidebar.isCompact()) {
     panel.dataset.side = 'none';
-    for (const key of ['left', 'top']) panel.style.removeProperty(key);
+    for (const key of ['left', 'top', 'max-height']) panel.style.removeProperty(key);
     return;
   }
   const toolbar = document.querySelector('.toolbar').getBoundingClientRect();
   const controls = document.querySelector('.dock').getBoundingClientRect();
   const area = { left: 16, right: rect.width - 16, top: toolbar.bottom - rect.top + 12, bottom: controls.top - rect.top - 12 };
+  // Short landscape screens: the details scroll so that the callout stays above the dock.
+  panel.style.maxHeight = `${Math.max(160, area.bottom - area.top)}px`;
   // The floating sidebar covers the stage's left side when it reaches below the toolbar.
   const side = $('sidebar').getBoundingClientRect();
   if (side.bottom - rect.top > area.top) area.left = Math.max(0, side.right - rect.left) + 16;
@@ -1420,14 +1478,27 @@ const sidebar = wireSidebar({ onChange: () => { if (renderer) resize(); placeIns
 const sidebarTabs = wirePanelTabs(document.querySelector('.sidebar-tabs'));
 
 function wireControls() {
+  // Touch devices with a system share sheet share the link there; others copy it.
+  const share = touchPrimary.matches && typeof navigator.share === 'function';
+  const shareLabel = share ? 'Share view link' : 'Copy view link';
+  $('copy-view-link').querySelector('span').textContent = shareLabel;
   $('copy-view-link').addEventListener('click', async () => {
     if (!state.ready) return;
     syncViewURL();
     const url = currentViewLink().href;
     const button = $('copy-view-link');
     const label = button.querySelector('span');
-    button.disabled = true; label.textContent = 'Copying link…';
     $('share-status').hidden = true;
+    if (share) {
+      try {
+        await navigator.share({ title: document.title, url });
+        closeDropdowns();
+        return;
+      } catch (error) {
+        if (error?.name === 'AbortError') return; // Dismissing the share sheet is not an error.
+      }
+    }
+    button.disabled = true; label.textContent = 'Copying link…';
     let timeout;
     try {
       // Some embedded browsers leave clipboard permission pending indefinitely.
@@ -1443,7 +1514,7 @@ function wireControls() {
       $('view-link-text').focus(); $('view-link-text').select();
     } finally {
       clearTimeout(timeout);
-      button.disabled = !state.ready; label.textContent = 'Copy view link';
+      button.disabled = !state.ready; label.textContent = shareLabel;
       $('share-status').hidden = false;
     }
   });
@@ -1483,6 +1554,11 @@ function wireControls() {
   $('element-reveal').addEventListener('click', () => revealInTree(selectedElement && tree.model?.elementOf.get(selectedElement)));
   modeButtons.forEach(button => button.addEventListener('click', () => chooseView(button.dataset.mode)));
   navButtons.forEach(button => button.addEventListener('click', () => chooseNavigation(button.dataset.nav)));
+  $('level-menu').addEventListener('click', event => {
+    const item = event.target.closest('[data-level]');
+    if (item && !item.disabled) pickLevel(item.dataset.level);
+  });
+  wireMenuKeys($('level-menu'));
   $('reset').addEventListener('click', () => resetView());
   $('surroundings').addEventListener('change', () => {
     if (!$('surroundings').checked) pendingSiteView = false;
@@ -1553,6 +1629,11 @@ function wireControls() {
     if (event.target !== canvas) return;
     // In Fly and Walk, R sits beside E (rise); Fit building on the camera rail serves every mode.
     if (event.code === 'KeyR' && !event.repeat && state.mode !== 'walk') { event.preventDefault(); resetView(); }
+    if (event.code === 'PageUp' || event.code === 'PageDown') {
+      event.preventDefault();
+      if (!event.repeat) stepLevel(event.code === 'PageUp' ? 1 : -1);
+      return;
+    }
     if (!isWalking()) {
       const directions = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] };
       if (directions[event.code] && state.mode !== 'walk') {
@@ -1629,7 +1710,6 @@ function render(time) {
 
 $('retry').addEventListener('click', () => location.reload());
 wireDropdowns();
-wireResponsiveLayout();
 setRangeDescription($('brightness'), '100 percent');
 setRangeDescription($('cut-height'), '2.0 meters above the selected floor');
 try { initialize(); } catch (error) { showError(error); }

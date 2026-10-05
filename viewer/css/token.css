@@ -103,11 +103,13 @@
   --shadow-selected: 0 1px 6px #0003;
   --shadow-text: 0 1px 4px #000, 0 1px 12px #000;
   --shadow-crosshair: 0 0 0 1px #0008;
-  --header-scrim: linear-gradient(#000b, #0000);
+  --shadow-sheet: 0 -16px 60px #0008;
   --blur-control: 16px;
   --blur-panel: 20px;
   --duration-fast: 140ms;
+  --duration-sheet: 240ms;
   --ease-standard: ease-out;
+  --ease-sheet: cubic-bezier(.2, .8, .2, 1);
   --layer-sticky: 1;
   --layer-notice: 4;
   --layer-loading: 5;
@@ -123,20 +125,34 @@
   --sidebar-width: 300px;
   --tree-row: 34px;
   --tree-indent: 16px;
-  --sheet-collapsed: 64px;
   --sheet-open: min(560px, 66dvh);
+  --sheet-max: calc(100dvh - var(--inset-top) - var(--space-4));
   --inspector-width: 300px;
   --dropdown-lighting: 320px;
   --dropdown-surroundings: 280px;
   --dropdown-help: 360px;
   --dropdown-menu: 232px;
+  --dropdown-level: 280px;
+  --level-max: 240px;
   --rail-button: 67px;
+  /* Rows and icon buttons: 40 px with a mouse, 44 px on touch screens (below). */
+  --target-size: var(--control-size-compact);
   --dock-label-size: var(--text-base);
+  /* Phones: the dock is 52 px buttons in a 4 px padded bar; header buttons are 44 px. */
+  --compact-dock: 62px;
+  --compact-bar: 50px;
 }
 
 /* Media thresholds are structural CSS constraints, not theme colors/spacing. */
 @media (max-width: 760px) {
   :root { --edge: var(--space-5); --bottom-edge: var(--space-5); --tree-row: 44px; }
+}
+@media (max-width: 359px) {
+  :root { --edge: var(--space-3); --bottom-edge: var(--space-3); }
+}
+/* Touch screens get 44 px targets wherever a layout would otherwise use 40 px or less. */
+@media (pointer: coarse) {
+  :root { --tree-row: 44px; --target-size: var(--control-size); }
 }
 @media (max-height: 500px) and (min-width: 761px) {
   :root { --edge: var(--space-4); --bottom-edge: var(--space-4); }
@@ -145,5 +161,5 @@
   :root { --edge: var(--space-8); --bottom-edge: var(--space-8); --sidebar-width: 320px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root { --duration-fast: 0ms; }
+  :root { --duration-fast: 0ms; --duration-sheet: 0ms; }
 }

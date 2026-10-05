@@ -1,5 +1,6 @@
 // Pure layout policies and input events; no browser or WebGL emulation.
 import { registerHooks } from 'node:module';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { popupPlacement, calloutPlacement, renderBudget } from '../viewer/js/view-layout.js';
@@ -18,14 +19,47 @@ const { wirePicking } = await import('../viewer/js/inspection.js');
 
 const devices = [[320, 568], [390, 844], [844, 390], [768, 1024], [1024, 768], [1440, 900], [2560, 1440], [3840, 2160]];
 
-test('compact lighting uses available height while desktop keeps its toolbar anchor', () => {
+test('narrow phones use the available height; short landscape screens keep the popup below its trigger', () => {
   const edges = {left: 20, right: 20, top: 20, bottom: 28};
   const phone = popupPlacement({ left: 20, bottom: 124 }, {left: 0, top: 0, width: 320, height: 568}, 352, edges);
   assert.equal(phone.top, 20); assert.equal(phone.maxHeight, 520);
+  // Covering the trigger would hide what opened the popup; the popup scrolls instead.
   const landscape = popupPlacement({ left: 20, bottom: 64 }, {left: 0, top: 0, width: 568, height: 320}, 352, edges);
-  assert.equal(landscape.top, 20); assert.equal(landscape.maxHeight, 272);
+  assert.equal(landscape.top, 74); assert.equal(landscape.maxHeight, 218);
   const desktop = popupPlacement({ left: 500, bottom: 76 }, {left: 0, top: 0, width: 1280, height: 720}, 352, edges);
   assert.equal(desktop.top, 86);
+});
+
+test('the level menu opens above its button, aligned with its left edge, and stays on screen', () => {
+  const edges = { left: 24, right: 24, top: 24, bottom: 24 };
+  const desktop = popupPlacement({ left: 24, right: 200, top: 824, bottom: 872 }, { left: 0, top: 0, width: 1440, height: 900 }, 280, edges, 'start', 'top');
+  assert.deepEqual(desktop, { left: 24, bottom: 86, width: 280, maxHeight: 790 });
+  assert.equal(desktop.top, undefined, 'placed by its bottom edge only');
+  for (const [width, height] of devices) {
+    const anchor = { left: 20, right: 170, top: height - 140, bottom: height - 94 };
+    const menu = popupPlacement(anchor, { left: 0, top: 0, width, height }, 280, 16, 'start', 'top');
+    assert.ok(menu.left >= 16 && menu.left + menu.width <= width - 16, `${width}x${height}`);
+    assert.equal(height - menu.bottom, anchor.top - 10, 'its bottom edge sits just above the button');
+    assert.equal(menu.maxHeight, anchor.top - 10 - 16, 'it may grow up to the top edge');
+  }
+  // A keyboard or zoom shrinks the visual viewport; fixed bottom offsets use the layout viewport.
+  const reduced = popupPlacement({ left: 20, right: 170, top: 450, bottom: 496 }, { left: 0, top: 100, width: 390, height: 400, layoutHeight: 844 }, 280, 16, 'start', 'top');
+  assert.equal(reduced.bottom, 404);
+  assert.equal(reduced.maxHeight, 324);
+});
+
+test('toolbar popups carry a sheet header with a close button, and the level picker opens a menu', async () => {
+  const shell = await readFile(new URL('../viewer/shell.html', import.meta.url), 'utf8');
+  for (const id of ['lighting', 'surroundings-panel', 'help', 'menu']) {
+    const panel = shell.match(new RegExp(`id="${id}" class="dropdown[^]*?<div class="panel-head">(.*?)</div>`));
+    assert.ok(panel, `${id} has a panel head`);
+    assert.match(panel[1], new RegExp(`popovertarget="${id}" popovertargetaction="hide"`), `${id} closes itself`);
+  }
+  assert.match(shell, /id="level-toggle"[^>]*popovertarget="level-menu"[^>]*aria-haspopup="menu"/);
+  assert.match(shell, /id="level-menu" class="dropdown level-menu" popover="auto" role="menu"/);
+  assert.match(shell, /id="sheet-toggle"[^>]*aria-label="\{\{name\}\}: model and places"/, 'the visible name is part of the accessible name');
+  assert.match(shell, /class="for-touch"/);
+  assert.match(shell, /class="for-pointer"/);
 });
 test('lighting dropdown stays within phone, tablet, landscape and large-screen viewports', () => {
   for (const [width, height] of devices) {

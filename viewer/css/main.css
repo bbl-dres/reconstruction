@@ -9,6 +9,10 @@
 * {
   box-sizing: border-box;
 }
+/* A downward drag on the header or a sheet must not pull-to-refresh and reload the model. */
+html, body {
+  overscroll-behavior: none;
+}
 body {
   margin: 0;
   overflow: hidden;
@@ -27,6 +31,22 @@ button:disabled {
 }
 button, input, select {
   -webkit-tap-highlight-color: transparent;
+}
+/* Controls react to the first tap; double-tap zoom stays available on text. */
+button, a, label, input, select, summary {
+  touch-action: manipulation;
+}
+/* Help text written for the input in hand: touch screens or mouse and keyboard. */
+.for-touch {
+  display: none;
+}
+@media (pointer: coarse) {
+  .for-touch {
+    display: revert;
+  }
+  .for-pointer {
+    display: none;
+  }
 }
 button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);
@@ -133,6 +153,12 @@ kbd {
   height: 100%;
   touch-action: none;
 }
+/* A long press on the view or a floating control must not select text or open a callout. */
+#scene, .toolbar, .controls, .camera-rail, .stage-title, .touch-walk, .navigation-hint {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 .stage-title {
   display: none;
 }
@@ -211,7 +237,7 @@ kbd {
 .sidebar-toggle[aria-expanded=false] svg {
   transform: rotate(90deg);
 }
-.sheet-summary, #sheet-close {
+.sheet-grabber, #sheet-close {
   display: none;
 }
 .sidebar-body {
@@ -490,7 +516,7 @@ kbd {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: var(--control-size-compact);
+  min-height: var(--target-size);
   padding: 0 var(--space-2);
   border: 0;
   border-radius: var(--radius-sm);
@@ -537,7 +563,7 @@ kbd {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: var(--control-size-compact);
+  min-height: var(--target-size);
   padding: 0 var(--space-3) 0 10px;
   border: 0;
   border-radius: var(--radius-inner);
@@ -548,8 +574,8 @@ kbd {
 }
 .toolbar-button.icon-only {
   justify-content: center;
-  width: var(--control-size-compact);
-  height: var(--control-size-compact);
+  width: var(--target-size);
+  height: var(--target-size);
   padding: 0;
 }
 .toolbar-button:hover:not(:disabled) {
@@ -608,13 +634,24 @@ kbd {
 .menu {
   padding: var(--space-1h);
 }
+/* A title and close button for popups presented as bottom sheets on phones. */
+.panel-head {
+  display: none;
+}
+/* The level menu opens upwards from the level button, by its bottom edge. */
+.level-menu {
+  top: auto;
+  bottom: var(--dropdown-bottom, 96px);
+  width: var(--dropdown-width, var(--dropdown-level));
+  padding: var(--space-1h);
+}
 .switch-row {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  min-height: var(--control-size-compact);
+  min-height: var(--target-size);
   font-size: var(--text-base);
   cursor: pointer;
 }
@@ -684,7 +721,7 @@ input:checked + .switch::after {
 .field-grid input {
   width: 100%;
   min-width: 0;
-  min-height: var(--control-size-compact);
+  min-height: var(--target-size);
   padding: 0 10px;
   border: var(--border-width) solid var(--color-border-strong);
   border-radius: var(--radius-sm);
@@ -867,7 +904,7 @@ input[type=range] {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: var(--control-size-compact);
+  min-height: var(--target-size);
   padding: 0 10px;
   border: 0;
   border-radius: 9px;
@@ -942,12 +979,79 @@ input[type=range] {
   margin: 0;
   accent-color: var(--color-text);
 }
+.level-item svg {
+  visibility: hidden;
+}
+.level-item[aria-checked=true] {
+  font-weight: var(--weight-semibold);
+}
+.level-item[aria-checked=true] svg {
+  visibility: visible;
+}
+.level-item > span:first-of-type {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.level-note {
+  flex: none;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── Level picker: one level in any view, at the bottom left ── */
+.level-picker {
+  grid-column: 1;
+  justify-self: start;
+  display: flex;
+  max-width: min(100%, var(--level-max));
+}
+.level-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  /* As tall as the navigation switch: its buttons, padding and border. */
+  min-height: calc(var(--target-size) + 2 * var(--space-1) + 2 * var(--border-width));
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-toolbar);
+  background: var(--color-overlay-soft);
+  box-shadow: var(--shadow-dock);
+  backdrop-filter: blur(var(--blur-panel));
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.level-toggle:hover:not(:disabled), .level-toggle[aria-expanded=true] {
+  background: var(--color-surface-hover);
+}
+/* A chosen level hides the rest of the building outside Floor plan; the edge says so. */
+.level-toggle[data-filtered=true] {
+  border-color: var(--color-border-active);
+}
+.level-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.level-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transform: rotate(-90deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.level-toggle[aria-expanded=true] .level-chevron {
+  transform: rotate(90deg);
+}
 
 /* Bottom controls: centred view dock, navigation switch at the right. */
 .navigation-hint {
   position: absolute;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + 2 * (var(--control-size-compact) + var(--space-2) + 2px) + var(--space-2));
+  bottom: calc(var(--inset-bottom) + 2 * (var(--target-size) + var(--space-2) + 2px) + var(--space-2));
   max-width: 40%;
   margin: 0 var(--space-half) 0 0;
   font-size: var(--text-xs);
@@ -959,7 +1063,7 @@ input[type=range] {
 .camera-rail {
   position: absolute;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + var(--control-size-compact) + var(--space-2) + 2px + var(--space-2));
+  bottom: calc(var(--inset-bottom) + var(--target-size) + var(--space-2) + 2px + var(--space-2));
   display: flex;
   gap: var(--space-half);
   padding: var(--space-1);
@@ -970,7 +1074,7 @@ input[type=range] {
   align-items: center;
   justify-content: center;
   width: var(--rail-button);
-  height: var(--control-size-compact);
+  height: var(--target-size);
   padding: 0;
   border: 0;
   border-radius: var(--radius-inner);
@@ -980,21 +1084,25 @@ input[type=range] {
 .camera-rail button:hover:not(:disabled) {
   background: var(--color-overlay-pressed);
 }
+/* Three columns keep the dock centred: the level button shrinks into the room on its left
+   (its label ellipsised), and the navigation switch keeps its full width on the right. */
 .controls {
   position: absolute;
   z-index: 2;
   left: var(--inset-left);
   right: var(--inset-right);
   bottom: var(--inset-bottom);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr);
+  align-items: end;
+  gap: var(--space-3);
   pointer-events: none;
 }
 .controls > * {
   pointer-events: auto;
 }
 .dock {
+  grid-column: 2;
   display: flex;
   align-items: center;
   gap: var(--space-1);
@@ -1054,9 +1162,8 @@ input[type=range] {
   color: var(--color-text);
 }
 .nav-modes {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   gap: var(--space-half);
   padding: var(--space-1);
@@ -1067,7 +1174,7 @@ input[type=range] {
   align-items: center;
   justify-content: center;
   width: var(--control-size);
-  height: var(--control-size-compact);
+  height: var(--target-size);
   padding: 0;
   border: 0;
   border-radius: var(--radius-inner);
@@ -1371,8 +1478,8 @@ progress::-webkit-progress-value {
 .primary-button:hover:not(:disabled) {
   background: var(--color-text);
 }
-/* Walk and Fly keep every control in view: the pad sits in the bottom-left corner and its
-   actions above the camera rail, in place of the navigation hint. */
+/* Walk and Fly keep every control in view: the pad sits at the bottom left above the level
+   button, and its actions above the camera rail, in place of the navigation hint. */
 .touch-walk {
   position: absolute;
   inset: 0;
@@ -1389,7 +1496,8 @@ progress::-webkit-progress-value {
 .move-pad {
   position: absolute;
   left: var(--inset-left);
-  bottom: var(--inset-bottom);
+  /* Above the level button. */
+  bottom: calc(var(--inset-bottom) + var(--target-size) + 2 * var(--space-1) + 2 * var(--border-width) + var(--space-3));
   display: grid;
   grid-template: repeat(2, 48px) / repeat(3, 48px);
   gap: var(--space-1);
@@ -1408,7 +1516,7 @@ progress::-webkit-progress-value {
 .touch-walk-actions {
   position: absolute;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + 2 * (var(--control-size-compact) + var(--space-2) + 2px) + var(--space-2));
+  bottom: calc(var(--inset-bottom) + 2 * (var(--target-size) + var(--space-2) + 2px) + var(--space-2));
   display: grid;
   justify-items: end;
   gap: var(--space-2);
@@ -1450,62 +1558,85 @@ body.touch-walking .navigation-hint {
   pointer-events: none;
 }
 
-/* ── Phones: one dock and a bottom sheet for the model ── */
+/* ── Phones: header and bottom controls at the edges, panels as bottom sheets ──
+   Top: the building name, which opens Model & places, and the toolbar. Bottom, from the
+   edge up: the dock; the level button with Fit building; Floor plan's cut slider. */
 #viewer.compact {
   display: block;
+  /* Bottom edges of the rows stacked above the dock. */
+  --compact-row: calc(var(--inset-bottom) + var(--compact-dock) + var(--space-2));
+  --compact-stack: calc(var(--compact-row) + var(--control-size) + 2 * var(--border-width) + var(--space-2));
 }
 #viewer.compact .stage {
   position: absolute;
   inset: 0;
 }
-#viewer.compact .stage::before {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  inset: 0 0 auto;
-  height: 120px;
-  background: var(--header-scrim);
-  pointer-events: none;
-}
 #viewer.compact .stage-title {
   position: absolute;
   z-index: 2;
-  display: block;
   top: var(--inset-top);
   left: var(--inset-left);
-  right: calc(var(--inset-right) + 140px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1h);
+  /* Clear of the three toolbar buttons and their 10 px of padding, gaps and border. */
+  max-width: calc(100% - var(--inset-left) - var(--inset-right) - 3 * var(--control-size) - 10px - var(--space-2));
+  min-height: var(--compact-bar);
   margin: 0;
-  font-size: var(--text-lg);
+  padding: 0 var(--space-3) 0 var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-overlay-soft);
+  box-shadow: var(--shadow-dock);
+  backdrop-filter: blur(var(--blur-panel));
+  font-size: var(--text-md);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
-  line-height: var(--control-size);
-  white-space: nowrap;
+  text-align: left;
+}
+#viewer.compact .stage-title:hover, #viewer.compact .stage-title[aria-expanded=true] {
+  background: var(--color-surface-hover);
+}
+#viewer.compact .stage-title span {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: var(--shadow-text);
-  pointer-events: none;
+  white-space: nowrap;
 }
+#viewer.compact .stage-title svg {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transform: rotate(90deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+#viewer.compact .stage-title[aria-expanded=true] svg {
+  transform: rotate(-90deg);
+}
+/* Model & places: a bottom sheet that slides in from below and leaves the top of the view visible. */
 #viewer.compact .sidebar {
   position: absolute;
   z-index: 6;
-  top: auto;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: auto 0 0;
   width: auto;
-  height: auto;
+  height: var(--sheet-open);
   max-height: none;
-  padding: 0 0 env(safe-area-inset-bottom);
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   border-width: var(--border-width) 0 0;
+  border-color: var(--color-border-strong);
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   background: var(--color-surface);
-  box-shadow: none;
+  box-shadow: var(--shadow-sheet);
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform var(--duration-sheet) var(--ease-sheet), visibility 0s linear var(--duration-sheet);
 }
 #viewer.compact.sheet-open .sidebar {
-  height: var(--sheet-open);
-  border-top-color: var(--color-border-strong);
-  box-shadow: 0 -16px 60px #0008;
+  transform: none;
+  visibility: visible;
+  transition: transform var(--duration-sheet) var(--ease-sheet);
 }
+/* The header keeps the page heading for screen readers; the building name replaces its toggle. */
 #viewer.compact .sidebar-header {
   position: absolute;
   width: 1px;
@@ -1513,20 +1644,19 @@ body.touch-walking .navigation-hint {
   overflow: hidden;
   clip-path: inset(50%);
 }
-#viewer.compact .sheet-summary {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  min-height: var(--sheet-collapsed);
-  padding: 22px var(--space-5) var(--space-4);
-  border: 0;
-  background: transparent;
-  color: var(--color-text);
-  text-align: left;
+#viewer.compact #sidebar-toggle {
+  display: none;
 }
-.sheet-handle {
+#viewer.compact .sheet-grabber {
+  position: relative;
+  display: block;
+  flex: none;
+  height: var(--space-6);
+  touch-action: none;
+  cursor: grab;
+}
+#viewer.compact .sheet-grabber::before, #viewer.compact .panel-head::before {
+  content: '';
   position: absolute;
   top: var(--space-2);
   left: 50%;
@@ -1536,40 +1666,17 @@ body.touch-walking .navigation-hint {
   background: var(--color-switch-off);
   transform: translateX(-50%);
 }
-.sheet-summary strong {
-  flex: 1;
-  font-size: var(--text-base);
-}
-#sheet-level {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-}
-.sheet-summary svg {
-  width: var(--icon-size-small);
-  height: var(--icon-size-small);
-  color: var(--color-text-muted);
-  transform: rotate(-90deg);
-}
-#viewer.compact.sheet-open .sheet-summary {
-  min-height: 18px;
-  padding: 0;
-}
-#viewer.compact.sheet-open .sheet-summary > :not(.sheet-handle) {
-  display: none;
-}
-#viewer.compact:not(.sheet-open) .sidebar-body {
-  display: none;
-}
 #viewer.compact #sheet-close {
   display: inline-flex;
-  width: 36px;
-  height: 36px;
+  width: var(--control-size);
+  height: var(--control-size);
+  margin-right: calc(-1 * var(--space-2));
 }
 #viewer.compact .sidebar-tabbar {
   margin: 0 var(--space-5);
 }
 #viewer.compact .sidebar-tabs [role=tab] {
-  min-height: var(--control-size-compact);
+  min-height: var(--control-size);
   font-size: var(--text-base);
 }
 #viewer.compact .filter-field {
@@ -1586,16 +1693,17 @@ body.touch-walking .navigation-hint {
   font-size: .9375rem;
 }
 #viewer.compact .tree-chevron {
-  width: 24px;
-  height: 24px;
+  width: var(--control-size-compact);
+  height: 100%;
 }
 #viewer.compact .tree-actions {
   width: auto;
 }
-#viewer.compact .tree-actions > :not([data-action=hide]) {
-  display: none !important;
+/* Zoom to and Isolate appear on the row in use; tapping a row focuses it. */
+#viewer.compact .tree-row:not(:focus-within) .tree-actions > :not([data-action=hide]):not([aria-pressed=true]) {
+  display: none;
 }
-#viewer.compact .tree-actions [data-action=hide] {
+#viewer.compact .tree-actions button {
   width: var(--control-size);
   height: var(--control-size);
 }
@@ -1608,15 +1716,15 @@ body.touch-walking .navigation-hint {
   font-size: .9375rem;
 }
 #viewer.compact .toolbar {
-  padding: 3px;
+  padding: var(--space-half);
   border-radius: var(--radius-control);
 }
 #viewer.compact .toolbar-button {
   justify-content: center;
-  width: var(--control-size-compact);
-  height: var(--control-size-compact);
+  width: var(--control-size);
+  height: var(--control-size);
   padding: 0;
-  border-radius: 9px;
+  border-radius: var(--radius-inner);
 }
 #viewer.compact .toolbar-button > span, #viewer.compact .toolbar-divider, #viewer.compact .help-toggle {
   display: none;
@@ -1624,23 +1732,33 @@ body.touch-walking .navigation-hint {
 #viewer.compact .compact-only {
   display: flex !important;
 }
+/* The level button and Fit building share the row above the dock, within thumb reach. */
+#viewer.compact .level-picker {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + var(--space-2));
+  max-width: calc(100% - var(--control-size) - 2 * var(--border-width) - var(--space-3));
+}
+#viewer.compact .level-toggle {
+  min-height: calc(var(--control-size) + 2 * var(--border-width));
+  border-radius: var(--radius-control);
+}
 #viewer.compact .camera-rail {
-  top: 50%;
-  bottom: auto;
+  bottom: var(--compact-row);
   padding: 0;
   border-radius: var(--radius-control);
-  transform: translateY(-50%);
 }
 #viewer.compact .camera-rail button {
   width: var(--control-size);
   height: var(--control-size);
   border-radius: var(--radius-control);
 }
-#viewer.compact #fit-surroundings, #viewer.compact .navigation-hint, #viewer.compact .fly-button {
+#viewer.compact #fit-surroundings, #viewer.compact .navigation-hint, #viewer.compact .fly-button, #viewer.compact .fly-help {
   display: none;
 }
 #viewer.compact .controls {
-  bottom: calc(var(--sheet-collapsed) + var(--space-3) + env(safe-area-inset-bottom));
+  bottom: var(--inset-bottom);
+  display: flex;
   align-items: center;
   justify-content: stretch;
   gap: var(--space-half);
@@ -1700,12 +1818,14 @@ body.touch-walking .navigation-hint {
   height: 52px;
   border-radius: var(--radius-control);
 }
+/* Floor plan's cut slider floats above the level row. */
 #viewer.compact .cut-control {
   position: absolute;
   right: 0;
-  bottom: calc(100% + var(--space-2));
+  bottom: calc(100% + var(--space-2) + var(--control-size) + 2 * var(--border-width) + var(--space-2));
   left: 0;
-  padding: var(--space-1h) var(--space-4);
+  min-height: var(--control-size);
+  padding: 0 var(--space-4);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-toolbar);
   background: var(--color-overlay-panel);
@@ -1720,15 +1840,29 @@ body.touch-walking .navigation-hint {
 #viewer.compact .inspector {
   right: var(--space-3);
   left: var(--space-3);
-  top: calc(var(--inset-top) + var(--control-size) + var(--space-3));
+  top: calc(var(--inset-top) + var(--compact-bar) + var(--space-2));
   width: auto;
+  max-height: calc(100% - var(--inset-top) - var(--compact-bar) - var(--compact-stack) - 2 * var(--space-2));
+}
+#viewer.compact[data-view-mode=plan] .inspector {
+  max-height: calc(100% - var(--inset-top) - var(--compact-bar) - var(--compact-stack) - var(--control-size) - 3 * var(--space-2));
+}
+/* The open sheet covers the lower view; the selection stays and its callout returns on closing. */
+#viewer.compact.sheet-open :is(.inspector, .pick-marker) {
+  visibility: hidden;
 }
 #viewer.compact .notice {
-  bottom: calc(var(--sheet-collapsed) + 96px);
+  bottom: calc(var(--compact-stack) + var(--space-2));
 }
-/* The dock stays above the sheet while walking: the pad and its actions sit above it (62 px dock, 12 px gaps). */
+#viewer.compact[data-view-mode=plan] .notice {
+  bottom: calc(var(--compact-stack) + var(--control-size) + 2 * var(--space-2));
+}
+/* While walking, the pad and its actions sit above the level row (pad: two 48 px rows). */
 #viewer.compact :is(.move-pad, .touch-walk-actions) {
-  bottom: calc(var(--sheet-collapsed) + env(safe-area-inset-bottom) + 86px);
+  bottom: var(--compact-stack);
+}
+body.touch-walking #viewer.compact .notice {
+  bottom: calc(var(--compact-stack) + 2 * var(--control-size-large) + var(--space-1) + var(--space-3));
 }
 #viewer.compact .guide {
   grid-template-columns: 1fr;
@@ -1737,6 +1871,134 @@ body.touch-walking .navigation-hint {
 #viewer.compact .guide dt:not(:first-child) {
   margin-top: var(--space-2);
 }
+/* Toolbar popups become bottom sheets: within thumb reach, full width, titled, with a close
+   button and a handle that closes them when dragged down. The level menu stays anchored. */
+#viewer.compact .dropdown:not(.level-menu) {
+  --sheet-pad: var(--space-5);
+  inset: auto 0 0;
+  width: auto;
+  max-height: var(--sheet-max);
+  padding: 0 calc(var(--sheet-pad) + env(safe-area-inset-right)) calc(var(--space-4) + env(safe-area-inset-bottom)) calc(var(--sheet-pad) + env(safe-area-inset-left));
+  border-width: var(--border-width) 0 0;
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sheet);
+}
+/* ::backdrop does not inherit the theme tokens in every browser. */
+#viewer.compact .dropdown:not(.level-menu)::backdrop {
+  background: rgb(0 0 0 / .45);
+}
+#viewer.compact .panel-head {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 calc(-1 * var(--sheet-pad)) var(--space-1);
+  padding: var(--space-6) var(--space-3) var(--space-1) var(--space-5);
+  background: var(--color-surface);
+  touch-action: none;
+}
+#viewer.compact .panel-head h2 {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-lg);
+}
+#viewer.compact .panel-close {
+  width: var(--control-size);
+  height: var(--control-size);
+}
+#viewer.compact .dropdown.help-panel {
+  --sheet-pad: 0px;
+}
+#viewer.compact .help-panel .segmented {
+  margin: var(--space-1) var(--space-5) 0;
+}
+#viewer.compact .help-body {
+  padding-right: var(--space-5);
+  padding-left: var(--space-5);
+}
+#viewer.compact .segmented [role=tab] {
+  min-height: var(--target-size);
+}
+#viewer.compact .dropdown.menu {
+  --sheet-pad: var(--space-2);
+}
+#viewer.compact :is(.dropdown .switch-row, .menu-item) {
+  min-height: var(--control-size-large);
+}
+#viewer.compact .menu-options label {
+  min-height: var(--control-size);
+}
+#viewer.compact .menu-options input {
+  width: 18px;
+  height: 18px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #viewer.compact .dropdown:not(.level-menu) {
+    transition: transform var(--duration-sheet) var(--ease-sheet), overlay var(--duration-sheet) allow-discrete, display var(--duration-sheet) allow-discrete;
+  }
+  #viewer.compact .dropdown:not(.level-menu):not(:popover-open) {
+    transform: translateY(100%);
+  }
+  @starting-style {
+    #viewer.compact .dropdown:not(.level-menu):popover-open {
+      transform: translateY(100%);
+    }
+  }
+}
+/* Small landscape phones: level, dock and Fit building share one row, so the view keeps
+   its height. The dock sits beside Fit building; the level button takes the room left of it. */
+@media (max-height: 500px) {
+  #viewer.compact {
+    --compact-row: var(--inset-bottom);
+    --compact-stack: calc(var(--inset-bottom) + var(--compact-dock) + var(--space-2));
+    --compact-fit: calc(var(--control-size) + 2 * var(--border-width) + var(--space-3));
+    --sheet-open: calc(100dvh - var(--inset-top) - var(--compact-bar) - var(--space-2));
+  }
+  #viewer.compact .controls {
+    right: calc(var(--inset-right) + var(--compact-fit));
+    left: auto;
+    width: min(340px, 52%);
+  }
+  #viewer.compact .level-picker {
+    right: calc(100% + var(--space-3));
+    bottom: calc((var(--compact-dock) - var(--control-size) - 2 * var(--border-width)) / 2 - var(--border-width));
+    left: auto;
+    max-width: calc(100cqi - 100% - var(--inset-left) - var(--inset-right) - var(--compact-fit) - 2 * var(--space-3));
+  }
+  #viewer.compact .camera-rail {
+    bottom: calc(var(--inset-bottom) + (var(--compact-dock) - var(--control-size) - 2 * var(--border-width)) / 2);
+  }
+  #viewer.compact .cut-control {
+    bottom: calc(100% + var(--space-2));
+  }
+  #viewer.compact[data-view-mode=plan] .notice {
+    bottom: calc(var(--compact-stack) + var(--control-size) + var(--space-2));
+  }
+}
+/* 320 px phones: room for the dock labels and the building name. */
+@media (max-width: 359px) {
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+  #viewer.compact .nav-modes button {
+    width: var(--control-size-compact);
+  }
+  #viewer.compact .nav-modes::before {
+    margin: 0 var(--space-half);
+  }
+  #viewer.compact .dock [data-mode] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  #viewer.compact .stage-title {
+    padding: 0 var(--space-2) 0 var(--space-3);
+    font-size: .9375rem;
+  }
+}
+/* Touch screens: 44 px targets (rows and icon buttons follow --target-size). */
 @media (pointer: coarse) {
   .field-grid input {
     font-size: var(--text-md);
@@ -1746,6 +2008,38 @@ body.touch-walking .navigation-hint {
   }
   .tree-row:not(:focus-within) .tree-actions > :not([data-action=hide]):not([aria-pressed=true]) {
     display: none;
+  }
+  .tree-chevron {
+    width: 32px;
+    height: 100%;
+  }
+  .tree-actions button {
+    width: var(--control-size-compact);
+    height: var(--control-size-compact);
+  }
+  .ghost-button {
+    width: var(--target-size);
+    height: var(--target-size);
+  }
+  .filter-field .ghost-button {
+    width: var(--control-size-compact);
+    height: var(--control-size-compact);
+  }
+  .filter-field input {
+    min-height: var(--target-size);
+  }
+  .sidebar-tabs [role=tab], .segmented [role=tab], .small-button, .link-button, .quiet-button,
+  .menu-options label, .inspector-actions button, .inspector-details summary {
+    min-height: var(--target-size);
+  }
+  input[type=range] {
+    height: var(--target-size);
+  }
+  /* Panels are 93–98 % opaque, so a blur behind them is barely visible, yet the GPU redoes
+     it on every frame while the view moves. Touch devices, mostly phones, skip it. */
+  .toolbar, .camera-rail, .nav-modes, .dock, .level-toggle, .dropdown, .inspector, .loading-card,
+  #viewer.compact :is(.stage-title, .controls) {
+    backdrop-filter: none;
   }
 }
 @media (max-height: 500px) {

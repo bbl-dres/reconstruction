@@ -35,7 +35,7 @@ reconstructions/<id>/
    `.gitattributes` routes `.blend`, images, PDFs, GLB and IFC through Git LFS. The public repository ignores the whole folder.
 3. Research and model in `work/` as described in `work/README.md` and `work/AGENTS.md`. Reference catalog commands (repository root): `python tools/reference-catalog/references.py --workspace reconstructions/<id>/work --validate` and `python tools/reference-catalog/build.py reconstructions/<id>/work`.
 4. Author every exported object to the [model handoff](model-handoff.md): stable `viewer_id`, `viewer_role`, `viewer_cutaway_role`, `viewer_floor_ids`. The default policy (`viewer/js/policy-default.js`) relies on these properties alone; only legacy geometry needs a building policy module (`public/policy/`, mapped as `building-policy` in the page's import map).
-5. Fill `public/building.json` ([schema](building.schema.json)): name, place, links, `walkStarts`, and `pipeline` with export profiles and the floor `levels` (id, label, elevation, slice min/max in glTF metres).
+5. Fill `public/building.json` ([schema](building.schema.json)): name, place, links, `walkStarts`, and `pipeline` with export profiles and the floor `levels` (id, label, elevation, slice min/max in glTF metres). The labels name the levels in the viewer's level button and model tree; the button shortens long labels with an ellipsis on narrow screens, so lead with the distinguishing word.
 6. Freeze a version in `work/versions/vNNN/` with exactly one `.blend` in `model/`, then import it:
 
    ```powershell

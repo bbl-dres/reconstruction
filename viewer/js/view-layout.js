@@ -1,13 +1,21 @@
 // CSS-pixel viewport geometry, including the area left by a software keyboard.
 // 'end' aligns the popup's right edge with its trigger, for toolbars on the right.
-export function popupPlacement(anchor, viewport, preferredWidth = 330, margin = 16, align = 'start') {
+// side 'top' opens above the trigger, for controls at the bottom of the screen; the popup
+// is then placed by its bottom edge, measured from the bottom of the layout viewport.
+export function popupPlacement(anchor, viewport, preferredWidth = 330, margin = 16, align = 'start', side = 'bottom') {
   const edge = typeof margin === 'number' ? { left: margin, right: margin, top: margin, bottom: margin } : margin;
   const width = Math.max(1, Math.min(preferredWidth, viewport.width - edge.left - edge.right));
   const start = align === 'end' ? anchor.right - width : anchor.left;
   const left = Math.max(viewport.left + edge.left, Math.min(start, viewport.left + viewport.width - width - edge.right));
-  // On phones and short landscape screens, use the available height like a sheet.
-  // Keeping the desktop anchor here would waste a third of a small viewport.
-  const compact = viewport.width <= 420 || viewport.height <= 500;
+  if (side === 'top') {
+    const end = anchor.top - 10;
+    const layoutHeight = viewport.layoutHeight ?? viewport.top + viewport.height;
+    return { left, bottom: layoutHeight - end, width, maxHeight: Math.max(1, end - viewport.top - edge.top) };
+  }
+  // Narrow screens use the available height like a sheet (phones present these popups as
+  // bottom sheets in CSS). Short landscape screens keep the anchor: covering the trigger
+  // would hide what opened the popup and how to close it.
+  const compact = viewport.width <= 420;
   const top = compact ? viewport.top + edge.top
     : Math.max(viewport.top + edge.top, Math.min(anchor.bottom + 10, viewport.top + viewport.height - edge.bottom - 104));
   return { left, top, width, maxHeight: Math.max(1, viewport.top + viewport.height - top - edge.bottom) };
