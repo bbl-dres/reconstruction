@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "landgut-lohn-v004-surroundings",
-  "title": "Landgut Lohn - v004 surroundings",
-  "asset": "surroundings-meshopt-f3722f6bdf04d2a7.glb",
+  "id": "landgut-lohn-v006-surroundings",
+  "title": "Landgut Lohn - v006 surroundings",
+  "asset": "surroundings-meshopt-af91ba210e93d174.glb",
   "source": {
     "file": "landgut-lohn.blend",
-    "bytes": 13150375,
-    "sha256": "f9f6fa0e93f2ca13ddf5cf0f6df60e547fbe16d902d6087de88a3fd601285fce"
+    "bytes": 14459813,
+    "sha256": "2bf1d91eafb6212150e879d5fb3b9c781b0b2f52b9e4494e2d4cf62775bb4eb4"
   },
   "conversion": {
     "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
-    "profileSha256": "9796fb6506c3f9d72fa926b3dcf45a7f97c179287886ae5f6a52f027e6f3f6c2"
+    "profileSha256": "c58ca0b0d99e26ddae2b9734ce228705cb39a2c96b936f5fae17446bd8ae926d"
   },
   "blenderVersion": "5.2.2 LTS",
   "coordinates": {
@@ -21,8 +21,8 @@
     "recentered": false
   },
   "sourceScene": {
-    "objects": 2804,
-    "meshes": 2782,
+    "objects": 3804,
+    "meshes": 3782,
     "textObjects": 0
   },
   "evaluatedText": [],
@@ -45,13 +45,13 @@
     }
   },
   "glb": {
-    "bytes": 8950588,
-    "sha256": "7a0989d2f36027bd96776dd30b9d8cd3d208b8d2b8dd85a9edaa0bcd8b154682",
+    "bytes": 10116560,
+    "sha256": "f4edd33cab8ce94eb6596247fc3be8a63b2caa39e0e199e1a75f364871a87c5b",
     "nodes": 1833,
     "meshNodes": 1833,
     "uniqueMeshes": 246,
     "renderedPrimitives": 1833,
-    "trianglesAcrossInstances": 291779,
+    "trianglesAcrossInstances": 314258,
     "materials": 28,
     "embeddedImages": 13,
     "taggedMeshNodes": 1833,
@@ -174,11 +174,11 @@
   "import": {
     "method": "verified-authored-glb",
     "packageAsset": "viewer/context.glb",
-    "packageReportSha256": "50654716925ea16311a759d393c62a9a9bdccaca543702754b2499ef88c40d8e"
+    "packageReportSha256": "c371308f78bb7f4a86ac8f8de60e05dda484eba7cb2e7a26df43f01d5545c0f6"
   },
   "optimization": {
-    "originalAsset": "surroundings-f9f6fa0e93f2-c2ebdae7dc81.glb",
-    "originalSha256": "c2ebdae7dc8145ebc5b6d90952effadac99c672061a703e4d6e2e78c360678df",
+    "originalAsset": "surroundings-2bf1d91eafb6-7b73a5648ae4.glb",
+    "originalSha256": "7b73a5648ae4a788873cc05b1b9ec5e3c4f9c04a54438caa8bb9bad57d107748",
     "recipe": {
       "codec": "meshoptimizer-1.2.0",
       "extension": "EXT_meshopt_compression",
@@ -186,14 +186,14 @@
       "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
       "gzipLevel": 6
     },
-    "compressedViews": 79,
-    "verifiedViews": 749,
+    "compressedViews": 145,
+    "verifiedViews": 763,
     "lossless": true,
     "storageStrategy": "transfer-size",
-    "originalBytes": 9967144,
-    "bytes": 8950588,
+    "originalBytes": 11343376,
+    "bytes": 10116560,
     "deliveryEncoding": "identity",
-    "gzipBytes": 5935543,
-    "gzipSha256": "7dea90b5ca5921cb096eee2849fa5dc2937ed32b94109e42466deb77f147e511"
+    "gzipBytes": 6279410,
+    "gzipSha256": "cd19fd1195c4bf0365ff66b760ede6582f07adc17cf9e5a529be85af1c1c637f"
   }
 }
