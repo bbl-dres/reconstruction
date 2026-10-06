@@ -1,5 +1,5 @@
 import { popupPlacement } from './view-layout.js?v=redesign-1';
-import { LANGUAGES, language, onLanguageChange, setLanguage, t } from './i18n.js?v=i18n-1';
+import { LANGUAGES, language, onLanguageChange, setLanguage, t } from './i18n.js?v=i18n-2';
 
 // Roving keyboard focus with automatic activation for local tabs.
 export function wirePanelTabs(tablist, onSelect = () => {}) {
@@ -56,9 +56,11 @@ function closeDropdown(panelId, triggerId) {
   if (!panel) return;
   if (typeof panel.hidePopover === 'function') {
     if (panel.matches(':popover-open')) panel.hidePopover();
-  } else {
+  } else if (!panel.hidden) {
     panel.hidden = true;
     document.getElementById(triggerId).setAttribute('aria-expanded', 'false');
+    // As a native popover would: listeners tidy up on close.
+    panel.dispatchEvent(Object.assign(new Event('toggle'), { newState: 'closed' }));
   }
 }
 
@@ -101,6 +103,11 @@ function wireDropdown(panelId, triggerId, widthToken) {
     if (opening) position();
     trigger.setAttribute('aria-expanded', String(opening));
   });
+  // Opened by a click before the page wired it: place it and mark its button now.
+  if (typeof panel.showPopover === 'function' && panel.matches(':popover-open')) {
+    position();
+    trigger.setAttribute('aria-expanded', 'true');
+  }
   if (typeof panel.showPopover !== 'function') {
     panel.hidden = true;
     trigger.addEventListener('click', () => {
@@ -112,7 +119,9 @@ function wireDropdown(panelId, triggerId, widthToken) {
     });
     let outside = false;
     document.addEventListener('pointerdown', event => { outside = !panel.contains(event.target) && !trigger.contains(event.target); });
-    document.addEventListener('click', event => { if (outside && !panel.contains(event.target) && !trigger.contains(event.target)) close(); });
+    // Other buttons that open this panel (Help in the More menu) are not a click outside it.
+    const opener = event => event.target.closest?.(`[popovertarget="${panelId}"]`);
+    document.addEventListener('click', event => { if (outside && !panel.contains(event.target) && !trigger.contains(event.target) && !opener(event)) close(); });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && !panel.hidden) { close(); trigger.focus(); }
     });

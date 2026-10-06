@@ -75,9 +75,9 @@
           <a class="toolbar-button icon-only toolbar-link" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer" data-i18n-attr="title:menu.github"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="sr-only" data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
           <a class="toolbar-button toolbar-link gallery-link" href="../../" data-i18n-attr="title:menu.gallery"><svg aria-hidden="true"><use href="#i-gallery"/></svg><span class="toolbar-label" data-i18n="menu.gallery">All reconstructions</span></a>
           <span class="toolbar-divider" aria-hidden="true"></span>
-          <button id="language-toggle" class="toolbar-button language-toggle" popovertarget="language-menu" aria-controls="language-menu" aria-haspopup="true" aria-expanded="false"><svg aria-hidden="true"><use href="#i-globe"/></svg><span id="language-code" class="language-code" aria-hidden="true">EN</span></button>
+          <button id="language-toggle" class="toolbar-button language-toggle" popovertarget="language-menu" aria-controls="language-menu" aria-expanded="false"><svg aria-hidden="true"><use href="#i-globe"/></svg><span id="language-code" class="language-code" aria-hidden="true">EN</span></button>
           <button id="help-toggle" class="toolbar-button icon-only help-toggle" popovertarget="help" aria-controls="help" aria-haspopup="dialog" aria-expanded="false" data-i18n-attr="aria-label:help.label title:help.title"><svg aria-hidden="true"><use href="#i-info"/></svg></button>
-          <button id="menu-toggle" class="toolbar-button icon-only" popovertarget="menu" aria-controls="menu" aria-haspopup="true" aria-expanded="false" data-i18n-attr="aria-label:menu.more title:menu.more"><svg aria-hidden="true"><use href="#i-more"/></svg></button>
+          <button id="menu-toggle" class="toolbar-button icon-only" popovertarget="menu" aria-controls="menu" aria-expanded="false" data-i18n-attr="aria-label:menu.more title:menu.more"><svg aria-hidden="true"><use href="#i-more"/></svg></button>
         </div>
       </div>
 
@@ -117,7 +117,7 @@
           <dl class="guide">
             <dt data-i18n="mode.orbit">Exterior</dt><dd data-i18n="help.exterior">The full building and its surroundings.</dd>
             <dt data-i18n="mode.dollhouse">Dollhouse</dt><dd data-i18n="help.dollhouse">Roofs and outer walls removed to show the interior.</dd>
-            <dt data-i18n="mode.plan">Floor plan</dt><dd data-i18n="help.plan">One level from above; the cut height slider appears in the dock.</dd>
+            <dt data-i18n="mode.plan">Floor plan</dt><dd data-i18n="help.plan">One level from above, cut 1 m above its floor. Choose the level in the model tree.</dd>
           </dl>
           <h3 class="eyebrow" data-i18n="help.navigate">Navigate</h3>
           <dl class="guide">
@@ -168,10 +168,10 @@
         </div>
       </div>
 
-      <div id="loading" class="loading-card" role="status" aria-live="polite" aria-atomic="true">
+      <div id="loading" class="loading-card">
         <span class="eyebrow" data-i18n="loading.eyebrow">Building explorer</span>
         <h2 id="loading-title" data-i18n="loading.opening">Opening {{name}}</h2>
-        <p id="loading-detail" data-i18n="loading.finding">Finding the model…</p>
+        <p id="loading-detail" role="status" data-i18n="loading.finding">Finding the model…</p>
         <progress id="load-progress" max="100" data-i18n-attr="aria-label:loading.progress"></progress>
         <button id="retry" class="primary-button" data-i18n="loading.retry" hidden>Try again</button>
       </div>
@@ -187,7 +187,7 @@
         <dl id="element-summary" class="inspector-facts"></dl>
         <div class="inspector-actions">
           <button id="element-zoom"><svg aria-hidden="true"><use href="#i-full"/></svg><span data-i18n="inspector.zoomTo">Zoom to</span></button>
-          <button id="element-hide" aria-pressed="false"><svg aria-hidden="true"><use href="#i-eye-off"/></svg><span>Hide</span></button>
+          <button id="element-hide"><svg aria-hidden="true"><use href="#i-eye-off"/></svg><span>Hide</span></button>
           <button id="element-reveal"><svg aria-hidden="true"><use href="#i-back"/></svg><span data-i18n="inspector.inTree">In tree</span></button>
         </div>
         <details id="element-details" class="inspector-details"><summary data-i18n="inspector.details">Properties &amp; sources</summary>
@@ -219,7 +219,6 @@
           <button data-mode="orbit" aria-pressed="true" disabled><svg aria-hidden="true"><use href="#i-cube"/></svg><span data-i18n="mode.orbit">Exterior</span></button>
           <button data-mode="dollhouse" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-dollhouse"/></svg><span data-i18n="mode.dollhouse">Dollhouse</span></button>
           <button data-mode="plan" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-plan"/></svg><span class="label-long" data-i18n="mode.plan">Floor plan</span><span class="label-short" data-i18n="mode.planShort">Plan</span></button>
-          <div id="cut-control" class="cut-control" hidden><label for="cut-height" data-i18n="dock.cut">Cut</label><input id="cut-height" type="range" min="0.5" max="8" step="0.1" value="2" aria-describedby="cut-description"><output id="cut-value" for="cut-height">2.0 m</output><span id="cut-description" class="sr-only" data-i18n="dock.cutDescription">Cut height above the selected floor.</span></div>
         </nav>
         <div class="nav-modes" role="group" data-i18n-attr="aria-label:nav.label">
           <button data-nav="orbit" aria-pressed="true" data-i18n-attr="aria-label:nav.orbit title:nav.orbitHint" disabled><svg aria-hidden="true"><use href="#i-orbit"/></svg></button>

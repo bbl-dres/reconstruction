@@ -9,6 +9,13 @@ export function captureView(camera, control, level) {
   };
 }
 
+// Distance at which a sphere of this radius fills the narrower side of the view, at the
+// camera's current zoom.
+export function fitDistance(camera, radius) {
+  const halfFov = MathUtils.degToRad(camera.getEffectiveFOV() / 2);
+  return radius / Math.sin(Math.min(halfFov, Math.atan(Math.tan(halfFov) * camera.aspect)));
+}
+
 export function restoreView(saved, camera, control, aspect) {
   settle(control);
   camera.position.copy(saved.position);

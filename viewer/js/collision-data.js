@@ -3,32 +3,60 @@ import { Box3, Matrix4, Triangle, Vector3 } from '../vendor/three/build/three.co
 import { Octree } from '../vendor/three/examples/jsm/math/Octree.js';
 
 const yieldTask = () => new Promise(resolve => setTimeout(resolve, 0));
+// Yield to the page after this many milliseconds of work, not after a count of meshes: timers are
+// clamped to 4 ms or more, and to about a second in a background tab.
+const WORK_SLICE = 12;
 
 // Copy only collision positions/indices; never transfer/detach render buffers.
 // The building policy's collisionCandidate is passed in: this module also runs in a worker,
 // where the page's import map (and therefore 'building-policy') is unavailable.
-export async function collisionInput(meshes, signal, collisionCandidate = () => true) {
+// upward turns every triangle to face up, for terrain exported with either winding.
+export async function collisionInput(meshes, signal, collisionCandidate = () => true, { upward = false } = {}) {
   signal?.throwIfAborted();
   const objects = [], geometries = [], shared = new Map(), transfer = [];
+  let sliceStart = performance.now();
   for (const mesh of meshes) {
     signal?.throwIfAborted();
     if (!collisionCandidate(mesh)) continue;
-    if (!shared.has(mesh.geometry)) {
+    // Facing up depends on the mesh's own transform, so upward copies are never shared.
+    if (upward || !shared.has(mesh.geometry)) {
       const attribute = mesh.geometry.attributes.position;
-      const positions = new Float32Array(attribute.count * 3);
-      for (let i = 0; i < attribute.count; i++) {
-        positions[i * 3] = attribute.getX(i); positions[i * 3 + 1] = attribute.getY(i); positions[i * 3 + 2] = attribute.getZ(i);
+      // Plain float positions copy in one go; interleaved or quantized ones are read one by one.
+      let positions;
+      if (!attribute.isInterleavedBufferAttribute && !attribute.normalized && attribute.array instanceof Float32Array && attribute.itemSize === 3) {
+        positions = attribute.array.slice(0, attribute.count * 3);
+      } else {
+        positions = new Float32Array(attribute.count * 3);
+        for (let i = 0; i < attribute.count; i++) {
+          positions[i * 3] = attribute.getX(i); positions[i * 3 + 1] = attribute.getY(i); positions[i * 3 + 2] = attribute.getZ(i);
+        }
       }
       const indices = mesh.geometry.index ? mesh.geometry.index.array.slice() : null;
+      if (upward) faceUp(positions, indices, mesh.matrixWorld);
       shared.set(mesh.geometry, geometries.length);
       geometries.push({ positions, indices });
       transfer.push(positions.buffer);
       if (indices) transfer.push(indices.buffer);
     }
     objects.push({ geometry: shared.get(mesh.geometry), matrix: mesh.matrixWorld.toArray() });
-    if (objects.length % 8 === 0) await yieldTask();
+    if (performance.now() - sliceStart > WORK_SLICE) { await yieldTask(); sliceStart = performance.now(); }
   }
   return { data: { geometries, objects }, transfer };
+}
+
+// Collision ignores back faces, so terrain walked on from above must face up. Swaps the
+// winding of each triangle whose world normal points down; positions are local to matrix.
+function faceUp(positions, indices, matrix) {
+  const a = new Vector3(), b = new Vector3(), c = new Vector3();
+  const count = indices ? indices.length : positions.length / 3;
+  for (let i = 0; i < count; i += 3) {
+    const at = corner => (indices ? indices[i + corner] : i + corner) * 3;
+    a.fromArray(positions, at(0)).applyMatrix4(matrix); b.fromArray(positions, at(1)).applyMatrix4(matrix); c.fromArray(positions, at(2)).applyMatrix4(matrix);
+    // The y component of (b - a) x (c - a).
+    if ((b.z - a.z) * (c.x - a.x) - (b.x - a.x) * (c.z - a.z) >= 0) continue;
+    if (indices) [indices[i + 1], indices[i + 2]] = [indices[i + 2], indices[i + 1]];
+    else for (let axis = 0; axis < 3; axis++) [positions[(i + 1) * 3 + axis], positions[(i + 2) * 3 + axis]] = [positions[(i + 2) * 3 + axis], positions[(i + 1) * 3 + axis]];
+  }
 }
 
 export function buildCollisionData({ geometries, objects }) {
@@ -90,9 +118,8 @@ export function buildCollisionData({ geometries, objects }) {
   return { boxes: Float64Array.from(boxes), layout: Uint32Array.from(layout), refs: order, vertices, meshes: objects.length, triangles: count };
 }
 
-export function packCollision(data) { return data; }
-
-export async function unpackCollision(data) {
+// The worker's result arrives as plain arrays; the page wraps them as a queryable world.
+export function unpackCollision(data) {
   return { world: new CollisionWorld(data), meshes: data.meshes, triangles: data.triangles };
 }
 

@@ -26,14 +26,17 @@ function compatible(parts) {
 // GLTFLoader represents one multi-material placement as a Group of primitives.
 // Restore one semantic Mesh with material groups, retaining every attribute and
 // index. Never combine different BIM placements, rooms or family instances.
+// A primitive of the placement itself, as opposed to a child placement parented to it.
+const isPrimitive = child => child.isMesh && !child.userData.viewer_id && !child.children.length;
+
 export function normalizeModelPrimitives(root) {
   const groups = [], cache = new Map();
   root.traverse(object => {
-    if (object.isGroup && object.userData.viewer_id && object.children.length > 1
-      && object.children.every(child => child.isMesh && !child.userData.viewer_id && !child.children.length)) groups.push(object);
+    if (object.isGroup && object.userData.viewer_id && object.children.filter(isPrimitive).length > 1) groups.push(object);
   });
   for (const group of groups) {
-    const parts = group.children;
+    const parts = group.children.filter(isPrimitive);
+    const placements = group.children.filter(child => !isPrimitive(child));
     if (!group.parent || !compatible(parts)) {
       // Unsupported primitives retain their original rendering but still inherit
       // their placement's floor, ceiling and inspection metadata.
@@ -50,6 +53,8 @@ export function normalizeModelPrimitives(root) {
     const mesh = new Mesh(geometry, parts.map(part => part.material));
     Object3D.prototype.copy.call(mesh, group, false);
     mesh.userData = group.userData;
+    // Child placements keep their transform relative to this placement.
+    for (const placement of placements) mesh.add(placement);
     const parent = group.parent;
     parent.remove(group); parent.add(mesh);
   }

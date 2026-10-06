@@ -335,6 +335,23 @@ test('inspection highlighting overlays the element, keeps its own look and clean
   restore(); // Closing/unloading twice must be harmless.
 });
 
+test('a selection highlight follows its element into and out of Floor plan clipping', () => {
+  const material = new THREE.MeshStandardMaterial();
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(), material);
+  const restore = highlightElement(mesh);
+  const parts = mesh.children;
+  assert.ok(parts.every(part => !part.material.clippingPlanes?.length), 'selected unclipped');
+  // Floor plan clips the element after it was selected; the overlay follows when it is drawn next.
+  const cut = [new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.2)];
+  material.clippingPlanes = cut;
+  for (const part of parts) part.onBeforeRender();
+  assert.ok(parts.every(part => part.material.clippingPlanes === cut));
+  material.clippingPlanes = null;
+  for (const part of parts) part.onBeforeRender();
+  assert.ok(parts.every(part => !part.material.clippingPlanes?.length), 'back to the full element');
+  restore();
+});
+
 test('authored interior sculptures are retained even when they share a collection with exterior figures', () => {
   const art = { name: 'New interior artwork', userData: { viewer_category: 'sculpture', viewer_role: 'decoration',
     viewer_environment: 'interior', viewer_dollhouse_hidden: false, viewer_source_collections: ['04 | Sculpture approximations'] } };
@@ -466,7 +483,8 @@ test('daylight toggles restore studio lights and frame shadows across the visibl
   daylightScene.background = new THREE.Color(0);
   daylightScene.environmentIntensity = 0.8;
   const light = new THREE.DirectionalLight(0xfff4e1, 2.5);
-  light.position.set(85, 110, 0); light.target.position.set(0, 10, 0); light.castShadow = false;
+  // As applyStudioLights leaves it: the sun always casts, shadows are switched on the renderer.
+  light.position.set(85, 110, 0); light.target.position.set(0, 10, 0); light.castShadow = true;
   const fill = new THREE.HemisphereLight(0xe8edff, 0x9c866b, 1.6);
   const renderer = { shadowMap: { needsUpdate: false, enabled: true } };
   const bounds = new THREE.Box3(new THREE.Vector3(-400, -10, -300), new THREE.Vector3(400, 70, 300));
@@ -475,7 +493,7 @@ test('daylight toggles restore studio lights and frame shadows across the visibl
   const options = { enabled: true, showSky: true, year: 2026, day: calendarDay(6, 21), minutes: 810, location: bern };
   const solar = control.update(options);
   const sky = control.sky;
-  assert.ok(sky.visible && light.castShadow && light.intensity > 0);
+  assert.ok(sky.visible && light.intensity > 0);
   assert.ok(light.position.clone().sub(light.target.position).normalize().distanceTo(new THREE.Vector3().fromArray(solar.direction)) < 1e-10);
   for (const x of [bounds.min.x, bounds.max.x]) for (const y of [bounds.min.y, bounds.max.y]) for (const z of [bounds.min.z, bounds.max.z]) {
     const point = new THREE.Vector3(x, y, z).project(light.shadow.camera);
@@ -486,14 +504,14 @@ test('daylight toggles restore studio lights and frame shadows across the visibl
   control.update({ ...options, showSky: false });
   assert.equal(sky.visible, false, 'the sky can be hidden for floor plan');
   control.update({ ...options, minutes: 0 });
-  assert.equal(light.castShadow, false, 'no shadows from a sun below the horizon');
-  assert.equal(light.intensity, 0);
+  assert.equal(light.intensity, 0, 'no light, and so no shadows, from a sun below the horizon');
+  assert.equal(light.castShadow, true, 'castShadow never changes: switching it recompiles every material');
   control.update({ enabled: false });
   assert.equal(sky.visible, false);
   assert.ok(light.position.equals(saved.position) && light.target.position.equals(saved.target));
   assert.ok(light.color.equals(saved.color));
   assert.equal(light.intensity, 2.5);
-  assert.equal(light.castShadow, false, 'studio lighting restores its shadow-free default');
+  assert.equal(light.castShadow, true, 'studio lighting keeps the same shadow setting');
   assert.equal(fill.intensity, 1.6);
   assert.equal(daylightScene.environmentIntensity, 0.8);
   assert.equal(daylightScene.background.getHex(), 0);

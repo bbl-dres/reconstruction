@@ -1,4 +1,5 @@
-import { Box3, MathUtils, Vector3 } from 'three';
+import { Box3, Vector3 } from 'three';
+import { fitDistance } from './view-navigation.js?v=fit-1';
 
 export function boxCorners(box) {
   const result = [];
@@ -11,10 +12,7 @@ export function boxCorners(box) {
 export function shadowCoverage({ building, site, camera, target, previous = 'building' }) {
   if (!site || camera.isOrthographicCamera) return 'building';
   const radius = Math.max(1, building.getSize(new Vector3()).length() / 2);
-  const halfFov = MathUtils.degToRad(camera.getEffectiveFOV() / 2);
-  const fitFov = Math.min(halfFov, Math.atan(Math.tan(halfFov) * camera.aspect));
-  const distance = camera.position.distanceTo(building.getCenter(new Vector3()));
-  const scale = distance * Math.sin(fitFov) / radius;
+  const scale = camera.position.distanceTo(building.getCenter(new Vector3())) / fitDistance(camera, radius);
   const offBuilding = building.distanceToPoint(target || camera.position) / radius;
   return scale > (previous === 'site' ? 3.2 : 4) || offBuilding > (previous === 'site' ? 0.4 : 0.75) ? 'site' : 'building';
 }

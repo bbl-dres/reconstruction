@@ -1,5 +1,6 @@
 import { Box3, EdgesGeometry, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, Raycaster, Vector2, Vector3 } from 'three';
-import { ELEMENT_LAYER } from './render-instances.js?v=overlay-1';
+import { ELEMENT_LAYER } from './render-instances.js?v=sync-2';
+import { isShown, materialsOf } from './scene-utils.js?v=1';
 
 export function pickElement(raycaster, meshes, stats) {
   return pickHit(raycaster, meshes, stats)?.object || null;
@@ -12,9 +13,7 @@ export function pickHit(raycaster, meshes, stats) {
   const fallbackBounds = new Box3();
   if (stats) Object.assign(stats, { candidates: 0, raycasts: 0 });
   for (const mesh of meshes) {
-    let visible = true;
-    for (let parent = mesh; parent; parent = parent.parent) if (!parent.visible) { visible = false; break; }
-    if (!visible || !mesh.layers.test(raycaster.layers)) continue;
+    if (!isShown(mesh) || !mesh.layers.test(raycaster.layers)) continue;
     // Imported models are static and cache world bounds at load time. The
     // fallback keeps standalone/dynamic meshes correct without stale caching.
     const box = mesh.userData.bounds || fallbackBounds.setFromObject(mesh);
@@ -95,36 +94,51 @@ function liftTowardsEye(material) {
 // selection color and its hidden edges faintly through whatever covers them. The overlay
 // is a child of the source node, so it follows the node's visibility, and the node's
 // materials, shared with other placements, are never changed.
-export function highlightElement(mesh, color = '#38d9ff') {
-  const sources = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-  const clipping = { clippingPlanes: sources[0].clippingPlanes, clipIntersection: sources[0].clipIntersection };
+// edgeCache lets the members of one product share the edge geometry of a shared mesh geometry;
+// its owner disposes the cached edges.
+export function highlightElement(mesh, color = '#38d9ff', edgeCache = null) {
+  const sources = materialsOf(mesh);
   const tints = sources.map(material => new MeshBasicMaterial({ color, transparent: true, opacity: 0.22, depthWrite: false,
     toneMapped: false, fog: false, side: material.side, visible: material.visible,
-    clippingPlanes: material.clippingPlanes, clipIntersection: material.clipIntersection,
     polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
   const shown = sources.some(material => material.visible);
-  const edgeMaterial = liftTowardsEye(new LineBasicMaterial({ color, toneMapped: false, fog: false, visible: shown, ...clipping }));
+  const edgeMaterial = liftTowardsEye(new LineBasicMaterial({ color, toneMapped: false, fog: false, visible: shown }));
   const hiddenMaterial = new LineBasicMaterial({ color, transparent: true, opacity: 0.25, depthTest: false, depthWrite: false,
-    toneMapped: false, fog: false, visible: shown, ...clipping });
-  const edges = new EdgesGeometry(mesh.geometry, 25);
+    toneMapped: false, fog: false, visible: shown });
+  // Floor plan switches the element's clipping while it stays selected: copy it before each draw.
+  // Floor plan may also give the element unclipped copies of its materials.
+  const followClipping = () => {
+    const current = materialsOf(mesh);
+    tints.forEach((tint, i) => { const source = current[i] ?? current[0]; tint.clippingPlanes = source.clippingPlanes; tint.clipIntersection = source.clipIntersection; });
+    for (const line of [edgeMaterial, hiddenMaterial]) { line.clippingPlanes = current[0].clippingPlanes; line.clipIntersection = current[0].clipIntersection; }
+  };
+  followClipping();
+  let edges = edgeCache?.get(mesh.geometry);
+  if (!edges) { edges = new EdgesGeometry(mesh.geometry, 25); edgeCache?.set(mesh.geometry, edges); }
   const overlay = [
     Object.assign(new Mesh(mesh.geometry, Array.isArray(mesh.material) ? tints : tints[0]), { name: 'Selection tint', renderOrder: 1 }),
     Object.assign(new LineSegments(edges, edgeMaterial), { name: 'Selection edges', renderOrder: 2 }),
     Object.assign(new LineSegments(edges, hiddenMaterial), { name: 'Selection hidden edges', renderOrder: 1000 }),
   ];
-  for (const part of overlay) { part.raycast = () => {}; mesh.add(part); }
+  for (const part of overlay) { part.raycast = () => {}; part.onBeforeRender = followClipping; mesh.add(part); }
   let restored = false;
   return () => {
     if (restored) return;
     restored = true;
     for (const part of overlay) part.removeFromParent();
-    edges.dispose(); edgeMaterial.dispose(); hiddenMaterial.dispose();
+    if (!edgeCache) edges.dispose();
+    edgeMaterial.dispose(); hiddenMaterial.dispose();
     tints.forEach(material => material.dispose());
   };
 }
 
 // A whole product: every member part is highlighted the same way.
 export function highlightElements(meshes, color) {
-  const cleanups = meshes.map(mesh => highlightElement(mesh, color));
-  return () => cleanups.forEach(clear => clear());
+  const edgeCache = new Map();
+  const cleanups = meshes.map(mesh => highlightElement(mesh, color, edgeCache));
+  return () => {
+    cleanups.forEach(clear => clear());
+    for (const edges of edgeCache.values()) edges.dispose();
+    edgeCache.clear();
+  };
 }

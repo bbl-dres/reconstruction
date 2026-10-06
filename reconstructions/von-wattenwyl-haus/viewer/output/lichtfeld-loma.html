@@ -617,6 +617,9 @@
    make_viewer.py inlines it into the splat viewers. Theme and scale values live in token.css. */
 
 /* Base for pages without main.css (the gallery and the splat viewers); main.css sets the same globally. */
+:where(.topbar, .dropdown, .loading-card), :where(.topbar, .dropdown, .loading-card) * {
+  box-sizing: border-box;
+}
 :where(.topbar, .dropdown) {
   font-family: var(--font-family);
   line-height: var(--leading-normal);
@@ -911,65 +914,7 @@ kbd {
   height: 12px;
 }
 
-/* Menus: items, notes and radio options (More, language). */
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  min-height: var(--control-size-compact);
-  padding: 0 10px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--color-text);
-  font-size: var(--text-base);
-  text-align: left;
-  text-decoration: none;
-}
-.menu-item:hover:not(:disabled) {
-  background: var(--color-overlay-pressed);
-}
-.menu-item svg {
-  width: 18px;
-  height: 18px;
-}
-.menu-item > span:first-of-type {
-  flex: 1;
-}
-.menu-item .menu-chevron {
-  width: 14px;
-  height: 14px;
-  color: var(--color-text-muted);
-  transform: rotate(90deg);
-  transition: transform var(--duration-fast) var(--ease-standard);
-}
-.menu-item[aria-expanded=true] .menu-chevron {
-  transform: rotate(-90deg);
-}
-.menu-divider {
-  display: block;
-  height: 1px;
-  margin: var(--space-1) var(--space-1h);
-  background: var(--color-border);
-}
-.menu-note {
-  margin: 0 10px var(--space-1h);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-}
-.menu-input {
-  display: block;
-  width: calc(100% - 20px);
-  min-height: 36px;
-  margin: 0 10px var(--space-1h);
-  padding: 0 var(--space-2);
-  border: var(--border-width) solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-raised);
-  color: var(--color-text);
-  font-size: var(--text-xs);
-}
+/* Menus: radio options (language, and in the viewer quality). */
 .menu-options {
   display: grid;
   gap: var(--space-half);
@@ -1026,6 +971,78 @@ kbd {
     margin-top: var(--space-2);
   }
 }
+
+/* Loading card, centred over the view while a building or splat opens: the viewer and the splat overlay share it. */
+.loading-card {
+  position: absolute;
+  z-index: var(--layer-loading);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(370px, calc(100% - var(--inset-left) - var(--inset-right)));
+  max-height: calc(100% - 200px);
+  overflow-y: auto;
+  padding: var(--space-7);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-overlay-panel);
+  -webkit-backdrop-filter: blur(var(--blur-panel));
+  backdrop-filter: blur(var(--blur-panel));
+  box-shadow: var(--shadow-panel);
+  text-align: center;
+  line-height: var(--leading-normal);
+}
+.loading-card .eyebrow {
+  margin-bottom: var(--space-4);
+}
+.loading-card h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+}
+.loading-card p {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+.loading-card progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin-top: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--color-switch-off);
+  accent-color: var(--color-text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.loading-card progress::-webkit-progress-bar {
+  border-radius: var(--radius-xs);
+  background: var(--color-switch-off);
+}
+.loading-card progress::-webkit-progress-value {
+  border-radius: var(--radius-xs);
+  background: var(--color-text);
+}
+.loading-card progress::-moz-progress-bar {
+  border-radius: var(--radius-xs);
+  background: var(--color-text);
+}
+@media (max-height: 500px) {
+  .loading-card {
+    padding: var(--space-4);
+  }
+  .loading-card .eyebrow {
+    display: none;
+  }
+  .loading-card h2 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-lg);
+  }
+}
 </style>
 <style>
   /* The overlay's own parts; the design tokens and the toolbar above come from viewer/css. */
@@ -1033,17 +1050,10 @@ kbd {
   .rc-root { font-family: var(--font-family); color: var(--color-text); }
   /* The viewer turns off touch scrolling and text selection everywhere; the help needs both. */
   .dropdown, .dropdown * { touch-action: pan-y; -webkit-user-select: text; user-select: text; }
-  /* Loading: like the building viewer's loading card. It replaces the viewer's own loading bar. */
+  /* Loading: the building viewer's loading card (app-tools.css), fixed over the page. It replaces the viewer's own loading bar. */
   #loadingWrap { display: none !important; }
-  .rc-loading { position: fixed; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(370px, calc(100vw - 2 * var(--edge))); max-height: calc(100dvh - 2 * var(--edge)); overflow-y: auto; padding: var(--space-7); text-align: center; border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-panel); background: var(--color-overlay-panel); -webkit-backdrop-filter: blur(var(--blur-panel)); backdrop-filter: blur(var(--blur-panel)); box-shadow: var(--shadow-panel); transition: opacity 300ms ease-out, visibility 0s 300ms; }
+  .rc-loading { position: fixed; z-index: 3; transition: opacity 300ms ease-out, visibility 0s 300ms; }
   .rc-loading.rc-done { opacity: 0; visibility: hidden; }
-  .rc-loading .eyebrow { margin-bottom: var(--space-4); }
-  .rc-loading h2 { margin: 0 0 var(--space-3); font-size: var(--text-3xl); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight); line-height: var(--leading-tight); }
-  .rc-loading p { margin: 0; font-size: var(--text-base); line-height: var(--leading-relaxed); color: var(--color-text-secondary); }
-  .rc-loading progress { display: block; width: 100%; height: 4px; margin-top: var(--space-6); border: 0; border-radius: var(--radius-xs); -webkit-appearance: none; appearance: none; background: var(--color-switch-off); accent-color: var(--color-text); }
-  .rc-loading progress::-webkit-progress-bar { background: var(--color-switch-off); border-radius: var(--radius-xs); }
-  .rc-loading progress::-webkit-progress-value { background: var(--color-text); border-radius: var(--radius-xs); }
-  .rc-loading progress::-moz-progress-bar { background: var(--color-text); border-radius: var(--radius-xs); }
   .rc-loading.rc-error progress { display: none; }
   /* Navigation tip, shown once per browser after the first frame: the double tap is not discoverable otherwise. */
   .rc-tip { position: fixed; z-index: 2; left: 50%; bottom: calc(var(--edge) + env(safe-area-inset-bottom) + 60px); transform: translateX(-50%); display: flex; align-items: center; gap: var(--space-1); width: max-content; max-width: calc(100vw - 2 * var(--edge)); padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-overlay-control); -webkit-backdrop-filter: blur(var(--blur-control)); backdrop-filter: blur(var(--blur-control)); box-shadow: var(--shadow-control); font-size: var(--text-base); line-height: var(--leading-normal); transition: opacity 300ms ease-out, visibility 0s 300ms; }
@@ -1057,12 +1067,6 @@ kbd {
   .rc-tip svg { width: var(--icon-size); height: var(--icon-size); fill: none; stroke: currentColor; stroke-width: var(--icon-stroke); stroke-linecap: round; stroke-linejoin: round; }
   .rc-tip.rc-done { opacity: 0; visibility: hidden; }
   @media (prefers-reduced-motion: reduce) { .rc-tip, .rc-loading { transition: none; } }
-  @media (max-height: 500px) {
-    .rc-loading { padding: var(--space-5); }
-    .rc-loading .eyebrow { display: none; }
-    .rc-loading h2 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
-    .rc-loading progress { margin-top: var(--space-4); }
-  }
 </style>
 <div class="rc-root">
   <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -1079,7 +1083,7 @@ kbd {
       <a class="toolbar-button icon-only toolbar-link" href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus" target="_blank" rel="noopener noreferrer" title="View on GitHub" data-i18n-attr="title:menu.github"><svg aria-hidden="true"><use href="#rc-i-github"/></svg><span class="sr-only" data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
       <a class="toolbar-button toolbar-link gallery-link" href="../../../../" title="All reconstructions" data-i18n-attr="title:menu.gallery"><svg aria-hidden="true"><use href="#rc-i-gallery"/></svg><span class="toolbar-label" data-i18n="menu.gallery">All reconstructions</span></a>
       <span class="toolbar-divider" aria-hidden="true"></span>
-      <button id="rc-language-toggle" type="button" class="toolbar-button language-toggle" popovertarget="rc-language-menu" aria-controls="rc-language-menu" aria-haspopup="true" aria-expanded="false" aria-label="Language: English"><svg aria-hidden="true"><use href="#rc-i-globe"/></svg><span id="rc-language-code" class="language-code" aria-hidden="true">EN</span></button>
+      <button id="rc-language-toggle" type="button" class="toolbar-button language-toggle" popovertarget="rc-language-menu" aria-controls="rc-language-menu" aria-expanded="false" aria-label="Language: English"><svg aria-hidden="true"><use href="#rc-i-globe"/></svg><span id="rc-language-code" class="language-code" aria-hidden="true">EN</span></button>
       <button id="rc-help-toggle" type="button" class="toolbar-button icon-only help-toggle" popovertarget="rc-help" aria-controls="rc-help" aria-haspopup="dialog" aria-expanded="false" aria-label="Help and model information" title="Help and controls" data-i18n-attr="aria-label:help.label title:help.title"><svg aria-hidden="true"><use href="#rc-i-info"/></svg></button>
     </div>
   </div>
@@ -1123,10 +1127,10 @@ kbd {
       <label lang="it"><input type="radio" name="rc-language" value="it"><span>Italiano</span></label>
     </div>
   </div>
-  <div id="rc-loading" class="rc-loading" role="status" aria-live="polite" aria-atomic="true">
+  <div id="rc-loading" class="loading-card rc-loading">
     <span class="eyebrow" data-i18n="loading.eyebrow">Splat viewer</span>
     <h2 id="rc-loading-title">Opening Beatrice von Wattenwyl-Haus</h2>
-    <p id="rc-loading-detail">Starting the download…</p>
+    <p id="rc-loading-detail" role="status">Starting the download…</p>
     <progress id="rc-load-progress" max="100" aria-label="Splat download progress" data-i18n-attr="aria-label:loading.progress"></progress>
   </div>
   <div id="rc-tip" class="rc-tip" role="status" hidden><span id="rc-tip-text"></span><button type="button" aria-label="Hide tip" data-i18n-attr="aria-label:tip.hide"><svg aria-hidden="true"><use href="#rc-i-close"/></svg></button></div>

@@ -36,6 +36,14 @@ test('building configuration rejects unsafe or incomplete values', () => {
     { links: [{ label: 'x', href: 'javascript:alert(1)' }] }, { walkStarts: { hall: { label: 'Hall', position: [0, 1], target: [0, 0, 0] } } }]) {
     assert.throws(() => parseBuilding({ ...base, ...bad }, 'https://example.test/b.json'), /Invalid building configuration/);
   }
+  // Paths are resolved, so no spelling leaves the building folder; an array is not an https link.
+  const url = 'https://example.test/reconstructions/x/public/building.json';
+  for (const about of ['..\\..\\evil.html', '\\\\evil.example\\a.html', '\\/evil.example/a.html', '%2e%2e/%2e%2e/x.html',
+    '//evil.example/a.html', 'models/../../x.html', '/abs.html', 'data:text/html,x', '']) {
+    assert.throws(() => parseBuilding({ ...base, about }, url), /Invalid building configuration/, JSON.stringify(about));
+  }
+  for (const about of ['about.html', 'docs/about.html', './about.html']) assert.equal(parseBuilding({ ...base, about }, url).about, about);
+  assert.throws(() => parseBuilding({ ...base, links: [{ label: 'x', href: ['https://x.test'] }] }, url), /Invalid building configuration/);
   setBuilding(parseBuilding(base, 'https://example.test/b.json'));
   assert.equal(building().name, 'Landgut Lohn');
 });

@@ -1,7 +1,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Box3 } from 'three';
 import { meshoptDecoderReady } from './meshopt-decoder.js';
-import { normalizeModelPrimitives } from './model-primitives.js';
+import { normalizeModelPrimitives } from './model-primitives.js?v=placements-1';
 
 // Let updated status text paint before parsing or preparing a large asset.
 export function paintOpportunity(signal) {

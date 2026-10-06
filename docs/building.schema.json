@@ -19,7 +19,7 @@
     "downloads": { "type": "string", "pattern": "^https://", "description": "Where model files can be downloaded" },
     "walkStarts": {
       "type": "object",
-      "description": "Walk-mode room starts in glTF metres (Y up). Used when the building policy exports no WALK_STARTS.",
+      "description": "Reference standing points in rooms, in glTF metres (Y up); tests check that walking surfaces carry them. The viewer starts walking below the current camera, not here.",
       "propertyNames": { "pattern": "^[a-z][a-z0-9-]*$" },
       "additionalProperties": {
         "type": "object", "required": ["label", "position", "target"],

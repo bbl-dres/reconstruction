@@ -18,7 +18,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8'/%3E%3Cpath d='m16 5 11 6v12l-11 6L5 23V11Zm0 12v12M5 11l11 6 11-6M16 5v12' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
   <!-- The viewers' design tokens and their toolbar, dropdowns and help panel (app-tools.css). -->
   <link rel="stylesheet" href="viewer/css/token.css?v=20261006-i18n">
-  <link rel="stylesheet" href="viewer/css/app-tools.css?v=20261006-app-tools">
+  <link rel="stylesheet" href="viewer/css/app-tools.css?v=20261006-review">
   <style>
     :root {
       --color-marker: #f0b35a;
@@ -27,7 +27,7 @@
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--color-canvas); color: var(--color-text); font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
     a { color: inherit; }
-    :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+    :focus-visible { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
     .page { max-width: 1120px; margin: 0 auto; padding: var(--inset-top) max(32px, env(safe-area-inset-right)) 48px max(32px, env(safe-area-inset-left)); }
     /* Header: one row as wide as the gallery, with the title, then Gallery | Map and the viewers' toolbar at the right. */
     .masthead { display: flex; align-items: center; gap: var(--space-6); margin-bottom: 32px; }
@@ -90,7 +90,7 @@
     <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4s-1.2-.4-4.1 1.5a14 14 0 0 0-7.4 0C4.7-.3 3.5.1 3.5.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.6v4" transform="translate(1 1) scale(.9)"/></symbol>
     <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3C9.5 5.6 8.2 8.6 8.2 12s1.3 6.4 3.8 9"/></symbol>
   </svg>
-  <section id="help" class="dropdown help-panel" popover="auto" role="dialog" aria-label="About the reconstructions" data-i18n-attr="aria-label:help.label" hidden>
+  <section id="help" class="dropdown help-panel" popover="auto" role="dialog" aria-label="About the reconstructions" data-i18n-attr="aria-label:help.label" tabindex="-1" autofocus hidden>
     <div class="help-body">
       <h2 class="eyebrow" data-i18n="help.project">About this project</h2>
       <p class="panel-note" data-i18n="help.projectText">Experimental 3D reconstructions of Swiss federal buildings, made from publicly available data. Dimensions, unseen spaces and some properties are inferred: these are not surveyed or official models.</p>
@@ -123,13 +123,21 @@
         <div class="toolbar app-tools" role="group" aria-label="Links, language and help" data-i18n-attr="aria-label:toolbar.label">
           <a class="toolbar-button icon-only toolbar-link" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer" title="View on GitHub" data-i18n-attr="title:menu.github"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="sr-only" data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
           <span class="toolbar-divider" aria-hidden="true"></span>
-          <button id="language-toggle" class="toolbar-button language-toggle" popovertarget="language-menu" aria-controls="language-menu" aria-haspopup="true" aria-expanded="false" aria-label="Language: English"><svg aria-hidden="true"><use href="#i-globe"/></svg><span id="language-code" class="language-code" aria-hidden="true">EN</span></button>
+          <button id="language-toggle" class="toolbar-button language-toggle" popovertarget="language-menu" aria-controls="language-menu" aria-expanded="false" aria-label="Language: English"><svg aria-hidden="true"><use href="#i-globe"/></svg><span id="language-code" class="language-code" aria-hidden="true">EN</span></button>
           <button id="help-toggle" class="toolbar-button icon-only help-toggle" popovertarget="help" aria-controls="help" aria-haspopup="dialog" aria-expanded="false" aria-label="About the reconstructions" title="About the reconstructions" data-i18n-attr="aria-label:help.label title:help.label"><svg aria-hidden="true"><use href="#i-info"/></svg></button>
         </div>
       </div>
     </header>
     <main>
       <p id="status" class="status" role="status" hidden></p>
+      <script>
+        // Opened from disk, browsers refuse module scripts, so the gallery cannot say this itself.
+        if (location.protocol === 'file:') {
+          const status = document.getElementById('status');
+          status.textContent = 'Open this page through a web server (for example: python tools/serve.py) to load the reconstructions.';
+          status.hidden = false;
+        }
+      </script>
       <section id="gallery-view" aria-label="Gallery" data-i18n-attr="aria-label:view.gallery">
         <ul id="gallery" class="gallery"></ul>
       </section>

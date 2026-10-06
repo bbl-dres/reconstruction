@@ -116,7 +116,10 @@ export function collisionCandidate(mesh) {
   // Authored floors can be named "deck" or "dais". Keep them as walking
   // surfaces even when the legacy name heuristic below does not recognize them.
   if (mesh.userData.viewer_role === 'floor') return true;
+  // Ceilings and roofs never stop a walker (a jump rises about 0.6 m), but as walking surfaces they
+  // would catch Walk's drop from above, even where Dollhouse hides them.
+  if (['ceiling', 'roof'].includes(mesh.userData.viewer_role)) return false;
   // Structural surfaces and large obstacles only. No tiny ornament or rail spindles.
   if (/acanthus|capital|cornice|mould|joint|seam|voussoir|archivolt|baluster|runner|microphone|coffer|frame|mural|painting|inset|upholstery|leather|glazing/i.test(mesh.name)) return false;
-  return /floor|ground|cross gallery|pavement|paving|stair|landing|wall|enclosure|partition|pier.*shaft|column.*shaft|plinth|seat|desk top|desktop|table|ceiling|facade.*pier|facade.*spandrel/i.test(mesh.name);
+  return /floor|ground|cross gallery|pavement|paving|stair|landing|wall|enclosure|partition|pier.*shaft|column.*shaft|plinth|seat|desk top|desktop|table|facade.*pier|facade.*spandrel/i.test(mesh.name);
 }

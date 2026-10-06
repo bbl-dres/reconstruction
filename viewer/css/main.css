@@ -649,6 +649,66 @@ input[type=range] {
   color: var(--color-text);
 }
 
+/* The More menu: items, a note, a divider and the link field for copying by hand. */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--control-size-compact);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: left;
+  text-decoration: none;
+}
+.menu-item:hover:not(:disabled) {
+  background: var(--color-overlay-pressed);
+}
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+}
+.menu-item > span:first-of-type {
+  flex: 1;
+}
+.menu-item .menu-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transform: rotate(90deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.menu-item[aria-expanded=true] .menu-chevron {
+  transform: rotate(-90deg);
+}
+.menu-divider {
+  display: block;
+  height: 1px;
+  margin: var(--space-1) var(--space-1h);
+  background: var(--color-border);
+}
+.menu-note {
+  margin: 0 10px var(--space-1h);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.menu-input {
+  display: block;
+  width: calc(100% - 20px);
+  min-height: 36px;
+  margin: 0 10px var(--space-1h);
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+}
+
 /* Bottom controls: centred view dock, navigation switch at the right. */
 .navigation-hint {
   position: absolute;
@@ -739,30 +799,6 @@ input[type=range] {
 .label-short {
   display: none;
 }
-.cut-control {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 10px 0 var(--space-1);
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  white-space: nowrap;
-}
-.cut-control::before {
-  content: '';
-  width: 1px;
-  height: 28px;
-  margin: 0 var(--space-1h);
-  background: var(--color-border-strong);
-}
-.cut-control input {
-  width: 120px;
-  height: 28px;
-}
-.cut-control output {
-  min-width: 40px;
-  color: var(--color-text);
-}
 .nav-modes {
   position: absolute;
   right: 0;
@@ -816,21 +852,7 @@ input[type=range] {
     white-space: nowrap;
   }
 }
-/* A narrow stage keeps the dock clear of the navigation switch with icon-only views:
-   in Floor plan, whose cut slider widens the dock, and on any stage below 780 px. */
-@container stage (max-width: 1000px) {
-  .dock:has(.cut-control:not([hidden])) [data-mode] {
-    padding: 0 var(--space-3);
-  }
-  .dock:has(.cut-control:not([hidden])) [data-mode] span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-}
+/* A narrow stage keeps the dock clear of the navigation switch with icon-only views. */
 @container stage (max-width: 780px) {
   .dock [data-mode] {
     padding: 0 var(--space-3);
@@ -1045,55 +1067,6 @@ input[type=range] {
 }
 
 /* ── Loading, walking and notices ── */
-.loading-card {
-  position: absolute;
-  z-index: var(--layer-loading);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(370px, calc(100% - var(--inset-left) - var(--inset-right)));
-  max-height: calc(100% - 200px);
-  overflow-y: auto;
-  padding: var(--space-7);
-  border: var(--border-width) solid var(--color-border-strong);
-  border-radius: var(--radius-panel);
-  background: var(--color-overlay-panel);
-  backdrop-filter: blur(var(--blur-panel));
-  box-shadow: var(--shadow-panel);
-  text-align: center;
-}
-.loading-card .eyebrow {
-  margin-bottom: var(--space-4);
-}
-.loading-card h2 {
-  margin-bottom: var(--space-3);
-  font-size: var(--text-3xl);
-}
-.loading-card p {
-  margin: 0;
-  font-size: var(--text-base);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-}
-progress {
-  display: block;
-  width: 100%;
-  height: 4px;
-  margin-top: var(--space-6);
-  border: 0;
-  border-radius: var(--radius-xs);
-  background: var(--color-switch-off);
-  accent-color: var(--color-text);
-  appearance: none;
-}
-progress::-webkit-progress-bar {
-  border-radius: var(--radius-xs);
-  background: var(--color-switch-off);
-}
-progress::-webkit-progress-value {
-  border-radius: var(--radius-xs);
-  background: var(--color-text);
-}
 .primary-button {
   display: flex;
   align-items: center;
@@ -1436,23 +1409,6 @@ body.touch-walking .navigation-hint {
   height: 52px;
   border-radius: var(--radius-control);
 }
-#viewer.compact .cut-control {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + var(--space-2));
-  left: 0;
-  padding: var(--space-1h) var(--space-4);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-toolbar);
-  background: var(--color-overlay-panel);
-}
-#viewer.compact .cut-control::before {
-  display: none;
-}
-#viewer.compact .cut-control input {
-  flex: 1;
-  width: auto;
-}
 #viewer.compact .inspector {
   right: var(--space-3);
   left: var(--space-3);
@@ -1480,16 +1436,6 @@ body.touch-walking .navigation-hint {
 @media (max-height: 500px) {
   .navigation-hint {
     display: none;
-  }
-  .loading-card {
-    padding: var(--space-4);
-  }
-  .loading-card .eyebrow {
-    display: none;
-  }
-  .loading-card h2 {
-    margin-bottom: var(--space-2);
-    font-size: var(--text-lg);
   }
   .inspector-details {
     max-height: 30dvh;

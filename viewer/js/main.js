@@ -1,27 +1,28 @@
 import * as THREE from 'three';
-import { loadGLB, paintOpportunity, prepareStaticModel, disposeAsset } from './asset-loader.js?v=gzip-5';
+import { loadGLB, paintOpportunity, prepareStaticModel, disposeAsset } from './asset-loader.js?v=gzip-6';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { LEVELS, WALK_STARTS, visibleInMode, collisionCandidate } from 'building-policy';
+import { LEVELS, visibleInMode, collisionCandidate } from 'building-policy';
 import { building } from './building-config.js';
-import { Walker } from './walking.js?v=v019-galleries';
-import { prepareCollisionWorld } from './collision-loader.js?v=v019-galleries';
-import { restoreView, navigateView, settle, toPlan, fromPlan, copyPerspective, eyeLevelFov } from './view-navigation.js?v=eye-level-1';
-import { readViewURL, writeViewURL } from './view-url.js?v=exterior-default';
-import { createRenderInstances } from './render-instances.js?v=overlay-1';
-import { wirePanelTabs, wireDropdowns, wireSidebar, wireResponsiveLayout, wireLanguageMenu, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=app-tools-1';
-import { t, formatNumber, onLanguageChange } from './i18n.js?v=i18n-1';
-import { createSurroundingsStyle } from './surroundings-style.js?v=sky-ibl-1';
+import { Walker, combineWorlds } from './walking.js?v=ground-1';
+import { prepareCollisionWorld } from './collision-loader.js?v=terrain-2';
+import { restoreView, navigateView, settle, toPlan, fromPlan, copyPerspective, eyeLevelFov, fitDistance } from './view-navigation.js?v=fit-1';
+import { readViewURL, writeViewURL, defaultPlanLevel } from './view-url.js?v=plan-1';
+import { materialsOf } from './scene-utils.js?v=1';
+import { createRenderInstances } from './render-instances.js?v=sync-2';
+import { wirePanelTabs, wireDropdowns, wireSidebar, wireResponsiveLayout, wireLanguageMenu, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=app-tools-3';
+import { t, formatNumber, onLanguageChange } from './i18n.js?v=i18n-2';
+import { createSurroundingsStyle } from './surroundings-style.js?v=alpha-1';
 import { parseMetadata, describeElement } from './model-metadata.js?v=archive-levels-1';
-import { wirePicking, highlightElement, highlightElements } from './inspection.js?v=overlay-1';
+import { wirePicking, highlightElement, highlightElements } from './inspection.js?v=clip-2';
 import { parseBimRegistry, describeProduct } from './bim-registry.js?v=redesign-1';
 import { parseCatalog, chooseModel } from './model-catalog.js?v=archive-levels-1';
-import { Daylight } from './daylight.js?v=sky-ibl-1';
+import { Daylight } from './daylight.js?v=fit-1';
 import { STUDIO, studioSunDirection, applyStudioLights, createSkyEnvironment } from './lighting.js?v=sky-ibl-1';
 import { localParts, dayOfYear, calendarSelection, calendarDate } from './solar-time.js?v=calendar-2';
 import { renderBudget, calloutPlacement } from './view-layout.js?v=redesign-1';
 import { wireTouchWalk } from './touch-walk.js';
 import { createFrameLoop } from './frame-loop.js';
-import { fitDirectionalShadow, shadowCoverage } from './shadow-fit.js?v=lens-2';
+import { fitDirectionalShadow, shadowCoverage } from './shadow-fit.js?v=fit-1';
 import { buildModelTree, filterTree, hiddenBy, hiddenMeshes, ancestors, elementsUnder, humanize, cleanName } from './model-tree.js?v=redesign-1';
 
 const $ = id => document.getElementById(id);
@@ -31,7 +32,7 @@ const navButtons = [...document.querySelectorAll('[data-nav]')];
 const keys = new Set();
 // mode is the camera mode; walkView is what Walk and Fly show (Exterior or Dollhouse visibility).
 // walking: Walk or Fly is moving the walking camera, looking by drag, with the pad on touch screens.
-const state = { mode: 'orbit', level: 'all', planLevel: null, ready: false, presented: false, dirty: true, meshes: [], materials: new Set(), walker: null, collision: null, walking: false, walkPad: false, walkView: 'orbit', navIntent: 'walk', modeRequest: 0, previousTime: 0, noticeTimer: 0 };
+const state = { mode: 'orbit', level: 'all', planLevel: null, ready: false, presented: false, dirty: true, meshes: [], materials: new Set(), walker: null, collision: null, terrain: null, walkPreparing: false, walking: false, walkView: 'orbit', navIntent: 'walk', modeRequest: 0, previousTime: 0, noticeTimer: 0, noticeOwner: null, metadata: 'loading' };
 let renderer, scene, camera, perspective, walkCamera, orthographic, orbit, plan, sun, fillLight, model, daylight, environmentTarget;
 let frameLoop;
 let buildingInstances;
@@ -41,8 +42,26 @@ let buildingBounds = new THREE.Box3();
 let casterBounds = new THREE.Box3();
 let viewportSize = '';
 let collisionPromise = null;
+let terrainPromise = null;
 const collisionAbort = new AbortController();
 const assetAbort = new AbortController();
+// Floor plan cuts 1 m above the chosen level's floor, as a drawn floor plan does, and below that floor.
+const PLAN_CUT = 1;
+// Cut through, furniture, stairs and other things that stand in a room leave odd fragments: in Floor
+// plan they are drawn whole when they start below the cut. Walls, columns, doors and windows are cut,
+// which shows the openings; what hangs above the cut (chandeliers, cornices) stays cut away.
+const PLAN_WHOLE = new Set(['furniture', 'chair', 'desk', 'table', 'cabinet', 'bench',
+  'stair', 'balustrade', 'railing', 'handrail', 'guardrail',
+  'sculpture', 'plant', 'equipment', 'decoration', 'light-fixture']);
+const wholeInPlan = (mesh, cut) => PLAN_WHOLE.has(mesh.userData.viewer_category ?? mesh.userData.viewer_role)
+  && (mesh.userData.bounds?.min.y ?? Infinity) < cut;
+// Clipping belongs to materials, which elements share: whole objects draw with unclipped copies.
+const uncutMaterials = new Map();
+const cutMaterialOf = new Map();
+const uncut = material => {
+  if (!uncutMaterials.has(material)) uncutMaterials.set(material, Object.assign(material.clone(), { clippingPlanes: null }));
+  return uncutMaterials.get(material);
+};
 const cutPlanes = [new THREE.Plane(new THREE.Vector3(0, -1, 0), 100), new THREE.Plane(new THREE.Vector3(0, 1, 0), 100)];
 const orbitDirection = new THREE.Vector3(0.95, 1.1, -1.35).normalize();
 let urlTimer = 0;
@@ -59,7 +78,6 @@ let pendingSiteView = false;
 let daylightMinutes = 720;
 const config = building();
 const modelBase = new URL(config.models, config.baseUrl);
-const walkStarts = Object.keys(WALK_STARTS).length ? WALK_STARTS : config.walkStarts;
 let activeModel = null;
 let activeLevels = LEVELS;
 const diagnostics = new URL(location.href).searchParams.has('stats');
@@ -71,6 +89,15 @@ const qualityInputs = [...document.querySelectorAll('[name="render-quality"]')];
 const renderQuality = () => qualityInputs.find(input => input.checked)?.value || 'auto';
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const icon = id => `<svg aria-hidden="true"><use href="#${id}"/></svg>`;
+// Imported models are static: render instancing batches repeated meshes unless ?instances=0.
+const useInstances = new URL(location.href).searchParams.get('instances') !== '0';
+// Width over height of the 3D view, never zero or infinite while the stage is collapsed.
+const viewAspect = () => Math.max(1, canvas.clientWidth) / Math.max(1, canvas.clientHeight);
+// Status lines are live regions: rewriting the same text would announce it again.
+function setText(id, text) {
+  const element = $(id);
+  if (element.textContent !== text) element.textContent = text;
+}
 
 // Walk mode moves on foot or in flight; announcements name whichever is active.
 function modeName(mode) {
@@ -83,12 +110,6 @@ function showLoading(part, text) {
   loadingText[part] = text;
   const element = $(`loading-${part}`), value = text();
   if (element.textContent !== value) element.textContent = value;
-}
-
-function showCutHeight() {
-  const value = formatNumber(Number($('cut-height').value), 1);
-  $('cut-value').textContent = `${value} m`;
-  setRangeDescription($('cut-height'), t('dock.cutValue', { value }));
 }
 
 function renderScene() {
@@ -123,6 +144,20 @@ try {
   if (QUALITIES.includes(quality)) qualityInputs.find(input => input.value === quality).checked = true;
 } catch { /* Use automatic quality when storage is unavailable. */ }
 
+// Errors meant for the visitor carry a translation key; anything else is described by its kind.
+// The technical message goes to the console only.
+function errorKey(error) {
+  if (error?.key) return error.key;
+  if (error?.name === 'TypeError' || /fetch|load failed|network|404|not found|HTTP/i.test(error?.message || '')) return 'error.buildingFile';
+  return 'error.model';
+}
+const keyedError = (key, cause) => Object.assign(new Error(key, { cause }), { key });
+
+function setViewerControlsEnabled(enabled) {
+  for (const button of [...modeButtons, ...navButtons]) button.disabled = !enabled;
+  for (const id of ['reset', 'zoom-in', 'zoom-out', 'lighting-toggle', 'copy-view-link']) $(id).disabled = !enabled;
+}
+
 function showError(error) {
   console.error(error);
   state.ready = false;
@@ -130,17 +165,15 @@ function showError(error) {
   assetAbort.abort(error);
   collisionAbort.abort(error);
   frameLoop?.stop();
-  [...modeButtons, ...navButtons].forEach(button => { button.disabled = true; });
-  for (const id of ['reset', 'zoom-in', 'zoom-out', 'lighting-toggle', 'copy-view-link']) $(id).disabled = true;
+  setViewerControlsEnabled(false);
   closeDropdowns();
   closeInspector();
   stopWalking();
   $('camera-tools').hidden = true;
   $('loading').hidden = false;
   showLoading('title', () => t('error.title'));
-  showLoading('detail', () => location.protocol === 'file:' ? t('error.localServer')
-    : /fetch|404|not found/i.test(error.message || '') ? t('error.buildingFile')
-      : error.message || t('error.webgl'));
+  const key = errorKey(error);
+  showLoading('detail', () => t(key));
   $('load-progress').hidden = true;
   $('retry').hidden = false;
 }
@@ -153,9 +186,9 @@ function invalidate() {
 function currentViewLink() {
   const target = state.mode === 'walk' ? camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(10).add(camera.position)
     : (state.mode === 'plan' ? plan : orbit).target;
-  return writeViewURL(location.href, { version: activeModel.id, mode: state.mode, level: state.level,
+  return writeViewURL(location.href, { version: activeModel.id, mode: state.mode, nav: state.walker?.flying ? 'fly' : 'walk', level: state.level,
     position: camera.position.toArray(), target: target.toArray(), zoom: camera.zoom,
-    halfHeight: orthographic.top, orbit: orbitDirection.toArray(), cut: Number($('cut-height').value),
+    halfHeight: orthographic.top, orbit: orbitDirection.toArray(),
     surroundings: $('surroundings').checked, muted: $('muted-surroundings').checked });
 }
 
@@ -167,16 +200,26 @@ function syncViewURL() {
   if (url.href !== location.href) try { history.replaceState(history.state, '', url); } catch { /* Copy link still works. */ }
 }
 
-function restoreLink() {
-  const view = readViewURL(location.href, activeModel.levels);
-  if (!view) return null;
-  state.mode = view.mode; state.level = view.level;
-  $('cut-height').value = String(view.cut);
-  showCutHeight();
+// A link's switches apply before the building and surroundings load, so the surroundings
+// arrive with the link's look; its camera follows once the building is there.
+function applyLinkSettings(view) {
+  if (!view) return;
   if (view.surroundings !== undefined) $('surroundings').checked = view.surroundings;
   if (view.muted !== undefined) $('muted-surroundings').checked = view.muted;
-  camera = view.mode === 'plan' ? orthographic : view.mode === 'walk' ? walkCamera : perspective;
-  orbit.enabled = ['orbit', 'dollhouse'].includes(view.mode); plan.enabled = view.mode === 'plan';
+}
+
+// The camera and controls that serve a mode.
+function useCameraFor(mode) {
+  camera = mode === 'plan' ? orthographic : mode === 'walk' ? walkCamera : perspective;
+  orbit.enabled = mode === 'orbit' || mode === 'dollhouse';
+  plan.enabled = mode === 'plan';
+}
+
+function restoreLink(view) {
+  if (!view) return null;
+  state.mode = view.mode; state.level = view.level;
+  if (view.mode === 'walk') state.navIntent = view.nav;
+  useCameraFor(view.mode);
   if (view.orbit) orbitDirection.fromArray(view.orbit).normalize();
   if (!view.snapshot) return false;
   const saved = { ...view.snapshot, position: new THREE.Vector3().fromArray(view.snapshot.position), target: new THREE.Vector3().fromArray(view.snapshot.target) };
@@ -186,22 +229,27 @@ function restoreLink() {
   } else {
     orbit.maxDistance = Math.max(orbit.maxDistance, saved.position.distanceTo(saved.target) * 1.1);
     if (view.mode === 'plan') { saved.position.x = saved.target.x; saved.position.z = saved.target.z; saved.position.y = Math.max(saved.target.y + 150, saved.position.y); }
-    restoreView(saved, camera, view.mode === 'plan' ? plan : orbit, canvas.clientWidth / canvas.clientHeight);
+    restoreView(saved, camera, view.mode === 'plan' ? plan : orbit, viewAspect());
   }
   camera.far = Math.max(camera.far, saved.position.distanceTo(saved.target) * 2);
   camera.updateProjectionMatrix();
   return true;
 }
-function notify(message, duration = 5500) {
+function notify(message, duration = 5500, owner = null) {
   clearTimeout(state.noticeTimer);
+  state.noticeOwner = owner;
   $('notice').textContent = message;
   $('notice').hidden = false;
   state.noticeTimer = setTimeout(() => { $('notice').hidden = true; }, duration);
 }
+function clearNotice(owner) {
+  if (state.noticeOwner === owner) $('notice').hidden = true;
+}
 
 function initialize() {
-  if (location.protocol === 'file:') throw new Error(t('error.localServerRequired'));
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: touchPrimary.matches ? 'default' : 'high-performance' });
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: touchPrimary.matches ? 'default' : 'high-performance' });
+  } catch (error) { throw keyedError('error.webgl', error); }
   renderer.setClearColor(0x000000, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = STUDIO.toneMapping;
@@ -228,12 +276,8 @@ function initialize() {
   scene.add(sun, sun.target);
   setStudioSun();
   daylight = new Daylight({ scene, sun, fillLight, renderer, bounds: shadowBounds });
-  const today = localParts(new Date());
   // Fresh visits always start in studio lighting (sun and sky, shadows off), even if the browser restores forms.
-  $('daylight').checked = false;
-  $('shadows').checked = STUDIO.shadows;
-  $('brightness').value = String(STUDIO.exposure);
-  setDaylightDate(today.year, dayOfYear(today));
+  resetLightingControls();
   perspective = new THREE.PerspectiveCamera(45, 1, 0.08, 1500);
   // A separate walking camera preserves the visitor's position AND heading.
   walkCamera = new THREE.PerspectiveCamera(60, 1, 0.08, 1500);
@@ -270,13 +314,16 @@ function initialize() {
 async function loadCatalog() {
   try {
     const response = await fetch(new URL('catalog.json', modelBase), { signal: assetAbort.signal });
-    if (!response.ok) throw new Error(t('error.catalog'));
-    const models = parseCatalog(await response.json());
+    if (!response.ok) throw keyedError('error.catalog');
+    let models;
+    try { models = parseCatalog(await response.json()); } catch (error) { throw keyedError('error.catalog', error); }
     const requested = new URL(location.href).searchParams.get('version');
     activeModel = chooseModel(models, requested);
     activeLevels = activeModel.levelDefinitions || LEVELS;
     $('model-version').textContent = activeModel.label;
     $('daylight').disabled = !activeModel.location;
+    // Today's date in the building's own time zone.
+    resetLightingDate();
     document.title = t('app.title', { version: activeModel.label });
     showLoading('title', () => t('loading.openingVersion', { version: activeModel.label }));
     // Levels are usable as soon as the building is; elements follow with the registry.
@@ -291,39 +338,49 @@ async function loadModel() {
   let pendingRoot;
   try {
     const signal = assetAbort.signal;
-    const gltf = await loadGLB(new URL(activeModel.building, modelBase), { signal, onProgress: progress => {
+    // The building and its surroundings load together and appear together, unless a shared link
+    // turns the surroundings off or opens the floor plan, which hides them.
+    const link = readViewURL(location.href, activeModel.levels);
+    applyLinkSettings(link);
+    const withSurroundings = $('surroundings').checked && link?.mode !== 'plan';
+    const downloads = withSurroundings ? { building: {}, surroundings: {} } : { building: {} };
+    // One bar for both: their bytes together once both sizes are known.
+    const showDownload = () => {
       if (signal.aborted) return;
-      if (progress.percent === null) $('load-progress').removeAttribute('value');
-      else $('load-progress').value = progress.percent;
-      const percent = progress.percent === 99 ? 99 : Math.floor(progress.percent / 5) * 5;
-      showLoading('detail', () => progress.phase === 'decode' ? t('loading.decoding')
-        : progress.percent === null ? t('loading.starting')
-          : t('loading.downloading', { percent, size: formatNumber(progress.total / 1_000_000, 1) }));
+      const parts = Object.values(downloads);
+      const downloading = parts.some(part => part.phase !== 'decode');
+      const total = parts.reduce((sum, part) => sum + (part.total || 0), 0);
+      const loaded = parts.reduce((sum, part) => sum + (part.loaded || 0), 0);
+      const known = downloading && parts.every(part => part.total);
+      const percent = known ? Math.min(99, Math.floor(loaded / total * 100)) : null;
+      if (percent === null) $('load-progress').removeAttribute('value');
+      else $('load-progress').value = percent;
+      showLoading('detail', () => !downloading ? t('loading.decoding') : !known ? t('loading.starting')
+        : t(withSurroundings ? 'loading.downloadingAll' : 'loading.downloading',
+          { percent: percent === 99 ? 99 : Math.floor(percent / 5) * 5, size: formatNumber(total / 1_000_000, 1) }));
+    };
+    const context = withSurroundings ? loadSurroundings(progress => { Object.assign(downloads.surroundings, progress); showDownload(); }) : null;
+    const gltf = await loadGLB(new URL(activeModel.building, modelBase), { signal, onProgress: progress => {
+      Object.assign(downloads.building, progress);
+      showDownload();
     } });
     pendingRoot = gltf.scene;
     showLoading('detail', () => t('loading.preparing'));
     await paintOpportunity(signal);
     let triangles = 0;
-    const materials = new Set();
-    const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    const meshes = await prepareStaticModel(pendingRoot, { signal, onMesh: mesh => {
+    const { meshes, materials } = await prepareAsset(pendingRoot, signal, mesh => {
       mesh.name = mesh.userData.viewer_source_name || mesh.name.replaceAll('_', ' ');
       triangles += (mesh.geometry.index?.count ?? mesh.geometry.attributes.position.count) / 3;
-      for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
-        materials.add(material);
-        material.clipShadows = true;
-        if (material.map) material.map.anisotropy = anisotropy;
-      }
-    } });
-    signal.throwIfAborted();
+      for (const material of materialsOf(mesh)) material.clipShadows = true;
+    });
     model = pendingRoot;
     state.meshes = meshes;
     state.materials = materials;
     scene.add(model);
-    if (new URL(location.href).searchParams.get('instances') !== '0') buildingInstances = createRenderInstances(meshes, scene);
+    if (useInstances) buildingInstances = createRenderInstances(meshes, scene);
     $('model-stats').textContent = `${state.meshes.length} meshes · ${Math.round(triangles / 1000)}k triangles · ${activeModel.label}`;
     $('model-stats').hidden = !diagnostics;
-    const linkRestored = restoreLink();
+    const linkRestored = restoreLink(link);
     applyVisibility();
     if (!linkRestored) {
       if (state.mode === 'walk') {
@@ -336,19 +393,29 @@ async function loadModel() {
     // loop waits until this first presentation, keeping the loading state true.
     await renderer.compileAsync(scene, camera);
     signal.throwIfAborted();
-    renderScene();
+    // Show both at once. Surroundings that fail leave the building to open on its own, and so
+    // does turning them off while they still load.
+    if (context) {
+      if (downloads.surroundings.phase === 'decode') showLoading('detail', () => t('surroundings.preparing'));
+      let optOut;
+      const optedOut = new Promise(resolve => { optOut = () => { if (!$('surroundings').checked) resolve(); }; });
+      $('surroundings').addEventListener('change', optOut);
+      await Promise.race([context, optedOut]);
+      $('surroundings').removeEventListener('change', optOut);
+      signal.throwIfAborted();
+    }
     pendingRoot = null;
     state.ready = true;
     state.presented = true;
+    refreshSurroundings();
+    renderScene();
     $('loading').hidden = true;
     renderPlaces();
     loadBim();
-    [...modeButtons, ...navButtons].forEach(button => { button.disabled = false; });
-    for (const id of ['reset', 'zoom-in', 'zoom-out', 'surroundings', 'lighting-toggle', 'copy-view-link']) $(id).disabled = false;
+    setViewerControlsEnabled(true);
+    // Also loads surroundings that a link opened without, once they are switched on.
     updateInterface();
     if (state.mode === 'walk') prepareWalk(++state.modeRequest);
-    // Give the actual building a paint opportunity before optional context work.
-    paintOpportunity(signal).then(updateSurroundings).catch(() => {});
     $('announcer').textContent = t('loading.ready', { version: activeModel.label, mode: modeName(state.mode) });
     invalidate();
   } catch (error) {
@@ -368,16 +435,32 @@ function inLevel(mesh) {
   return state.level === 'all' || tree.loading || tree.model?.elementOf.get(mesh)?.level === state.level;
 }
 
-function applyVisibility() {
-  const view = displayMode();
+// Floor plan cuts 1 m above the chosen level's floor and below that level.
+function updateCutPlanes() {
   const section = activeLevels[state.level];
-  const clip = Boolean(section && view === 'plan');
+  const clip = Boolean(section && displayMode() === 'plan');
   if (clip) {
-    cutPlanes[0].constant = section.elevation + Number($('cut-height').value);
+    cutPlanes[0].constant = section.elevation + PLAN_CUT;
     cutPlanes[1].constant = -section.min;
   }
+  return clip;
+}
+
+function applyVisibility() {
+  const view = displayMode();
+  const clip = updateCutPlanes();
   const policyLevel = tree.loading ? state.level : 'all';
-  for (const mesh of state.meshes) mesh.visible = visibleInMode(mesh, view, policyLevel, activeLevels) && inLevel(mesh) && !tree.hiddenMeshes.has(mesh);
+  for (const mesh of state.meshes) {
+    mesh.visible = visibleInMode(mesh, view, policyLevel, activeLevels) && inLevel(mesh) && !tree.hiddenMeshes.has(mesh);
+    const whole = clip && mesh.visible && wholeInPlan(mesh, cutPlanes[0].constant);
+    if (whole && !cutMaterialOf.has(mesh)) {
+      cutMaterialOf.set(mesh, mesh.material);
+      mesh.material = Array.isArray(mesh.material) ? mesh.material.map(uncut) : uncut(mesh.material);
+    } else if (!whole && cutMaterialOf.has(mesh)) {
+      mesh.material = cutMaterialOf.get(mesh);
+      cutMaterialOf.delete(mesh);
+    }
+  }
   buildingInstances?.sync();
   for (const material of state.materials) {
     const wasClipped = Boolean(material.clippingPlanes?.length);
@@ -406,18 +489,24 @@ function refreshSurroundings() {
     }
   }
   $('retry-surroundings').hidden = !surroundings.error;
-  $('surroundings-status').textContent = surroundings.error ? t('surroundings.unavailable')
+  setText('surroundings-status', surroundings.error ? t('surroundings.unavailable')
     : enabled && state.mode === 'plan' ? t('surroundings.pausedInPlan')
       : enabled && surroundings.loading ? (surroundings.phase !== 'download' ? t('surroundings.preparing') : surroundings.progress === null ? t('surroundings.starting') : t('surroundings.downloading', { percent: surroundings.progress }))
-        : t('surroundings.planHides');
+        : t('surroundings.planHides'));
   $('muted-row').classList.toggle('dimmed', !enabled);
   $('surroundings-toggle').classList.toggle('surroundings-hidden', !enabled);
 }
 
 function updateSurroundings() {
   refreshSurroundings();
-  // Keep the initial load small. One in-flight request is reused across toggles.
+  // Turned on after opening, the surroundings load on their own. One in-flight request is reused across toggles.
   if (assetAbort.signal.aborted || !state.ready || !state.presented || !$('surroundings').checked || state.mode === 'plan' || surroundings.root || surroundings.loading) return;
+  loadSurroundings();
+}
+
+// Downloads and prepares the surroundings. The promise settles once they are ready or have
+// failed; onProgress follows the download for the loading card.
+function loadSurroundings(onProgress = () => {}) {
   surroundings.loading = true;
   surroundings.progress = null;
   surroundings.phase = 'download';
@@ -425,26 +514,21 @@ function updateSurroundings() {
   refreshSurroundings();
   let pendingRoot;
   const signal = assetAbort.signal;
-  loadGLB(new URL(activeModel.surroundings, modelBase), { signal, onProgress: progress => {
+  return loadGLB(new URL(activeModel.surroundings, modelBase), { signal, onProgress: progress => {
     if (signal.aborted) return;
     surroundings.progress = progress.percent;
     surroundings.phase = progress.phase;
+    onProgress(progress);
     refreshSurroundings();
   } }).then(async gltf => {
     const root = gltf.scene;
     pendingRoot = root;
     // The export shares the building's original origin, scale and orientation.
     root.visible = false;
-    const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    const meshes = await prepareStaticModel(root, { signal, onMesh: mesh => {
-      for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
-        surroundings.materials.add(material);
-        if (material.map) material.map.anisotropy = anisotropy;
-      }
-    } });
-    signal.throwIfAborted();
+    const { meshes, materials } = await prepareAsset(root, signal);
+    for (const material of materials) surroundings.materials.add(material);
     const style = createSurroundingsStyle(root);
-    if (new URL(location.href).searchParams.get('instances') !== '0') surroundings.instances = createRenderInstances(meshes, scene);
+    if (useInstances) surroundings.instances = createRenderInstances(meshes, scene);
     style.setMuted($('muted-surroundings').checked);
     surroundings.instances?.sync();
     const bounds = new THREE.Box3().setFromObject(root);
@@ -466,19 +550,17 @@ function updateSurroundings() {
     signal.throwIfAborted();
     surroundings.prepared = true;
     pendingRoot = null;
+    // Walking surfaces in preparation or in use: the terrain joins them.
+    if (collisionPromise) prepareTerrain();
     // Site bookmarks requested before this asset loaded need visible bounds.
     refreshSurroundings();
     if (pendingSiteView && $('surroundings').checked && state.mode === 'orbit') frameView(true);
     pendingSiteView = false;
-    if ($('surroundings').checked && state.mode !== 'plan') $('announcer').textContent = t('surroundings.ready');
+    // Loaded with the building, they are announced with it.
+    if (state.presented && $('surroundings').checked && state.mode !== 'plan') $('announcer').textContent = t('surroundings.ready');
   }).catch(error => {
-    surroundings.instances?.dispose(); surroundings.instances = null;
-    surroundings.style?.setMuted(false);
-    surroundings.style?.dispose(); surroundings.style = null;
-    surroundings.root = null;
-    surroundings.prepared = false;
+    disposeSurroundings();
     disposeAsset(pendingRoot);
-    surroundings.materials.clear();
     if (signal.aborted) return;
     pendingSiteView = false;
     console.error('Surroundings could not be loaded:', error);
@@ -492,6 +574,32 @@ function updateSurroundings() {
   });
 }
 
+function disposeSurroundings() {
+  surroundings.instances?.dispose(); surroundings.instances = null;
+  surroundings.style?.setMuted(false);
+  surroundings.style?.dispose(); surroundings.style = null;
+  disposeAsset(surroundings.root);
+  surroundings.root = null;
+  surroundings.prepared = false;
+  surroundings.materials.clear();
+}
+
+// Static preparation shared by the building and the surroundings: merged primitives,
+// sharp textures at grazing angles, and the set of materials in use.
+async function prepareAsset(root, signal, onMesh = () => {}) {
+  const materials = new Set();
+  const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  const meshes = await prepareStaticModel(root, { signal, onMesh: mesh => {
+    for (const material of materialsOf(mesh)) {
+      materials.add(material);
+      if (material.map) material.map.anisotropy = anisotropy;
+    }
+    onMesh(mesh);
+  } });
+  signal.throwIfAborted();
+  return { meshes, materials };
+}
+
 function visibleBounds(includeSurroundings = false) {
   const bounds = new THREE.Box3();
   for (const mesh of state.meshes) if (mesh.visible) bounds.union(mesh.userData.bounds);
@@ -499,7 +607,7 @@ function visibleBounds(includeSurroundings = false) {
   const section = activeLevels[state.level];
   if (section && displayMode() === 'plan') {
     bounds.min.y = section.min;
-    bounds.max.y = section.elevation + Number($('cut-height').value);
+    bounds.max.y = section.elevation + PLAN_CUT;
   }
   if (includeSurroundings && surroundings.root?.visible) bounds.union(surroundings.bounds);
   return bounds;
@@ -519,7 +627,7 @@ function shadowBounds() {
 }
 
 function updateShadowFraming() {
-  if (!state.meshes.length || !renderer.shadowMap.enabled || !sun.castShadow) return;
+  if (!state.meshes.length || !renderer.shadowMap.enabled || !sun.castShadow || sun.intensity <= 0) return;
   const bounds = shadowBounds();
   if (!shadowDirty) return;
   fitDirectionalShadow(sun, bounds.receivers, bounds.casters);
@@ -529,11 +637,7 @@ function updateShadowFraming() {
 
 function frameView(includeSurroundings = false) {
   // Stop drag momentum before fitting a new floor or the wider site.
-  const control = state.mode === 'plan' ? plan : orbit;
-  const damping = control.enableDamping;
-  control.enableDamping = false;
-  control.update();
-  control.enableDamping = damping;
+  settle(state.mode === 'plan' ? plan : orbit);
   const bounds = visibleBounds(includeSurroundings);
   const center = bounds.getCenter(new THREE.Vector3());
   const size = bounds.getSize(new THREE.Vector3());
@@ -541,7 +645,7 @@ function frameView(includeSurroundings = false) {
     orthographic.position.set(center.x, bounds.max.y + 150, center.z);
     plan.target.copy(center);
     // fit to both viewport dimensions, allowing room for the floating controls
-    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const aspect = viewAspect();
     const height = Math.max(size.z * 1.25, size.x / aspect * 1.25, 20);
     orthographic.left = -height * aspect / 2;
     orthographic.right = height * aspect / 2;
@@ -551,10 +655,7 @@ function frameView(includeSurroundings = false) {
     orthographic.updateProjectionMatrix();
     plan.update();
   } else {
-    const radius = size.length() / 2;
-    const halfFov = THREE.MathUtils.degToRad(perspective.fov / 2);
-    const fitFov = Math.min(halfFov, Math.atan(Math.tan(halfFov) * perspective.aspect));
-    const distance = radius / Math.sin(fitFov) * (state.mode === 'dollhouse' ? 1.03 : 1.06);
+    const distance = fitDistance(perspective, size.length() / 2) * (state.mode === 'dollhouse' ? 1.03 : 1.06);
     const direction = new THREE.Vector3(0.95, state.mode === 'dollhouse' ? 1.1 : 0.65, -1.35).normalize();
     perspective.position.copy(center).addScaledVector(direction, distance);
     orbit.target.copy(center);
@@ -574,16 +675,13 @@ function frameBounds(bounds) {
   if (state.mode === 'plan') {
     const shift = new THREE.Vector3(center.x - plan.target.x, 0, center.z - plan.target.z);
     plan.target.add(shift); orthographic.position.add(shift);
-    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const aspect = viewAspect();
     const height = Math.max(size.z * 1.6, size.x / aspect * 1.6, 2);
     orthographic.zoom = THREE.MathUtils.clamp((orthographic.top - orthographic.bottom) / height, plan.minZoom, plan.maxZoom);
     orthographic.updateProjectionMatrix();
     plan.update();
   } else {
-    const radius = Math.max(size.length() / 2, 0.5);
-    const halfFov = THREE.MathUtils.degToRad(perspective.getEffectiveFOV() / 2);
-    const fitFov = Math.min(halfFov, Math.atan(Math.tan(halfFov) * perspective.aspect));
-    const distance = THREE.MathUtils.clamp(radius / Math.sin(fitFov) * 1.2, orbit.minDistance, orbit.maxDistance);
+    const distance = THREE.MathUtils.clamp(fitDistance(perspective, Math.max(size.length() / 2, 0.5)) * 1.2, orbit.minDistance, orbit.maxDistance);
     const direction = perspective.position.clone().sub(orbit.target).normalize();
     orbit.target.copy(center);
     perspective.position.copy(center).addScaledVector(direction, distance);
@@ -597,11 +695,11 @@ async function setMode(mode) {
   const request = ++state.modeRequest;
   pendingSiteView = false;
   const previous = state.mode;
-  const aspect = canvas.clientWidth / canvas.clientHeight;
+  const aspect = viewAspect();
   if (previous !== 'walk') settle(previous === 'plan' ? plan : orbit);
   stopWalking();
   // Leaving Walk or Fly while its surfaces are still being prepared drops that notice.
-  if (previous === 'walk' && $('notice').textContent === t('walk.preparing')) $('notice').hidden = true;
+  if (previous === 'walk') clearNotice('walk.preparing');
   if (previous === 'walk') {
     settle(orbit);
     // Each camera keeps its own lens: eye level on foot, the 45° orbit lens otherwise.
@@ -620,22 +718,18 @@ async function setMode(mode) {
   }
   state.mode = mode;
   keys.clear();
-  camera = mode === 'plan' ? orthographic : mode === 'walk' ? walkCamera : perspective;
-  orbit.enabled = mode === 'orbit' || mode === 'dollhouse';
-  plan.enabled = mode === 'plan';
-  // Plan needs one floor: prefer the Bundeshaus-era 'principal' ID, else the first defined floor.
-  // A floor plan picks it for the visitor, so leaving the plan shows all levels again.
+  useCameraFor(mode);
+  // Plan needs one floor. A floor plan picks it for the visitor, so leaving the plan shows all levels again.
   if (previous === 'plan' && state.planLevel === state.level) state.level = 'all';
   state.planLevel = null;
-  if (mode === 'plan' && state.level === 'all') {
-    const levels = activeModel?.levels || ['principal'];
-    state.level = state.planLevel = levels.includes('principal') ? 'principal' : levels.find(level => level !== 'all') || 'all';
-  }
+  if (mode === 'plan' && state.level === 'all') state.level = state.planLevel = defaultPlanLevel(activeModel?.levels);
   applyVisibility();
+  // Floor plan opens on its whole level, wherever the orbit camera had been panned or zoomed.
+  if (mode === 'plan') frameView();
   updateInterface();
   if (mode === 'walk') {
     await prepareWalk(request);
-    if (state.mode !== mode || request !== state.modeRequest || !state.ready) return;
+    if (!isCurrentWalk(request)) return;
   }
   $('announcer').textContent = modeName(mode) + (state.level !== 'all' ? ` · ${levelLabel()}` : '');
   invalidate();
@@ -665,56 +759,69 @@ async function chooseNavigation(nav) {
   }
   state.navIntent = nav;
   if (state.mode !== 'walk') { await setMode('walk'); return; }
-  if (!state.walker) { updateNavButtons(); return; }
+  // Still preparing, or failed: (re)start the preparation, which applies the choice when done.
+  if (!state.walker || state.walkPreparing) { updateNavButtons(); prepareWalk(++state.modeRequest); return; }
   applyNavigation();
   startWalking();
   updateInterface();
 }
 
+// Walk drops straight down from the camera; with nothing at all below, it keeps flying.
 function applyNavigation() {
   const walker = state.walker;
   if (state.navIntent === 'fly') walker.setFlying(true);
-  else if (walker.flying) {
-    // Walking needs a floor: return to the last one, else start in the first room.
-    if (walker.hasSafePosition) walker.setFlying(false);
-    else if (startInRoom()) walker.setFlying(false);
-    else {
-      state.navIntent = 'fly';
-      notify(t('walk.noStart'));
-    }
-  }
+  else if (walker.flying && !walker.dropBelow()) state.navIntent = 'fly';
 }
 
-// The building's first walking start, for a walk that begins above the floor.
-function startInRoom() {
-  const [start] = Object.values(walkStarts);
-  return Boolean(start && state.walker?.spawn(start.position, start.target));
+// The surroundings' terrain is walked on too, once they are loaded. Their buildings are context only.
+function prepareTerrain() {
+  if (terrainPromise || !surroundings.prepared) return terrainPromise || Promise.resolve();
+  const meshes = new Set();
+  // A terrain node with several materials is a group: its meshes carry the role on the group.
+  surroundings.root.traverse(node => { if (node.userData.viewer_role === 'terrain') node.traverse(mesh => { if (mesh.isMesh) meshes.add(mesh); }); });
+  terrainPromise = prepareCollisionWorld(meshes, collisionAbort.signal, undefined, { upward: true }).then(result => {
+    state.terrain = result.world;
+    joinWalkingWorlds();
+  }).catch(error => {
+    terrainPromise = null;
+    if (!collisionAbort.signal.aborted) console.error('Terrain walking surfaces could not be prepared:', error);
+  });
+  return terrainPromise;
 }
+
+function joinWalkingWorlds() {
+  if (state.walker) state.walker.world = state.terrain ? combineWorlds([state.collision.world, state.terrain]) : state.collision.world;
+}
+
+// Changing modes or choosing again during preparation must never start a stale walk.
+const isCurrentWalk = request => state.mode === 'walk' && request === state.modeRequest && state.ready;
 
 async function prepareWalk(request) {
   closeDropdowns();
-  if (!state.collision) {
-    const preparing = t('walk.preparing');
-    notify(preparing, 60000);
+  if (!state.collision || (surroundings.prepared && !state.terrain)) {
+    notify(t('walk.preparing'), 60000, 'walk.preparing');
+    state.walkPreparing = true;
     try {
       collisionPromise ||= prepareCollisionWorld(state.meshes, collisionAbort.signal, collisionCandidate).then(result => {
         state.collision = result;
         state.walker = new Walker(walkCamera, result.world);
       }).catch(error => { collisionPromise = null; throw error; });
-      await collisionPromise;
+      await Promise.all([collisionPromise, prepareTerrain()]);
+      joinWalkingWorlds();
     } catch (error) {
-      if (state.mode !== 'walk' || request !== state.modeRequest || !state.ready) return;
+      if (!isCurrentWalk(request)) return;
       console.error(error);
-      notify(error.message || t('walk.failed'));
+      notify(t('walk.failed'));
       return;
     } finally {
-      if ($('notice').textContent === preparing) $('notice').hidden = true;
+      // Every request waits on the same preparation, so it is over for all of them.
+      state.walkPreparing = false;
+      clearNotice('walk.preparing');
     }
   }
-  // Changing modes during preparation must never start a stale walk.
-  if (state.mode !== 'walk' || request !== state.modeRequest || !state.ready) return;
+  if (!isCurrentWalk(request)) return;
   // Preserve this camera, including shared links. Walking from a viewpoint above the
-  // floor starts in the first room; flying starts here.
+  // floor drops straight down from it; flying starts here.
   state.walker.adoptView();
   applyNavigation();
   updateInterface();
@@ -746,7 +853,6 @@ function updateInterface() {
   const view = displayMode();
   $('viewer').dataset.viewMode = mode;
   for (const button of modeButtons) button.setAttribute('aria-pressed', String(button.dataset.mode === view));
-  $('cut-control').hidden = view !== 'plan';
   $('navigation-hint').textContent = navigationHint();
   $('sheet-level').textContent = levelLabel();
   canvas.setAttribute('aria-label', t(mode === 'plan' ? 'canvas.plan' : mode === 'walk' ? 'canvas.walk' : 'canvas.orbit'));
@@ -765,12 +871,12 @@ function isWalking() { return state.walking; }
 // Every other control stays in view, so the visitor can switch at any time.
 function setWalkingActive(active) {
   state.walking = active;
-  state.walkPad = active && touchPrimary.matches;
+  const pad = active && touchPrimary.matches;
   touchWalk?.setActive(active);
   keys.clear();
   if (state.walker) state.walker.velocity.set(0, 0, 0);
-  $('touch-walk').hidden = !state.walkPad;
-  document.body.classList.toggle('touch-walking', state.walkPad);
+  $('touch-walk').hidden = !pad;
+  document.body.classList.toggle('touch-walking', pad);
   // Movement keys go to the view, so it takes focus whenever Walk or Fly starts.
   if (active) canvas.focus({ preventScroll: true });
   state.previousTime = performance.now();
@@ -808,6 +914,27 @@ function setDaylightDate(year, day) {
   $('daylight-date').value = calendarDate(year, day);
 }
 
+// Today, in the building's time zone once the model is known.
+function resetLightingDate() {
+  const today = localParts(new Date(), activeModel?.location?.timeZone);
+  setDaylightDate(today.year, dayOfYear(today));
+  daylightMinutes = 720;
+}
+
+// Studio lighting: no daylight, default shadows and brightness, today at noon.
+function resetLightingControls() {
+  $('daylight').checked = false;
+  $('shadows').checked = STUDIO.shadows;
+  $('brightness').value = String(STUDIO.exposure);
+  resetLightingDate();
+}
+
+function showBrightness() {
+  const value = Number($('brightness').value);
+  $('brightness-value').textContent = formatNumber(value, 1);
+  setRangeDescription($('brightness'), t('lighting.brightnessValue', { value: Math.round(value * 100) }));
+}
+
 function updateAboutFacts() {
   const sky = $('daylight').checked && activeModel?.location;
   $('about-lighting').textContent = `${t(sky ? 'lighting.sunAndSky' : 'lighting.studioShort')} · ${t($('shadows').checked ? 'about.shadowsOn' : 'about.shadowsOff')}`;
@@ -817,17 +944,23 @@ function updateAboutFacts() {
 function applyLightingAppearance() {
   // Brightness and shadows apply to studio and daylight alike; Floor plan stays shadow-free for legibility.
   renderer.toneMappingExposure = Number($('brightness').value);
-  $('brightness-value').textContent = formatNumber(Number($('brightness').value), 1);
-  setRangeDescription($('brightness'), t('lighting.brightnessValue', { value: Math.round(Number($('brightness').value) * 100) }));
+  showBrightness();
   const shadows = $('shadows').checked && state.mode !== 'plan';
   if (renderer.shadowMap.enabled !== shadows) {
     renderer.shadowMap.enabled = shadows;
-    for (const material of [...state.materials, ...surroundings.materials]) material.needsUpdate = true;
+    for (const material of [...state.materials, ...uncutMaterials.values(), ...surroundings.materials]) material.needsUpdate = true;
     renderer.shadowMap.needsUpdate = shadows;
     shadowDirty = true;
   }
   updateAboutFacts();
   invalidate();
+}
+
+// Sunrise and sunset in 24-hour local time; one formatter per time zone.
+const sunClocks = new Map();
+function sunClock(timeZone) {
+  if (!sunClocks.has(timeZone)) sunClocks.set(timeZone, new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', minute: '2-digit' }));
+  return sunClocks.get(timeZone);
 }
 
 function updateDaylight() {
@@ -847,7 +980,7 @@ function updateDaylight() {
   const selection = calendarSelection($('daylight-date').value);
   $('daylight-date').setAttribute('aria-invalid', String(!selection));
   if (!selection) {
-    $('daylight-status').textContent = t('lighting.invalidDate');
+    setText('daylight-status', t('lighting.invalidDate'));
     $('daylight-status').hidden = false;
     return; // Leave the rendered sun unchanged while a date is incomplete.
   }
@@ -858,14 +991,14 @@ function updateDaylight() {
   // The skipped spring hour is visibly advanced to a real local time.
   if (result.adjusted) daylightMinutes = actual.hour * 60 + actual.minute;
   $('daylight-hour').value = `${String(actual.hour).padStart(2, '0')}:${String(actual.minute).padStart(2, '0')}`;
-  const clock = new Intl.DateTimeFormat('en-GB', { timeZone: location.timeZone, hour: '2-digit', minute: '2-digit' });
+  const clock = sunClock(location.timeZone);
   const eventTime = value => value && Number.isFinite(value.getTime()) ? clock.format(value) : t('lighting.noEvent');
-  $('daylight-sun-times').textContent = t('lighting.sunTimes', { sunrise: eventTime(result.times.sunrise), sunset: eventTime(result.times.sunset) });
+  setText('daylight-sun-times', t('lighting.sunTimes', { sunrise: eventTime(result.times.sunrise), sunset: eventTime(result.times.sunset) }));
   const notes = [];
   if (result.adjusted) notes.push(t('lighting.springForward'));
   if (result.repeated) notes.push(t('lighting.autumnRepeat'));
   if (state.mode === 'plan') notes.push(t('lighting.skyHiddenInPlan'));
-  $('daylight-status').textContent = notes.join(' ');
+  setText('daylight-status', notes.join(' '));
   $('daylight-status').hidden = notes.length === 0;
   invalidate();
 }
@@ -898,13 +1031,12 @@ function resize() {
   invalidate();
 }
 
-// Fit building or Fit site. Fly and Walk return to Orbit in the same view first.
-async function resetView(includeSurroundings = false) {
+// Home: fit the building. Fly and Walk return to Orbit in the same view first.
+async function resetView() {
   if (!state.ready) return;
   pendingSiteView = false;
   if (state.mode === 'walk') await setMode(state.walkView);
-  if (state.mode !== 'walk') frameView(includeSurroundings);
-  invalidate();
+  if (state.mode !== 'walk') frameView();
 }
 
 // The camera rail's zoom: closer in Orbit and Floor plan; on foot, a narrower lens for a
@@ -924,6 +1056,13 @@ function updateZoomButtons() {
   $('zoom-in').disabled = !state.ready || (state.mode === 'walk' && walkCamera.zoom >= 4);
 }
 
+// + and - by the character typed, so every keyboard layout zooms; the numpad by its keys.
+function zoomKey(event) {
+  if (event.code === 'NumpadAdd') return 0.8;
+  if (event.code === 'NumpadSubtract') return 1.25;
+  return { '+': 0.8, '=': 0.8, '-': 1.25, '_': 1.25 }[event.key] ?? null;
+}
+
 function showFullscreenLabel() {
   $('fullscreen').querySelector('span').textContent = t(document.fullscreenElement ? 'menu.exitFullscreen' : 'menu.fullscreen');
 }
@@ -934,9 +1073,8 @@ function refreshLanguage() {
   showLoading('title', loadingText.title);
   showLoading('detail', loadingText.detail);
   showFullscreenLabel();
-  showCutHeight();
   if (renderer) applyLightingAppearance();
-  updateAboutFacts();
+  else showBrightness();
   renderPlaces();
   if (selectedElement) renderElementInfo(selectedElement);
   if (state.ready) updateInterface();
@@ -982,13 +1120,14 @@ async function loadMetadata() {
     if (data.modelId !== activeModel.id) throw new Error('Metadata belongs to a different model version.');
     metadata = parseMetadata(data, activeModel.levels);
     for (const issue of metadata.issues) console.warn(issue);
+    state.metadata = 'ready';
     renderPlaces();
     if (selectedElement) renderElementInfo(selectedElement);
   } catch (error) {
     if (assetAbort.signal.aborted) return;
     console.warn('Model annotations unavailable:', error);
-    $('places-note').textContent = t('places.unavailable');
-    $('places-note').hidden = false;
+    state.metadata = 'failed';
+    renderPlaces();
   }
 }
 
@@ -999,21 +1138,26 @@ async function loadBim() {
     if (!response.ok) throw new Error(`Registry request failed: ${response.status}`);
     const loaded = parseBimRegistry(await response.json(), state.meshes, activeModel);
     assetAbort.signal.throwIfAborted();
-    bim = loaded;
     // A late optional registry must not silently change a selection already open.
     closeInspector();
-    buildTree(bim);
+    buildTree(loaded);
+    bim = loaded;
   } catch (error) {
     if (assetAbort.signal.aborted) return;
     console.warn('Whole-object inventory unavailable:', error);
+    bim = null;
     buildTree(null);
   }
 }
 
 function elementDescription(mesh) { return describeProduct(mesh, bim) || describeElement(mesh, metadata); }
 
+// Properties are matched by label, case aside.
+const findProperty = (properties, label) => properties.find(p => p.label.toLowerCase() === label.toLowerCase());
+const selectedNode = () => selectedElement && tree.model?.elementOf.get(selectedElement);
+
 function fallbackCategory(mesh) {
-  const value = describeElement(mesh, metadata).properties.find(p => p.label.toLowerCase() === 'category')?.value || 'unclassified';
+  const value = findProperty(describeElement(mesh, metadata).properties, 'category')?.value || 'unclassified';
   return value.toLowerCase().replace(/\s*\/\s*|\s+/g, '-');
 }
 
@@ -1022,8 +1166,7 @@ function fallbackCategory(mesh) {
 function renderPlaces() {
   const groups = [[t('places.views'), metadata.views], [t('places.points'), metadata.pointsOfInterest]].filter(([, entries]) => entries.length);
   $('places-note').hidden = groups.length > 0;
-  if (!groups.length && !state.ready) $('places-note').textContent = t('places.loading');
-  else if (!groups.length) $('places-note').textContent = t('places.none');
+  if (!groups.length) setText('places-note', t(state.metadata === 'failed' ? 'places.unavailable' : state.metadata === 'loading' || !state.ready ? 'places.loading' : 'places.none'));
   const items = [];
   for (const [title, entries] of groups) {
     if (groups.length > 1) {
@@ -1046,7 +1189,7 @@ function renderPlaces() {
 
 async function visitPlace(entry) {
   if (!state.ready) return;
-  sidebar.dismiss();
+  dismissSidebar();
   pendingSiteView = false;
   const view = entry.camera;
   await setMode(view.mode);
@@ -1057,9 +1200,9 @@ async function visitPlace(entry) {
   if (view.frame === 'site') {
     $('surroundings').checked = true;
     storePreference('surroundings', true);
-    pendingSiteView = !surroundings.root;
+    pendingSiteView = !surroundings.prepared;
     updateSurroundings();
-    if (surroundings.root) frameView(true);
+    if (surroundings.prepared) frameView(true);
     else notify(t('places.waitingForSite'));
   } else if (view.frame) frameView();
   else {
@@ -1068,7 +1211,7 @@ async function visitPlace(entry) {
       position: new THREE.Vector3().fromArray(view.position), target: new THREE.Vector3().fromArray(view.target),
       zoom: 1, halfHeight: view.height / 2,
     };
-    restoreView(saved, camera, control, canvas.clientWidth / canvas.clientHeight);
+    restoreView(saved, camera, control, viewAspect());
   }
   $('announcer').textContent = `${entry.title} · ${modeName(state.mode)}`;
   invalidate();
@@ -1078,10 +1221,15 @@ async function visitPlace(entry) {
 
 function buildTree(registry, meshes = state.meshes) {
   const levels = (activeModel?.levels || []).filter(level => level !== 'all' && activeLevels[level]);
+  const hidden = [...tree.hidden], isolated = tree.isolated;
   tree.model = buildModelTree({ meshes, bim: registry, levels, definitions: activeLevels, category: fallbackCategory });
   tree.loading = meshes.length === 0;
   for (const set of [tree.expanded, tree.collapsedInFilter, tree.hidden]) set.clear();
-  tree.isolated = null; tree.shown.clear(); tree.active = null; tree.hiddenMeshes = new Set();
+  tree.shown.clear(); tree.active = null;
+  // Storey IDs stay the same when the registry replaces the first tree: keep what was hidden or isolated.
+  for (const id of hidden) if (tree.model.nodes.has(id)) tree.hidden.add(id);
+  tree.isolated = tree.model.nodes.has(isolated) ? isolated : null;
+  tree.hiddenMeshes = hiddenMeshes(tree.model, tree.hidden, isolatedNode());
   tree.filter = filterTree(tree.model, $('tree-filter').value);
   if (!tree.loading) applyVisibility();
   renderTree();
@@ -1113,13 +1261,14 @@ function renderTree() {
     const name = escapeHTML(node.name), say = (key, params) => escapeHTML(t(key, params));
     const labelState = node.kind === 'storey' ? ` aria-pressed="${focus}"` : node.kind === 'element' ? '' : ` aria-expanded="${open}"`;
     const hideTitle = by && by !== node ? (by === isolated ? say('tree.hiddenByIsolation') : say('tree.hiddenWith', { name: by.name })) : say('tree.showOrHide');
+    // The Hide button's label says what it does next (Show or Hide); a pressed state would repeat it.
     return `<li class="${classes}" data-id="${escapeHTML(node.id)}" data-open="${open}" style="--depth:${depth}">`
       + `<button class="tree-chevron${node.children.length ? '' : ' empty'}" data-action="toggle" tabindex="-1" aria-label="${say(open ? 'tree.collapse' : 'tree.expand', { name: node.name })}">${icon('i-chevron')}</button>`
       + `<button class="tree-label" data-action="select" tabindex="-1" title="${name}"${labelState}><span class="tree-name">${name}</span></button>`
       + `<span class="tree-actions">`
       + `<button data-action="zoom" tabindex="-1" aria-label="${say('tree.zoomTo', { name: node.name })}" title="${say('tree.zoomTitle')}">${icon('i-full')}</button>`
       + `<button data-action="isolate" tabindex="-1" aria-pressed="${tree.isolated === node.id}" aria-label="${say('tree.isolate', { name: node.name })}" title="${say('tree.isolateTitle')}">${icon('i-isolate')}</button>`
-      + `<button data-action="hide" tabindex="-1" aria-pressed="${Boolean(by)}" aria-label="${say(by ? 'tree.show' : 'tree.hide', { name: node.name })}" title="${hideTitle}">${icon(by ? 'i-eye-off' : 'i-eye')}</button>`
+      + `<button data-action="hide" tabindex="-1" aria-label="${say(by ? 'tree.show' : 'tree.hide', { name: node.name })}" title="${hideTitle}">${icon(by ? 'i-eye-off' : 'i-eye')}</button>`
       + `</span></li>`;
   };
   const visit = (node, depth, showAll) => {
@@ -1134,7 +1283,7 @@ function renderTree() {
     for (const child of node.children) {
       if (!all && !filter.matches.has(child) && !filter.open.has(child)) continue;
       if (count === limit) {
-        rows.push(`<li class="tree-row is-more" data-id="${escapeHTML(node.id)}" style="--depth:${depth + 1}"><span class="tree-chevron empty"></span><button class="tree-more" data-action="more" tabindex="-1">${escapeHTML(t('tree.more'))}</button></li>`);
+        rows.push(`<li class="tree-row is-more" data-more-for="${escapeHTML(node.id)}" style="--depth:${depth + 1}"><span class="tree-chevron empty"></span><button class="tree-more" data-action="more" tabindex="-1">${escapeHTML(t('tree.more'))}</button></li>`);
         break;
       }
       count++;
@@ -1147,32 +1296,35 @@ function renderTree() {
     visit(root, 0, false);
     if (truncated) break;
   }
-  const focused = list.contains(document.activeElement);
+  // A redraw keeps focus on the same control of the active row: Hide stays on Hide.
+  const focusedAction = list.contains(document.activeElement) ? document.activeElement.dataset.action || 'select' : null;
   list.innerHTML = rows.join('');
   const status = tree.loading ? t('tree.loadingElements')
     : filter && !rows.length ? t('tree.noMatches')
       : truncated ? t('tree.truncated') : '';
-  $('tree-status').textContent = status;
+  setText('tree-status', status);
   $('tree-status').hidden = !status;
   $('visibility-footer').hidden = !tree.hidden.size && !tree.isolated;
-  const active = (tree.active && list.querySelector(`[data-id="${CSS.escape(tree.active)}"]:not(.is-more)`)) || list.querySelector('.tree-row');
-  setActiveRow(active, focused);
+  setActiveRow(rowFor(tree.active) || list.querySelector('.tree-row'), focusedAction);
 }
 
+const rowFor = id => id && $('model-tree').querySelector(`[data-id="${CSS.escape(id)}"]`);
+
 // One tab stop for the tree: the active row's label and actions; arrows move between rows.
-function setActiveRow(row, focus = false) {
+// focusAction moves focus to that control of the row (the label when it has none).
+function setActiveRow(row, focusAction = null) {
   const list = $('model-tree');
   for (const button of list.querySelectorAll('[tabindex="0"]')) button.tabIndex = -1;
   if (!row) return;
-  tree.active = row.dataset.id;
+  if (row.dataset.id) tree.active = row.dataset.id;
   for (const button of row.querySelectorAll('.tree-label, .tree-actions button, .tree-more')) button.tabIndex = 0;
-  if (focus) (row.querySelector('.tree-label, .tree-more'))?.focus({ preventScroll: false });
+  if (focusAction) (row.querySelector(`[data-action="${focusAction}"]`) || row.querySelector('.tree-label, .tree-more'))?.focus({ preventScroll: true });
 }
 
 function focusNode(node) {
   tree.active = node.id;
-  const row = $('model-tree').querySelector(`[data-id="${CSS.escape(node.id)}"]:not(.is-more)`);
-  if (row) { setActiveRow(row, true); row.scrollIntoView({ block: 'nearest' }); }
+  const row = rowFor(node.id);
+  if (row) { setActiveRow(row, 'select'); row.scrollIntoView({ block: 'nearest' }); }
 }
 
 function toggleExpanded(node) {
@@ -1216,8 +1368,11 @@ function toggleIsolate(node) {
 }
 
 function showAll() {
+  const hadFocus = $('visibility-footer').contains(document.activeElement);
   tree.hidden.clear(); tree.isolated = null;
   updateUserVisibility();
+  // The footer hides itself: keep focus in the tree's panel.
+  if (hadFocus) $('tree-filter').focus();
   $('announcer').textContent = t('tree.allShown');
 }
 
@@ -1240,13 +1395,20 @@ async function zoomToNode(node) {
   revealLevel(node);
   frameBounds(nodeBounds(node));
   notify(t('tree.framing', { name: node.name }), 1600);
-  if (sidebar.isCompact()) sidebar.dismiss();
+  if (sidebar.isCompact()) dismissSidebar();
+}
+
+// A sheet or overlay that closes hides its controls: focus moves to the view it uncovered.
+function dismissSidebar() {
+  const hadFocus = $('sidebar').contains(document.activeElement);
+  sidebar.dismiss();
+  if (hadFocus && !$('sidebar-body').checkVisibility?.()) canvas.focus({ preventScroll: true });
 }
 
 function selectFromTree(node) {
   if (!state.ready) return;
   revealLevel(node);
-  if (sidebar.isCompact()) sidebar.dismiss();
+  if (sidebar.isCompact()) dismissSidebar();
   inspectElement(node.meshes[0]);
   // Frame elements that are out of view; leave the camera alone otherwise. Fly and Walk
   // never move the visitor for a selection; Zoom to does that.
@@ -1271,8 +1433,8 @@ function revealInTree(node) {
   }
   tree.active = node.id;
   renderTree();
-  const row = $('model-tree').querySelector(`[data-id="${CSS.escape(node.id)}"]`);
-  if (row) { setActiveRow(row, true); row.scrollIntoView({ block: 'center' }); }
+  const row = rowFor(node.id);
+  if (row) { setActiveRow(row, 'select'); row.scrollIntoView({ block: 'center' }); }
 }
 
 function wireTree() {
@@ -1280,6 +1442,15 @@ function wireTree() {
   list.addEventListener('click', event => {
     const button = event.target.closest('button[data-action]');
     const row = button?.closest('.tree-row');
+    if (row?.dataset.moreFor) {
+      // The next page appears where "More…" was; focus moves to its first row.
+      const id = row.dataset.moreFor, index = [...list.children].indexOf(row);
+      tree.shown.set(id, (tree.shown.get(id) || TREE_PAGE) + TREE_PAGE);
+      renderTree();
+      const next = list.children[index];
+      if (next) setActiveRow(next, 'select');
+      return;
+    }
     const node = row && tree.model.nodes.get(row.dataset.id);
     if (!node) return;
     setActiveRow(row);
@@ -1293,7 +1464,6 @@ function wireTree() {
       case 'zoom': zoomToNode(node); break;
       case 'isolate': toggleIsolate(node); break;
       case 'hide': toggleHidden(node); break;
-      case 'more': tree.shown.set(node.id, (tree.shown.get(node.id) || TREE_PAGE) + TREE_PAGE); renderTree(); break;
     }
   });
   list.addEventListener('focusin', event => {
@@ -1318,13 +1488,14 @@ function wireTree() {
       if (isOpen(node)) { toggleExpanded(node); focusNode(node); } else if (node.parent) focusNode(node.parent);
     } else return;
     event.preventDefault();
-    if (target) { setActiveRow(target, true); target.scrollIntoView({ block: 'nearest' }); }
+    if (target) { setActiveRow(target, 'select'); target.scrollIntoView({ block: 'nearest' }); }
   });
   let filterTimer = 0;
   $('tree-filter').addEventListener('input', () => {
     $('clear-filter').hidden = !$('tree-filter').value;
     clearTimeout(filterTimer);
     filterTimer = setTimeout(() => {
+      if (!tree.model) return;
       tree.filter = filterTree(tree.model, $('tree-filter').value);
       tree.collapsedInFilter.clear(); tree.shown.clear(); tree.active = null;
       renderTree();
@@ -1353,13 +1524,12 @@ function tidyProperty(label, text) {
 function renderElementInfo(mesh) {
   const info = elementDescription(mesh);
   const node = tree.model?.elementOf.get(mesh);
-  const value = label => info.properties.find(p => p.label.toLowerCase() === label.toLowerCase())?.value;
+  const property = label => findProperty(info.properties, label);
   $('element-title').textContent = info.title;
-  const category = node ? categoryOf(node)?.name : value('Category');
+  const category = node ? categoryOf(node)?.name : property('Category')?.value;
   $('element-subtitle').textContent = [category, node && storeyOf(node).level !== 'all' ? storeyOf(node).name : ''].filter(Boolean).join(' · ');
   // The summary holds the essentials; the details list the rest in the same grid, each
   // evidence text once. Inferred values carry a quiet tag with their confidence.
-  const property = label => info.properties.find(p => p.label.toLowerCase() === label.toLowerCase());
   const shown = new Set([property('Category'), property('Primary storey')]);
   const row = (label, item, text = item.value) => {
     shown.add(item);
@@ -1399,7 +1569,6 @@ function renderElementInfo(mesh) {
   const visible = (bim?.members(mesh) || [mesh]).some(part => part.visible);
   $('element-visibility').hidden = visible;
   const hidden = node ? Boolean(hiddenBy(node, tree.hidden, isolatedNode())) : false;
-  $('element-hide').setAttribute('aria-pressed', String(hidden));
   $('element-hide').querySelector('span').textContent = t(hidden ? 'inspector.show' : 'inspector.hide');
   $('element-hide').querySelector('use').setAttribute('href', hidden ? '#i-eye' : '#i-eye-off');
   $('element-hide').disabled = !node;
@@ -1468,17 +1637,19 @@ function placeInspector() {
 
 // ── Controls ──
 
-const sidebar = wireSidebar({ onChange: () => { if (renderer) resize(); placeInspector(); } });
+const sidebar = wireSidebar({ onChange: () => { if (frameLoop) resize(); placeInspector(); } });
 const sidebarTabs = wirePanelTabs(document.querySelector('.sidebar-tabs'));
 
 function wireControls() {
   $('copy-view-link').addEventListener('click', async () => {
     if (!state.ready) return;
     syncViewURL();
-    const url = currentViewLink().href;
     const button = $('copy-view-link');
+    // Busy, not disabled: a disabled button would drop keyboard focus to the page.
+    if (button.getAttribute('aria-disabled') === 'true') return;
+    const url = currentViewLink().href;
     const label = button.querySelector('span');
-    button.disabled = true; label.textContent = t('menu.copying');
+    button.setAttribute('aria-disabled', 'true'); label.textContent = t('menu.copying');
     $('share-status').hidden = true;
     let timeout;
     try {
@@ -1495,8 +1666,10 @@ function wireControls() {
       $('view-link-text').focus(); $('view-link-text').select();
     } finally {
       clearTimeout(timeout);
-      button.disabled = !state.ready; label.textContent = t('menu.copyLink');
-      $('share-status').hidden = false;
+      button.removeAttribute('aria-disabled'); label.textContent = t('menu.copyLink');
+      // Closed meanwhile: the message would only reappear stale next time.
+      const menu = $('menu');
+      $('share-status').hidden = !(typeof menu.showPopover === 'function' ? menu.matches(':popover-open') : !menu.hidden);
     }
   });
   $('menu').addEventListener('toggle', event => {
@@ -1524,15 +1697,15 @@ function wireControls() {
   $('close-inspector').addEventListener('click', closeInspector);
   $('element-details').addEventListener('toggle', placeInspector);
   $('element-zoom').addEventListener('click', () => {
-    const node = selectedElement && tree.model?.elementOf.get(selectedElement);
+    const node = selectedNode();
     if (node) zoomToNode(node);
-    else if (selectedElement) frameBounds(bim?.bounds(selectedElement) || selectedElement.userData.bounds);
+    else if (selectedElement) frameBounds(bim?.bounds(selectedElement) || selectedElement.userData.bounds || new THREE.Box3().setFromObject(selectedElement));
   });
   $('element-hide').addEventListener('click', () => {
-    const node = selectedElement && tree.model?.elementOf.get(selectedElement);
+    const node = selectedNode();
     if (node) toggleHidden(node);
   });
-  $('element-reveal').addEventListener('click', () => revealInTree(selectedElement && tree.model?.elementOf.get(selectedElement)));
+  $('element-reveal').addEventListener('click', () => revealInTree(selectedNode()));
   modeButtons.forEach(button => button.addEventListener('click', () => chooseView(button.dataset.mode)));
   navButtons.forEach(button => button.addEventListener('click', () => chooseNavigation(button.dataset.nav)));
   $('reset').addEventListener('click', () => resetView());
@@ -1557,10 +1730,8 @@ function wireControls() {
     surroundings.error = '';
     $('surroundings').checked = true;
     updateSurroundings();
-  });
-  $('cut-height').addEventListener('input', () => {
-    showCutHeight();
-    applyVisibility();
+    // The retry button hides itself: focus moves to the switch it turned on.
+    $('surroundings').focus();
   });
   $('brightness').addEventListener('input', applyLightingAppearance);
   $('daylight').addEventListener('change', updateDaylight);
@@ -1579,12 +1750,7 @@ function wireControls() {
   });
   $('shadows').addEventListener('change', applyLightingAppearance);
   $('reset-lighting').addEventListener('click', () => {
-    $('daylight').checked = false;
-    $('brightness').value = '1';
-    $('shadows').checked = STUDIO.shadows;
-    const today = localParts(new Date(), activeModel.location?.timeZone);
-    setDaylightDate(today.year, dayOfYear(today));
-    daylightMinutes = 720;
+    resetLightingControls();
     updateDaylight();
     $('daylight').focus({ preventScroll: true });
   });
@@ -1601,9 +1767,11 @@ function wireControls() {
   });
   showFullscreenLabel();
   window.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !$('inspector').hidden && !event.target.closest?.('.dropdown, input, select')) { closeInspector(); return; }
+    if (event.key === 'Escape' && !$('inspector').hidden && !dropdownOpen() && !event.target.closest?.('.dropdown, input, select')) { closeInspector(); return; }
     if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.target !== canvas) return;
+    const zoom = zoomKey(event);
+    if (zoom) { event.preventDefault(); zoomView(zoom); return; }
     // In Fly and Walk, R sits beside E (rise); Fit building on the camera rail serves every mode.
     if (event.code === 'KeyR' && !event.repeat && state.mode !== 'walk') { event.preventDefault(); resetView(); }
     if (!isWalking()) {
@@ -1612,10 +1780,6 @@ function wireControls() {
         event.preventDefault();
         const [horizontal, vertical] = directions[event.code];
         navigate({ horizontal, vertical, pan: event.shiftKey });
-      }
-      if (['Equal', 'NumpadAdd', 'Minus', 'NumpadSubtract'].includes(event.code)) {
-        event.preventDefault();
-        navigate({ zoom: ['Minus', 'NumpadSubtract'].includes(event.code) ? 1.25 : 0.8 });
       }
       if (event.key === '?' || event.code === 'KeyH') openDropdown('help');
       return;
@@ -1635,9 +1799,10 @@ function wireControls() {
     if (!event.persisted) {
       assetAbort.abort(); collisionAbort.abort(); frameLoop.stop();
       clearHighlight?.();
-      buildingInstances?.dispose(); surroundings.instances?.dispose();
-      surroundings.style?.setMuted(false); surroundings.style?.dispose();
-      disposeAsset(model); disposeAsset(surroundings.root); disposeAsset(daylight?.sky);
+      buildingInstances?.dispose();
+      disposeSurroundings();
+      disposeAsset(model); disposeAsset(daylight?.sky);
+      for (const material of uncutMaterials.values()) material.dispose();
       environmentTarget?.dispose(); sun.shadow.map?.dispose();
       orbit.dispose(); plan.dispose(); renderer.dispose();
     }
@@ -1650,16 +1815,21 @@ function wireControls() {
   });
   window.addEventListener('resize', resize);
   new ResizeObserver(resize).observe(canvas);
-  touchPrimary.addEventListener('change', resize);
+  // Touch or mouse first: the pad, the hints and the render budget follow.
+  touchPrimary.addEventListener('change', () => {
+    resize();
+    if (state.walking) setWalkingActive(true);
+    if (state.ready) updateInterface();
+  });
   screen.orientation?.addEventListener('change', releaseMovement);
+  // The error card offers Reload; showError stops rendering and every load.
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault();
-    frameLoop.stop();
-    collisionAbort.abort();
-    showError(new Error(t('error.contextLost')));
+    showError(keyedError('error.contextLost'));
   });
 }
 
+const walkPose = { position: new THREE.Vector3(), quaternion: new THREE.Quaternion() };
 function render(time) {
   const delta = state.previousTime ? (time - state.previousTime) / 1000 : 0;
   state.previousTime = time;
@@ -1667,11 +1837,12 @@ function render(time) {
   if (orbit.enabled && orbit.update()) invalidate();
   if (plan.enabled && plan.update()) invalidate();
   if (isWalking() && state.walker) {
-    const message = state.walker.update(delta, keys);
-    if (message) notify(t('walk.returned'));
-    invalidate();
+    walkPose.position.copy(camera.position); walkPose.quaternion.copy(camera.quaternion);
+    if (state.walker.update(delta, keys)) notify(t('walk.returned'));
+    if (!camera.position.equals(walkPose.position) || !camera.quaternion.equals(walkPose.quaternion)) invalidate();
   }
-  if (state.dirty && (!model || state.presented)) {
+  // Nothing is drawn before the building and its surroundings are presented together.
+  if (state.dirty && state.presented) {
     updateShadowFraming();
     renderScene();
     placeInspector();
@@ -1686,6 +1857,5 @@ wireDropdowns();
 wireLanguageMenu();
 onLanguageChange(refreshLanguage);
 wireResponsiveLayout();
-setRangeDescription($('brightness'), t('lighting.brightnessValue', { value: 100 }));
-showCutHeight();
+showBrightness();
 try { initialize(); } catch (error) { showError(error); }

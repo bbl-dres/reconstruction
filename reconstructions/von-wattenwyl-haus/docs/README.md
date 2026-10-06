@@ -6,6 +6,8 @@ What we measured, changed and considered in the Beatrice von Wattenwyl-Haus expe
 
 | Page | Question |
 |---|---|
+| [Pipeline](pipeline.md) | Which steps, in which order, with which commands? |
+| [Results](results.md) | Can the panoramas make a splat, how sharp is it, and why not sharper? |
 | [Splat quality](splat-quality.md) | Why is the splat soft between capture positions, what did the training settings change, and what could improve it? |
 | [Web viewer](viewer.md) | Which viewer do we publish, why was it slow and hard to navigate on phones, what did we change, and what are the alternatives? |
 | [Compute](compute.md) | Is the laptop enough, and what would an external or rented GPU add? |

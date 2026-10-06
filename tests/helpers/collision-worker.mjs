@@ -1,13 +1,13 @@
 // Runs the production collision algorithms in a real Node worker thread.
 // This does not emulate a browser, WebGL, or browser worker delivery policy.
 import { Worker, isMainThread, parentPort } from 'node:worker_threads';
-import { collisionInput, buildCollisionData, packCollision, unpackCollision } from '../../viewer/js/collision-data.js';
+import { collisionInput, buildCollisionData, unpackCollision } from '../../viewer/js/collision-data.js';
 // The worker module cannot use the page's import map; tests exercise the Bundeshaus policy.
 import { collisionCandidate } from '../../reconstructions/bundeshaus/public/policy/model-policy.js';
 
 if (!isMainThread) parentPort.once('message', data => {
   const start = performance.now();
-  const result = packCollision(buildCollisionData(data));
+  const result = buildCollisionData(data);
   result.buildAndPackMs = performance.now() - start;
   parentPort.postMessage(result, [result.boxes.buffer, result.layout.buffer, result.refs.buffer, result.vertices.buffer]);
 });

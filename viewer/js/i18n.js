@@ -14,12 +14,20 @@ function storedLanguage() {
   } catch { return 'en'; }
 }
 
-export async function loadLanguages(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url.pathname} could not be loaded (${response.status}).`);
-  tables = await response.json();
-  current = storedLanguage();
+// With a fallback table, a page that cannot load its translations carries on in it (and returns false).
+export async function loadLanguages(url, fallback = null) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`${url.pathname} could not be loaded (${response.status}).`);
+    tables = await response.json();
+  } catch (error) {
+    if (!fallback) throw error;
+    console.error(error);
+    tables = fallback;
+  }
+  current = tables[storedLanguage()] ? storedLanguage() : 'en';
   document.documentElement.lang = current;
+  return tables !== fallback;
 }
 
 // Values every string may use, such as the building's {name}.

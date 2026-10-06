@@ -67,7 +67,7 @@ test('strings fall back to English, then to the key, and numbers follow the lang
 const pages = {
   gallery: {
     tables: JSON.parse(await readFile(new URL('../gallery/data/i18n.json', import.meta.url), 'utf8')),
-    sources: await Promise.all(['../index.html', '../gallery/js/main.js', '../gallery/js/dom.js', '../gallery/js/map.js']
+    sources: await Promise.all(['../index.html', '../gallery/js/main.js', '../gallery/js/dom.js', '../gallery/js/map.js', '../gallery/js/english.js']
       .map(path => readFile(new URL(path, import.meta.url), 'utf8'))),
     markup: ['a'],  // the footer credits link their sources
     shared: ['language.label', 'language.name'],  // the viewer's language menu (interface.js) labels its button with these
@@ -123,4 +123,9 @@ test('gallery entries translate title, place, summary and tags into German, Fren
       if (language === 'de') assert.ok(!fields.summary.includes('ß'), entry.id);
     }
   }
+});
+
+test('gallery: the English fallback for a missing table matches the table', async () => {
+  const { ENGLISH } = await import('../gallery/js/english.js');
+  for (const [key, text] of Object.entries(ENGLISH)) assert.equal(text, pages.gallery.tables.en[key], key);
 });

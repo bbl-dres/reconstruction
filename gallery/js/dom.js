@@ -1,4 +1,4 @@
-import { language, t } from '../../viewer/js/i18n.js?v=i18n-1';
+import { language, t } from '../../viewer/js/i18n.js?v=i18n-2';
 
 // A reconstruction in the current language: its translations override the English title, place, summary and tags.
 export function inLanguage(item) {

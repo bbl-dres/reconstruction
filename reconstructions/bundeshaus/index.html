@@ -8,16 +8,24 @@
   <title>Bundeshaus · Building explorer</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8'/%3E%3Cpath d='m16 5 11 6v12l-11 6L5 23V11Zm0 12v12M5 11l11 6 11-6M16 5v12' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../../viewer/css/token.css?v=20261006-i18n">
-  <link rel="stylesheet" href="../../viewer/css/app-tools.css?v=20261006-app-tools">
-  <link rel="stylesheet" href="../../viewer/css/main.css?v=20261006-app-tools">
+  <link rel="stylesheet" href="../../viewer/css/app-tools.css?v=20261006-review">
+  <link rel="stylesheet" href="../../viewer/css/main.css?v=20261006-plan">
   <script type="importmap">
-    {"imports":{"three":"../../viewer/vendor/three/build/three.module.js","three/addons/":"../../viewer/vendor/three/examples/jsm/","building-policy":"./public/policy/model-policy.js?v=top-floor-dollhouse-1"}}
+    {"imports":{"three":"../../viewer/vendor/three/build/three.module.js","three/addons/":"../../viewer/vendor/three/examples/jsm/","building-policy":"./public/policy/model-policy.js?v=no-ceiling-walk-1"}}
   </script>
 </head>
 <body>
   <!-- Thin entry page: the shared viewer (../../viewer) builds the interface from public/building.json. -->
   <p id="boot-status" class="boot-status" hidden></p>
+  <script>
+    // Opened from disk, browsers refuse module scripts, so this note cannot come from the viewer.
+    if (location.protocol === 'file:') {
+      const note = document.getElementById('boot-status');
+      note.innerHTML = '<strong>Open with a local server</strong><br>Run “python tools/serve.py” from the repository root and open the address it prints. No build is needed.';
+      note.hidden = false;
+    }
+  </script>
   <noscript>This viewer needs JavaScript enabled.</noscript>
-  <script type="module" src="../../viewer/js/boot.js?v=20261006-i18n"></script>
+  <script type="module" src="../../viewer/js/boot.js?v=20261006-plan-2"></script>
 </body>
 </html>

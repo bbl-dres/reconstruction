@@ -5,7 +5,7 @@
 // Levels come from the catalog's levelDefinitions; no built-in floors.
 export const LEVELS = {};
 
-// Walk starts come from building.json (walkStarts); a legacy policy may still export its own.
+// Reference standing points for tests; the viewer starts walking below the camera. A legacy policy may still export its own.
 export const WALK_STARTS = {};
 
 const removedInDollhouse = new Set(['roof', 'ceiling']);

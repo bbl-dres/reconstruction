@@ -1,11 +1,21 @@
 # Landgut Lohn
 
-Reconstruction of the Landsitz Lohn, Lohnweg 2, 3122 Kehrsatz – the Federal Council's country residence for official guests, built 1782/83 for the von Tscharner family (attributed to Carl Ahasver von Sinner), with the Dependance and the Peristyl of 1959/60. The model shows the state before the 2026–2029 renovation.
+The Federal Council's country residence in Kehrsatz, built 1782/83, with the Dependance and the Peristyl of 1959/60, as it stood before the 2026–2029 renovation. Reconstructed in Blender from floor plans, swisstopo LiDAR and a 360° tour, with furnished interiors and 500 × 500 m of surroundings, and shown in the shared 3D viewer.
+
+**Viewer:** [bbl-dres.github.io/reconstruction/reconstructions/landgut-lohn](https://bbl-dres.github.io/reconstruction/reconstructions/landgut-lohn/) · **Run locally:** `python tools/serve.py --building landgut-lohn` from the repository root
+
+> [!NOTE]
+> An experimental reconstruction: dimensions, unseen spaces and some properties are inferred. The plans, tour and photographs it is based on are not redistributed, only the model and renders of it.
+
+## Contents
 
 | Path | Content |
 |---|---|
-| `index.html` | Viewer page (shared viewer in `../../viewer/`, default presentation policy) |
-| `public/` | Published configuration, model catalog (GLB, BIM registry, IFCZIP), profiles, previews and [model status](public/docs/model-status.md) |
-| `work/` | Gitignored authoring workspace: floor plans, tour material, public geodata, research, Blender stages and frozen versions. Never published |
+| `index.html` | Entry page for the shared viewer in [`viewer/`](../../viewer), with the default viewer policy |
+| `public/` | Published: configuration, the current model v008 (GLB, BIM registry, IFCZIP), export profiles and previews ([published files](public/README.md)) |
+| `work/` | Authoring workspace, gitignored and tracked in a private repository; never published |
 
-Current version: v003 (v001 is kept in the catalog). See [Adding a building](../../docs/adding-a-building.md) for the workflow.
+## More
+
+- [Model status](public/docs/model-status.md): what the model contains, its sources and accuracy figures
+- [Adding a building](../../docs/adding-a-building.md): the workflow this reconstruction follows

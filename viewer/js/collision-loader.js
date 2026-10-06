@@ -1,11 +1,11 @@
-import { collisionInput, unpackCollision } from './collision-data.js?v=v019-galleries';
+import { collisionInput, unpackCollision } from './collision-data.js?v=terrain-2';
 
-export async function prepareCollisionWorld(meshes, signal, candidate) {
+export async function prepareCollisionWorld(meshes, signal, candidate, options) {
   if (typeof Worker === 'undefined') throw new Error('This browser cannot prepare walking surfaces. Try a browser with module worker support.');
-  const input = await collisionInput(meshes, signal, candidate);
+  const input = await collisionInput(meshes, signal, candidate, options);
   signal?.throwIfAborted();
   const packed = await new Promise((resolve, reject) => {
-    const worker = new Worker(new URL('./collision-worker.js?v=v019-galleries', import.meta.url), { type: 'module' });
+    const worker = new Worker(new URL('./collision-worker.js?v=terrain-2', import.meta.url), { type: 'module' });
     const cleanup = () => { worker.terminate(); signal?.removeEventListener('abort', abort); };
     const abort = () => { cleanup(); reject(signal.reason); };
     signal?.addEventListener('abort', abort, { once: true });
