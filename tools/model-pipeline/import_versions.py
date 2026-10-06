@@ -1,6 +1,6 @@
 """Convert saved iterations of one reconstruction and publish its local viewer catalog.
 
-Usage: python tools/model-pipeline/import_versions.py <versions folder> --building <id> [--only vNNN]
+Usage: python tools/model-pipeline/import_versions.py <releases folder> --building <id> [--only vNNN] [--keep-latest]
 
 The building is reconstructions/<id>/: assets go to public/models/, export profiles and
 names come from public/building.json ("pipeline"), scratch files go to work/.
@@ -212,7 +212,7 @@ def export(source, output_dir, kind, source_hash, model_id, blender):
                 print(f"Reuse {candidate.relative_to(REPO)}", flush=True)
                 return candidate, report
     output = candidates[0]
-    profile_path = WORK / "import-profiles" / f"{model_id}-{kind}.json"
+    profile_path = WORK / "build" / "tmp" / "import-profiles" / f"{model_id}-{kind}.json"
     write_json(profile_path, profile)
     command = [sys.executable, str(TOOLS / "export_model.py"), str(source), "--output", str(output), "--profile", str(profile_path)]
     if blender:
@@ -358,12 +358,37 @@ def import_version(folder, blender):
     }
 
 
+def retire_older(catalog_path, entries):
+    """Keep only the newest version published: move the others to the gitignored work/archive/models/."""
+    newest = max(entries.values(), key=lambda entry: entry["version"])
+    archive = WORK / "archive" / "models"
+    for entry in sorted(entries.values(), key=lambda entry: entry["version"]):
+        if entry["id"] == newest["id"]:
+            continue
+        folder = (MODELS / entry["building"]).resolve().parent
+        if folder == MODELS.resolve() or not folder.is_relative_to(MODELS.resolve()):
+            print(f"Keep {entry['id']}: its assets are not in their own folder", file=sys.stderr, flush=True)
+            continue
+        target = archive / folder.name
+        if target.exists():
+            print(f"Keep {entry['id']}: {target.relative_to(REPO)} already exists", file=sys.stderr, flush=True)
+            continue
+        if folder.is_dir():
+            archive.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(folder), str(target))
+        del entries[entry["id"]]
+        print(f"Retired {entry['id']} to {target.relative_to(REPO)}", flush=True)
+    write_json(catalog_path, {"schemaVersion": 1, "models": sorted(entries.values(), key=lambda entry: entry["version"], reverse=True)})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("versions", type=Path, help="Source folder containing v001, v002, etc.")
+    parser.add_argument("versions", type=Path, help="Releases folder containing v001, v002, etc. (work/releases)")
     parser.add_argument("--building", default="bundeshaus", help="Reconstruction folder name under reconstructions/ (default: bundeshaus)")
     parser.add_argument("--blender")
     parser.add_argument("--only", action="append", metavar="vNNN", help="Import only this saved version; repeat to select several")
+    parser.add_argument("--keep-latest", action="store_true",
+                        help="After a successful import, retire every other published version: move its folder to work/archive/models/ and drop it from the catalog")
     args = parser.parse_args()
     try:
         configure(args.building)
@@ -392,6 +417,8 @@ def main():
             if isinstance(error, subprocess.CalledProcessError):
                 detail = error.stderr or error.stdout or ""
                 print((detail.decode(errors="replace") if isinstance(detail, bytes) else detail)[-4000:], file=sys.stderr)
+    if args.keep_latest and not failed and entries:
+        retire_older(catalog_path, entries)
     print(f"Catalog contains {len(entries)} versions. Failed: {', '.join(failed) or 'none'}", flush=True)
     return 1 if failed else 0
 

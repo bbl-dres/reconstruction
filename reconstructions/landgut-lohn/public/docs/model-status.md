@@ -2,9 +2,19 @@
 
 [← Published files](../README.md)
 
-Version **v006** (6 October 2026). Only this version is published; v001–v005 are kept in the private authoring workspace. An experimental reconstruction made with 3D modelling software from documentary evidence; it is not a survey and not an engineering model. Every exported object carries its evidence class (`lohn_basis`: measured, inferred or placeholder), a source note and a confidence.
+Version **v008** (6 October 2026). Only this version is published; v001–v007 are kept in the private authoring workspace. An experimental reconstruction made with 3D modelling software from documentary evidence; it is not a survey and not an engineering model. Every exported object carries its evidence class (`lohn_basis`: measured, inferred or placeholder), a source note and a confidence.
 
-## Changes from v005
+## Changes from v007
+
+- **Walk**: the grounds of the estate can now be walked; before, a visitor stepping out of the buildings fell through the terrain.
+
+## Changes from v006
+
+- **Dollhouse view**: trims, pictures, mirrors, wall lights and clocks on the outer walls now disappear together with the facade, and ceiling medallions together with the ceiling. Before, they stayed floating in front of the opened rooms. Furniture, inner walls with their decoration, and the chandeliers stay.
+- **Hall openings**: the openings between the halls and the corridors on both floors have the wall above them that the plans and the 360° tour show; the door curtains hang in these openings and the wall lights of the upper hall sit on its corner walls.
+- **Floor edges**: small spikes at the window recesses of the floor surfaces are removed.
+
+## Changes from v005 (v006)
 
 - **Interiors**: 17 rooms that appear in the 2019 360° tour are furnished as photographed – the Salon, Speisesaal, Rauchzimmer, Kleines Esszimmer, Garderobe, Halle and corridors on the ground floor, and the Obere Halle, Churchill-, Damen-, Mittel-, Biedermeier- and Kreidolf-Zimmer upstairs. Each piece is placed where it stands in the panorama: 303 pieces, built from 24 parametric families (chairs, armchairs, sofas, beds, tables, chests, wardrobes, a built-in china cabinet, clocks, mirrors, pictures, carpets, lamps, chandeliers, door curtains). Pieces of the same kind and size share one type and are drawn as instances. Pictures are frames with a neutral canvas and carpets show their main colours only; no artwork is reproduced.
 - **Room finishes**: skirting, dado, panel mouldings and cornices in 11 rooms, following the panelling seen in the tour.
@@ -43,4 +53,4 @@ Version **v006** (6 October 2026). Only this version is published; v001–v005 a
 
 ## Downloads
 
-The catalog in `models/` lists the v006 building and surroundings GLBs, the BIM product registry (864 products, 641 types) and an IFC4 reference model (IFCZIP, tessellated, schema-validated; not tested in a receiving application).
+The catalog in `models/` lists the v008 building and surroundings GLBs, the BIM product registry (922 products) and an IFC4 reference model (IFCZIP, tessellated, schema-validated; not tested in a receiving application).

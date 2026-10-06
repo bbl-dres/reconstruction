@@ -1,11 +1,20 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "REPLACE-BUILDING-ID",
   "namespace": null,
   "latestRelease": null,
-  "activeStage": null,
   "publicFolder": "../public",
   "contracts": "../../../docs",
   "units": "meters",
-  "coordinateSystem": null
+  "coordinateSystem": null,
+  "paths": {
+    "build": "build",
+    "workingModel": null,
+    "releases": "releases",
+    "referenceManifest": "references/manifest.json",
+    "referenceCatalog": "references/catalog/index.html",
+    "decisions": "research/decisions.json",
+    "georeference": "research/derived/model_georeference.json"
+  },
+  "releases": []
 }

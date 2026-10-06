@@ -1,7 +1,51 @@
-# Private work repository. Large or re-downloadable material stays out even here.
+# Private work repository of one reconstruction (layout: docs/conventions.md).
+# Tracked: text, data, scripts and records. Not tracked: binaries and generated bulk.
+# Binaries stay on disk; releases list them with SHA-256 in SHA256SUMS. To version them,
+# install Git LFS (.gitattributes already routes these types) and remove the lines below.
+
+# Python and editor caches
 __pycache__/
 *.pyc
 *.blend1
-catalog/thumbnails/
+
+# Scratch, caches and re-downloadable raw downloads
+build/tmp/
 downloads/
 cache/
+viewer-scratch/
+archive/models/
+
+# Binaries (Git LFS candidates)
+*.blend
+*.glb
+*.gz
+*.ifc
+*.ifczip
+*.zip
+*.npy
+*.npz
+*.mp4
+*.las
+*.laz
+*.tif
+*.tiff
+*.exr
+*.hdr
+*.b3dm
+*.png
+*.jpg
+*.jpeg
+*.JPG
+*.pdf
+
+# Generated catalogs and reports (rebuilt by scripts; large)
+references/catalog/
+catalog/thumbnails/
+tools/reference-catalog/thumbnails/
+build_spec.json
+validation_report.html
+**/bim.json
+**/*.report.json
+**/object_metadata_audit.json
+**/baseline_inventory.json
+**/native_validation.json

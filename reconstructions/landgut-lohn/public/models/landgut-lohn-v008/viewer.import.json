@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "modelId": "landgut-lohn-v008",
+  "sourceAnnotationSha256": "e6d6e339b5deb9e66c91d58d9e84fa75235e46ad93377bb0ab979a7cbe1b5916",
+  "retainedObjectNotes": 9,
+  "corrections": [],
+  "omittedObjects": [],
+  "omissionReason": "No exported building mesh has this ID; original notes retained here for author review."
+}

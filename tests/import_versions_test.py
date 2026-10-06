@@ -12,7 +12,8 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools" / "model-pipeline"))
 from export_model import glb_summary, read_glb_bytes
-from import_versions import export_profile, handoff_file, prepared_export, write_json, model_levels, model_location, import_annotations
+from import_versions import export_profile, handoff_file, prepared_export, write_json, model_levels, model_location, import_annotations, retire_older
+import import_versions
 from optimize_models import optimize_asset, prune_unused_assets
 
 
@@ -53,6 +54,25 @@ class PreparedImportTests(unittest.TestCase):
             "source": {"sha256": self.source_hash}, "coordinates": {"units": "metres", "exportUp": "Y", "recentered": False},
             "glb": glb_summary(asset), "selection": {"collections": {"07e | Circulation": 2}}})
         return asset
+
+    def test_keep_latest_moves_older_versions_to_the_work_archive(self):
+        models, work = self.temp / "public" / "models", self.temp / "work"
+        entries = {}
+        for version in (3, 5, 8):
+            model_id = f"demo-v{version:03d}"
+            (models / model_id).mkdir(parents=True)
+            (models / model_id / "building.glb").write_bytes(b"glb")
+            entries[model_id] = {"id": model_id, "version": version, "building": f"./{model_id}/building.glb"}
+        catalog = models / "catalog.json"
+        with patch.object(import_versions, "MODELS", models), patch.object(import_versions, "WORK", work), \
+             patch.object(import_versions, "REPO", self.temp):
+            retire_older(catalog, entries)
+        self.assertEqual(list(entries), ["demo-v008"])
+        self.assertEqual([entry["id"] for entry in json.loads(catalog.read_text())["models"]], ["demo-v008"])
+        self.assertTrue((models / "demo-v008" / "building.glb").is_file())
+        for model_id in ("demo-v003", "demo-v005"):
+            self.assertFalse((models / model_id).exists())
+            self.assertTrue((work / "archive" / "models" / model_id / "building.glb").is_file())
 
     def test_prepared_package_preserves_bytes_shared_meshes_and_ids_on_reimport(self):
         source_bytes = (self.package / "building.glb").read_bytes()

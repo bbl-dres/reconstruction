@@ -243,7 +243,7 @@ Run the relevant [viewer and pipeline checks](viewer-guide.md#verify-changes) af
 
 ### The implemented viewer.json contract
 
-Deliver `versions/vNNN/model/viewer.json` with the exact catalog `modelId`. The importer also discovers annotations in `viewer/`, version root and numbered `stageNN/viewer/` folders newest first. Prefer the simple layout for new packages. Without an authored file, it seeds compatible bookmarks and ID-matched notes from the newest published version as provisional, and does not overwrite existing repo annotations unless source annotations are supplied.
+Deliver `work/releases/vNNN/model/viewer.json` with the exact catalog `modelId`. The importer also discovers annotations in `viewer/`, version root and numbered `stageNN/viewer/` folders newest first. Prefer the simple layout for new packages. Without an authored file, it seeds compatible bookmarks and ID-matched notes from the newest published version as provisional, and does not overwrite existing repo annotations unless source annotations are supplied.
 
 [viewer-metadata.schema.json](viewer-metadata.schema.json) defines version 1. Minimal file:
 
@@ -457,7 +457,7 @@ These IFC milestones do not block the existing GLB viewer. Model preparation pri
 Preferred frozen modeling-package layout; older numbered `stageNN/viewer/` packages remain supported:
 
 ```text
-versions/vNNN/
+work/releases/vNNN/
   model/bundeshaus_bern.blend       editable master, packed/relative dependencies
   model/viewer.json                implemented views, places and object properties
   viewer/building_profile.json     complete intended collection inventory

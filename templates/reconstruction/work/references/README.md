@@ -1,12 +1,12 @@
 # Building evidence library
 
-Browse the **[HTML catalog](../catalog/index.html)**. Start with **[manifest.json](manifest.json)** for machine-readable discovery, [INDEX.md](INDEX.md) for browsing and [manifest.schema.json](manifest.schema.json) for validation. This is the authoritative current reference index; old folder manifests have been consolidated.
+Browse the **[HTML catalog](catalog/index.html)**. Start with **[manifest.json](manifest.json)** for machine-readable discovery, [INDEX.md](INDEX.md) for browsing and [manifest.schema.json](manifest.schema.json) for validation. This is the authoritative current reference index; old folder manifests have been consolidated.
 
 ## What belongs here
 
 Only evidence of the **real building**: photographs (including screenshots of photographic panoramas), original drawings, floor plans, sections, elevations, site plans and contextual publications. Faithful page renders, crops and extracted drawing text are allowed in `derived/` with a parent-source link. They are never substitutes for the original sheet.
 
-Do not store reconstruction renders, viewer screenshots, model comparisons, invented geometry or generated textures here. Put model review artifacts in `../review/` or the relevant `../stages/<stage>/review/`. Secondary illustrations are in `../research/secondary-illustrations/`; web-page captures in `../research/source-pages/`; GIS/terrain files in `../research/geodata/`; photogrammetric map views in `../research/geospatial-imagery/`.
+Do not store reconstruction renders, viewer screenshots, model comparisons, invented geometry or generated textures here. Put model review artifacts in `../build/review/`. Secondary illustrations are in `../research/secondary-illustrations/`; web-page captures in `../research/source-pages/`; GIS/terrain files in `../research/geodata/`; photogrammetric map views in `../research/geospatial-imagery/`.
 
 ## Structure
 
@@ -32,7 +32,7 @@ Do not create parallel `user/` and `public/` libraries: who supplied a file belo
 1. Query the manifest by `kind`, `location.spaces`, `location.levels`, `collectionId` or tags. Read `review.limitations`, date basis, rights and provenance before treating a source as evidence.
 2. Use `id` in findings and decisions. Use `path` to open the current file. Resolve historical paths through `legacyPaths`; record every future migration in `../research/reference-library/`.
 3. Inspect an original plan's title block, orientation, scale and revision before measuring. Photo directions, panorama cube-face names and model coordinates are different concepts.
-4. Keep interpretation in `../research/`, model changes in `../stages/`, and immutable releases in `../versions/`. Never overwrite the evidence with annotated/model overlays.
+4. Keep interpretation in `../research/`, model changes in `../build/`, and immutable releases in `../releases/`. Never overwrite the evidence with annotated/model overlays.
 5. Before intake, compute SHA-256. If identical bytes exist, append the new source URL/attachment and alias to that record. Otherwise add a new file/record and validate. Similar-looking different revisions are **not** duplicates.
 
 ```powershell
@@ -47,7 +47,7 @@ Run from the building project root. The helper uses Python's standard library; i
 
 ## Metadata conventions
 
-- `location.levels`: project-native labels, not viewer menu keys. Define these labels in PROJECT.md, including their source datum and translations.
+- `location.levels`: project-native labels, not viewer menu keys. Define these labels in the identity table of ../README.md, including their source datum and translations.
 - `location.spaces`: stable lowercase identifiers, with source room titles preserved in descriptions. Broad/legacy labels have low confidence; unknown locations stay empty.
 - `dates.created` may be a year or date; `createdBasis` distinguishes a printed sheet/revision from a filename or tour generation date.
 - `orientation.north`, `orientation.view`, `scale` remain null when unverified.

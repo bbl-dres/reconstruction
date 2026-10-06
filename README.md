@@ -26,14 +26,15 @@ The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstr
 | `gallery/` | Gallery code (`js/`), data (`data/reconstructions.json`: title, place, summary, link, preview, tags and WGS84 location with its source), preview images and README artwork (`assets/`), [MapLibre GL JS](https://maplibre.org/) 6.11.2 (`vendor/maplibre-gl/`, BSD-3-Clause, checksum in `VERSION.json`) |
 | `viewer/` | Shared Three.js building viewer: `shell.html`, `js/`, `css/`, pinned `vendor/` libraries ([THIRD_PARTY.md](viewer/THIRD_PARTY.md)) |
 | `tools/model-pipeline/` | Blender → GLB export, Meshopt compression, catalog import, BIM registry, IFC export, audit |
+| `tools/model-checks/` | Blender checks for any building: hygiene, coplanar faces, furniture, Dollhouse audit |
 | `tools/reference-catalog/` | Evidence library intake, validation and offline catalog for a building's `work/` |
 | `tools/serve.py` | Local server for the gallery and all viewers |
-| `docs/` | Shared contracts: [viewer guide](docs/viewer-guide.md), [model handoff](docs/model-handoff.md), [adding a building](docs/adding-a-building.md), JSON schemas |
+| `docs/` | [Reconstruction handbook](docs/reconstruction-handbook.md), [conventions](docs/conventions.md), [pitfalls](docs/pitfalls.md), [agent brief template](docs/agent-brief-template.md); shared contracts: [viewer guide](docs/viewer-guide.md), [model handoff](docs/model-handoff.md), [adding a building](docs/adding-a-building.md), JSON schemas |
 | `templates/reconstruction/` | Starter for a new building |
 | `tests/` | Viewer, pipeline and configuration tests |
 | `reconstructions/<id>/` | One folder per building: thin `index.html`, `README.md`, committed `public/` and gitignored `work/` |
 
-Each Blender reconstruction has a **`public/`** folder (committed and published: building configuration, models, previews, docs) and a **`work/`** folder (gitignored: references, research, stages, native models, frozen versions). `work/` is tracked in a private repository per building. See [Adding a building](docs/adding-a-building.md).
+Each Blender reconstruction has a **`public/`** folder (committed and published: building configuration, models, previews, docs) and a **`work/`** folder (gitignored: `references/`, `research/`, the living `build/`, frozen `releases/`, `archive/`; layout in [conventions](docs/conventions.md#work-folder)). `work/` is tracked in a private repository per building. See [Contributing](CONTRIBUTING.md) and [Adding a building](docs/adding-a-building.md).
 
 ## Run locally
 

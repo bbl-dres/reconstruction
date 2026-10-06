@@ -2,20 +2,20 @@
   "schemaVersion": 1,
   "models": [
     {
-      "id": "landgut-lohn-v006",
-      "label": "v006",
-      "version": 6,
-      "building": "./landgut-lohn-v006/building-meshopt-ebfa17014ad27c8c.glb",
-      "surroundings": "./landgut-lohn-v006/surroundings-meshopt-af91ba210e93d174.glb",
-      "metadata": "./landgut-lohn-v006/viewer.json",
-      "sourceSha256": "2bf1d91eafb6212150e879d5fb3b9c781b0b2f52b9e4494e2d4cf62775bb4eb4",
+      "id": "landgut-lohn-v008",
+      "label": "v008",
+      "version": 8,
+      "building": "./landgut-lohn-v008/building-meshopt-16e7cf5ca965133d.glb",
+      "surroundings": "./landgut-lohn-v008/surroundings-meshopt-2a85a72e1755d514.glb",
+      "metadata": "./landgut-lohn-v008/viewer.json",
+      "sourceSha256": "6e7a20ed1a8eba0837c4451700a74ee3a489e719602747266e6136563773fb27",
       "levels": [
         "all",
         "eg",
         "og1",
         "dg"
       ],
-      "meshCount": 1356,
+      "meshCount": 1414,
       "location": {
         "latitude": 46.90861792676888,
         "longitude": 7.4747328725895095,
@@ -43,8 +43,8 @@
           "max": 18.0
         }
       },
-      "bim": "./landgut-lohn-v006/bim-4b98ba221135c928.json",
-      "ifc": "./landgut-lohn-v006/reference-c493d1870b225abe.ifczip"
+      "bim": "./landgut-lohn-v008/bim-f967abce862d6cbe.json",
+      "ifc": "./landgut-lohn-v008/reference-b664fefb68193fd1.ifczip"
     }
   ]
 }
