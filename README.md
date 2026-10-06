@@ -14,7 +14,9 @@ Experimental 3D reconstructions of Swiss federal buildings, made from publicly a
 The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstruction and shows them as cards or on a map (`#map`). Every reconstruction lives in its own folder under `reconstructions/`. Blender-authored buildings share one viewer and one model pipeline; each building only adds data.
 
 ## Preview
-- Live App: https://bbl-dres.github.io/reconstruction/ 
+- Live App: https://bbl-dres.github.io/reconstruction/
+
+## Reconstructions
 
 | Reconstruction | What it is |
 |---|---|
