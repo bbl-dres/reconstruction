@@ -11,7 +11,7 @@ registerHooks({ resolve(specifier, context, next) {
 const THREE = await import('three');
 const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
 const { Octree } = await import('three/addons/math/Octree.js');
-const { toPlan, fromPlan, copyPerspective, viewHeight, navigateView } = await import('../viewer/js/view-navigation.js');
+const { toPlan, fromPlan, copyPerspective, eyeLevelFov, viewHeight, navigateView } = await import('../viewer/js/view-navigation.js');
 const { Walker } = await import('../viewer/js/walking.js');
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-6, `${a} != ${b}`);
 const sameVector = (a, b) => close(a.distanceTo(b), 0);
@@ -47,6 +47,20 @@ test('POV handoff preserves the lens, position and upward or downward gaze', () 
     sameVector(walk.position, source.position); close(walk.quaternion.angleTo(source.quaternion), 0);
     close(walk.getEffectiveFOV(), source.getEffectiveFOV());
   }
+});
+
+test('Walk and Fly see at eye level: about 90° across on landscape, within 60–80° vertically', () => {
+  const across = (fov, aspect) => THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(fov / 2)) * aspect));
+  close(across(eyeLevelFov(1.6), 1.6), 90);
+  close(across(eyeLevelFov(4 / 3), 4 / 3), 90);
+  close(eyeLevelFov(16 / 9), 60); close(eyeLevelFov(21 / 9), 60);
+  close(eyeLevelFov(390 / 844), 80);
+  // The handoff from the orbit lens keeps position and gaze but not the orbit's 45° lens.
+  const source = new THREE.PerspectiveCamera(45); source.position.set(3, 1.6, 2); source.lookAt(0, 1.6, 0);
+  const walk = new THREE.PerspectiveCamera(eyeLevelFov(1.6), 1.6); walk.zoom = 1.4;
+  copyPerspective(source, walk, { matchLens: false });
+  sameVector(walk.position, source.position); close(walk.quaternion.angleTo(source.quaternion), 0);
+  close(walk.zoom, 1); close(walk.getEffectiveFOV(), eyeLevelFov(1.6));
 });
 
 test('keyboard panning stays proportional to the visible view with a zoomed lens', () => {

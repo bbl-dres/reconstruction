@@ -522,16 +522,46 @@ kbd {
   box-shadow: var(--shadow-dock);
   backdrop-filter: blur(var(--blur-panel));
 }
-.toolbar {
+/* Top bar: scene settings centred on the stage; links, language, help and More at the right. */
+.topbar {
   position: absolute;
   z-index: 2;
   top: var(--inset-top);
+  left: var(--inset-left);
   right: var(--inset-right);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.topbar > * {
+  pointer-events: auto;
+}
+.scene-tools {
+  grid-column: 2;
+}
+.app-tools {
+  grid-column: 3;
+  justify-self: end;
+}
+.toolbar {
   display: flex;
   align-items: center;
   gap: var(--space-half);
   padding: var(--space-1);
   border-radius: var(--radius-toolbar);
+}
+.toolbar-link {
+  color: inherit;
+  text-decoration: none;
+}
+.language-code {
+  font-size: var(--text-sm);
+  letter-spacing: .04em;
+}
+.language-menu .menu-options {
+  padding: 0;
 }
 .toolbar-button {
   display: inline-flex;
@@ -947,7 +977,7 @@ input[type=range] {
 .navigation-hint {
   position: absolute;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + 2 * (var(--control-size-compact) + var(--space-2) + 2px) + var(--space-2));
+  bottom: calc(var(--inset-bottom) + var(--control-size-compact) + var(--space-2) + 2px + var(--space-2));
   max-width: 40%;
   margin: 0 var(--space-half) 0 0;
   font-size: var(--text-xs);
@@ -956,20 +986,24 @@ input[type=range] {
   text-shadow: var(--shadow-text);
   pointer-events: none;
 }
+/* Camera: Home, zoom in and zoom out, stacked at the right edge and vertically centred. */
 .camera-rail {
   position: absolute;
+  z-index: 2;
+  top: 50%;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + var(--control-size-compact) + var(--space-2) + 2px + var(--space-2));
   display: flex;
+  flex-direction: column;
   gap: var(--space-half);
   padding: var(--space-1);
   border-radius: var(--radius-toolbar);
+  transform: translateY(-50%);
 }
 .camera-rail button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--rail-button);
+  width: var(--control-size-compact);
   height: var(--control-size-compact);
   padding: 0;
   border: 0;
@@ -1073,6 +1107,38 @@ input[type=range] {
   border-radius: var(--radius-inner);
   background: transparent;
   color: var(--color-text-secondary);
+}
+/* Narrower stages keep the top bar clear of the sidebar: the gallery link drops its label
+   first, then Lighting and Surroundings. Labels stay available to screen readers. */
+@container stage (max-width: 1279px) {
+  .gallery-link {
+    justify-content: center;
+    width: var(--control-size-compact);
+    padding: 0;
+  }
+  .gallery-link .toolbar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+@container stage (max-width: 999px) {
+  .scene-tools .toolbar-button {
+    justify-content: center;
+    width: var(--control-size-compact);
+    padding: 0;
+  }
+  .scene-tools .toolbar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 /* A narrow stage keeps the dock clear of the navigation switch with icon-only views:
    in Floor plan, whose cut slider widens the dock, and on any stage below 780 px. */
@@ -1372,7 +1438,7 @@ progress::-webkit-progress-value {
   background: var(--color-text);
 }
 /* Walk and Fly keep every control in view: the pad sits in the bottom-left corner and its
-   actions above the camera rail, in place of the navigation hint. */
+   actions above the navigation switch, in place of the navigation hint. */
 .touch-walk {
   position: absolute;
   inset: 0;
@@ -1408,7 +1474,7 @@ progress::-webkit-progress-value {
 .touch-walk-actions {
   position: absolute;
   right: var(--inset-right);
-  bottom: calc(var(--inset-bottom) + 2 * (var(--control-size-compact) + var(--space-2) + 2px) + var(--space-2));
+  bottom: calc(var(--inset-bottom) + var(--control-size-compact) + var(--space-2) + 2px + var(--space-2));
   display: grid;
   justify-items: end;
   gap: var(--space-2);
@@ -1473,7 +1539,7 @@ body.touch-walking .navigation-hint {
   display: block;
   top: var(--inset-top);
   left: var(--inset-left);
-  right: calc(var(--inset-right) + 140px);
+  right: calc(var(--inset-right) + 196px);
   margin: 0;
   font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
@@ -1618,8 +1684,18 @@ body.touch-walking .navigation-hint {
   padding: 0;
   border-radius: 9px;
 }
-#viewer.compact .toolbar-button > span, #viewer.compact .toolbar-divider, #viewer.compact .help-toggle {
+#viewer.compact .toolbar-button > span, #viewer.compact .toolbar-divider, #viewer.compact .help-toggle, #viewer.compact .toolbar-link {
   display: none;
+}
+/* Phones: the two scene buttons sit just left of the toolbar, which shows the language code. */
+#viewer.compact .topbar {
+  grid-template-columns: 1fr auto auto;
+}
+#viewer.compact .language-toggle > svg {
+  display: none;
+}
+#viewer.compact .language-toggle > .language-code {
+  display: inline;
 }
 #viewer.compact .compact-only {
   display: flex !important;
@@ -1636,7 +1712,7 @@ body.touch-walking .navigation-hint {
   height: var(--control-size);
   border-radius: var(--radius-control);
 }
-#viewer.compact #fit-surroundings, #viewer.compact .navigation-hint, #viewer.compact .fly-button {
+#viewer.compact .navigation-hint, #viewer.compact .fly-button {
   display: none;
 }
 #viewer.compact .controls {

@@ -4,8 +4,8 @@
     <symbol id="i-dollhouse" viewBox="0 0 24 24"><path d="m3 7 9 5 9-5M3 7v10l9 5 9-5V7M12 12v10M3 7l9-5 9 5M8 10v7l4 2 4-2v-7"/></symbol>
     <symbol id="i-plan" viewBox="0 0 24 24"><path d="M3 3h18v18H3ZM3 12h8m4 0h6M12 3v5m0 8v5M7 12v9"/></symbol>
     <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="m7 12 3-4 4 1 3 4h3M12 9l-2 7-4 5m5-8 4 3 1 5"/></symbol>
-    <symbol id="i-orbit" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-7-7"/><circle cx="18.5" cy="5.5" r="1.5"/></symbol>
-    <symbol id="i-fly" viewBox="0 0 24 24"><path d="M4 20 20 4M10 4h10v10"/></symbol>
+    <symbol id="i-orbit" viewBox="0 0 24 24"><path d="M12 4.5l4 2.2v4.8L12 13.7 8 11.5V6.7Z"/><path d="M8 6.7l4 2.2 4-2.2M12 8.9v4.8"/><path d="M7.4 11.6C4.2 12.3 2 13.6 2 15c0 2.2 4.5 4 10 4s10-1.8 10-4c0-1.4-2.2-2.7-5.4-3.4"/><path d="m11 17.3 2 1.7-2 1.7"/></symbol>
+    <symbol id="i-fly" viewBox="0 0 24 24"><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/><path d="M9.5 9.5 7.3 7.3m7.2 2.2 2.2-2.2m-9.4 9.4 2.2-2.2m7.2 2.2-2.2-2.2"/><circle cx="5.5" cy="5.5" r="2.5"/><circle cx="18.5" cy="5.5" r="2.5"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
     <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 6M4 3v6h6"/></symbol>
     <symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h7m4 0h5M4 17h3m4 0h9"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
@@ -24,184 +24,207 @@
     <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4s-1.2-.4-4.1 1.5a14 14 0 0 0-7.4 0C4.7-.3 3.5.1 3.5.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.6v4" transform="translate(1 1) scale(.9)"/></symbol>
     <symbol id="i-gallery" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3C9.5 5.6 8.2 8.6 8.2 12s1.3 6.4 3.8 9"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
   </svg>
 
-  <main id="viewer" aria-label="Interactive building viewer">
-    <aside id="sidebar" class="sidebar" aria-label="Model and places">
+  <main id="viewer" data-i18n-attr="aria-label:app.label">
+    <aside id="sidebar" class="sidebar" data-i18n-attr="aria-label:sidebar.label">
       <div class="sidebar-header">
         <svg class="building-mark" aria-hidden="true"><use href="#i-cube"/></svg>
         <h1>{{name}}</h1>
-        <button id="sidebar-toggle" class="ghost-button sidebar-toggle" aria-label="Model and places" title="Collapse panel" aria-controls="sidebar-body" aria-expanded="true"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
+        <button id="sidebar-toggle" class="ghost-button sidebar-toggle" data-i18n-attr="aria-label:sidebar.label" aria-controls="sidebar-body" aria-expanded="true"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
       </div>
-      <button id="sheet-toggle" class="sheet-summary" aria-controls="sidebar-body" aria-expanded="false"><span class="sheet-handle" aria-hidden="true"></span><strong>Model</strong><span id="sheet-level">All levels</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
+      <button id="sheet-toggle" class="sheet-summary" aria-controls="sidebar-body" aria-expanded="false"><span class="sheet-handle" aria-hidden="true"></span><strong data-i18n="sidebar.model">Model</strong><span id="sheet-level" data-i18n="level.all">All levels</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
       <div id="sidebar-body" class="sidebar-body">
         <div class="sidebar-tabbar">
-          <div class="sidebar-tabs" role="tablist" aria-label="Explore the building">
-            <button id="model-tab" role="tab" aria-selected="true" aria-controls="model-panel">Model</button>
-            <button id="places-tab" role="tab" aria-selected="false" aria-controls="places-panel" tabindex="-1">Places</button>
+          <div class="sidebar-tabs" role="tablist" data-i18n-attr="aria-label:sidebar.tabs">
+            <button id="model-tab" role="tab" aria-selected="true" aria-controls="model-panel" data-i18n="sidebar.model">Model</button>
+            <button id="places-tab" role="tab" aria-selected="false" aria-controls="places-panel" tabindex="-1" data-i18n="sidebar.places">Places</button>
           </div>
-          <button id="sheet-close" class="ghost-button" aria-label="Close model and places"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+          <button id="sheet-close" class="ghost-button" data-i18n-attr="aria-label:sidebar.close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </div>
         <div id="model-panel" class="tab-panel" role="tabpanel" aria-labelledby="model-tab">
-          <div class="filter-field"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="tree-filter" type="search" placeholder="Filter" aria-label="Filter levels and elements" autocomplete="off" spellcheck="false"><button id="clear-filter" class="ghost-button" aria-label="Clear filter" hidden><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
-          <p id="tree-status" class="tree-status" role="status">Loading the model…</p>
-          <ul id="model-tree" class="model-tree" aria-label="Levels and elements"></ul>
-          <div id="visibility-footer" class="visibility-footer" hidden><span>Some elements hidden</span><button id="show-all" class="text-button">Show all</button></div>
+          <div class="filter-field"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="tree-filter" type="search" data-i18n-attr="placeholder:tree.filter aria-label:tree.filterLabel" autocomplete="off" spellcheck="false"><button id="clear-filter" class="ghost-button" data-i18n-attr="aria-label:tree.clearFilter" hidden><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+          <p id="tree-status" class="tree-status" role="status" data-i18n="tree.loadingModel">Loading the model…</p>
+          <ul id="model-tree" class="model-tree" data-i18n-attr="aria-label:tree.label"></ul>
+          <div id="visibility-footer" class="visibility-footer" hidden><span data-i18n="tree.someHidden">Some elements hidden</span><button id="show-all" class="text-button" data-i18n="tree.showAll">Show all</button></div>
         </div>
         <div id="places-panel" class="tab-panel" role="tabpanel" aria-labelledby="places-tab" hidden>
-          <p id="places-note" class="tree-status">Loading saved places…</p>
+          <p id="places-note" class="tree-status" data-i18n="places.loading">Loading saved places…</p>
           <div id="places-list" class="places-list"></div>
         </div>
       </div>
     </aside>
 
     <div id="stage" class="stage">
-      <canvas id="scene" tabindex="0" aria-label="3D building. Drag to orbit, right-drag to pan, scroll to zoom." aria-describedby="canvas-help">Interactive 3D reconstruction of the {{name}}. Use the view controls or open Help for navigation instructions and model coverage.</canvas>
-      <p id="canvas-help" class="sr-only">With the viewer focused: arrow keys rotate, Shift and arrows pan, plus and minus zoom, R fits the building. In floor plan, arrows pan. Tab moves to the controls.</p>
+      <canvas id="scene" tabindex="0" data-i18n="canvas.fallback" data-i18n-attr="aria-label:canvas.orbit" aria-describedby="canvas-help">Interactive 3D reconstruction of {{name}}.</canvas>
+      <p id="canvas-help" class="sr-only" data-i18n="canvas.help"></p>
       <p class="stage-title" aria-hidden="true">{{name}}</p>
 
-      <div class="toolbar" role="group" aria-label="Lighting, surroundings and help">
-        <button id="lighting-toggle" class="toolbar-button lighting-toggle" aria-label="Lighting" popovertarget="lighting" aria-controls="lighting" aria-haspopup="dialog" aria-expanded="false" aria-describedby="lighting-state" disabled><svg class="lighting-icon" aria-hidden="true"><use href="#i-sun"/></svg><span>Lighting</span></button>
-        <span id="lighting-state" class="sr-only">Studio lighting</span>
-        <button id="surroundings-toggle" class="toolbar-button surroundings-toggle" aria-label="Surroundings" popovertarget="surroundings-panel" aria-controls="surroundings-panel" aria-haspopup="dialog" aria-expanded="false" aria-describedby="surroundings-status"><svg aria-hidden="true"><use href="#i-context"/></svg><span>Surroundings</span></button>
-        <span class="toolbar-divider" aria-hidden="true"></span>
-        <button id="help-toggle" class="toolbar-button icon-only help-toggle" popovertarget="help" aria-controls="help" aria-haspopup="dialog" aria-expanded="false" aria-label="Help and model information" title="Help and controls"><svg aria-hidden="true"><use href="#i-info"/></svg></button>
-        <button id="menu-toggle" class="toolbar-button icon-only" popovertarget="menu" aria-controls="menu" aria-haspopup="true" aria-expanded="false" aria-label="More" title="More"><svg aria-hidden="true"><use href="#i-more"/></svg></button>
+      <!-- Scene settings centred at the top; links, language, help and More at the right. -->
+      <div class="topbar">
+        <div class="toolbar scene-tools" role="group" data-i18n-attr="aria-label:toolbar.scene">
+          <button id="lighting-toggle" class="toolbar-button lighting-toggle" data-i18n-attr="aria-label:lighting.title" popovertarget="lighting" aria-controls="lighting" aria-haspopup="dialog" aria-expanded="false" aria-describedby="lighting-state" disabled><svg class="lighting-icon" aria-hidden="true"><use href="#i-sun"/></svg><span class="toolbar-label" data-i18n="lighting.title">Lighting</span></button>
+          <span id="lighting-state" class="sr-only" data-i18n="lighting.studio">Studio lighting</span>
+          <button id="surroundings-toggle" class="toolbar-button surroundings-toggle" data-i18n-attr="aria-label:surroundings.title" popovertarget="surroundings-panel" aria-controls="surroundings-panel" aria-haspopup="dialog" aria-expanded="false" aria-describedby="surroundings-status"><svg aria-hidden="true"><use href="#i-context"/></svg><span class="toolbar-label" data-i18n="surroundings.title">Surroundings</span></button>
+        </div>
+        <div class="toolbar app-tools" role="group" data-i18n-attr="aria-label:toolbar.label">
+          <a class="toolbar-button icon-only toolbar-link" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer" data-i18n-attr="title:menu.github"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="sr-only" data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
+          <a class="toolbar-button toolbar-link gallery-link" href="../../" data-i18n-attr="title:menu.gallery"><svg aria-hidden="true"><use href="#i-gallery"/></svg><span class="toolbar-label" data-i18n="menu.gallery">All reconstructions</span></a>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <button id="language-toggle" class="toolbar-button language-toggle" popovertarget="language-menu" aria-controls="language-menu" aria-haspopup="true" aria-expanded="false"><svg aria-hidden="true"><use href="#i-globe"/></svg><span id="language-code" class="language-code" aria-hidden="true">EN</span></button>
+          <button id="help-toggle" class="toolbar-button icon-only help-toggle" popovertarget="help" aria-controls="help" aria-haspopup="dialog" aria-expanded="false" data-i18n-attr="aria-label:help.label title:help.title"><svg aria-hidden="true"><use href="#i-info"/></svg></button>
+          <button id="menu-toggle" class="toolbar-button icon-only" popovertarget="menu" aria-controls="menu" aria-haspopup="true" aria-expanded="false" data-i18n-attr="aria-label:menu.more title:menu.more"><svg aria-hidden="true"><use href="#i-more"/></svg></button>
+        </div>
       </div>
 
-      <section id="lighting" class="dropdown lighting-panel" popover="auto" role="dialog" aria-label="Lighting" hidden>
-        <label class="switch-row"><span>Sun &amp; sky</span><input id="daylight" type="checkbox" role="switch" aria-controls="daylight-options" aria-describedby="daylight-description" disabled autofocus><span class="switch" aria-hidden="true"></span></label>
-        <p id="daylight-description" class="panel-note" hidden>Daylight needs a location and north orientation for this model.</p>
+      <section id="lighting" class="dropdown lighting-panel" popover="auto" role="dialog" data-i18n-attr="aria-label:lighting.title" hidden>
+        <label class="switch-row"><span data-i18n="lighting.sunAndSky">Sun &amp; sky</span><input id="daylight" type="checkbox" role="switch" aria-controls="daylight-options" aria-describedby="daylight-description" disabled autofocus><span class="switch" aria-hidden="true"></span></label>
+        <p id="daylight-description" class="panel-note" data-i18n="lighting.needsLocation" hidden>Daylight needs a location and north orientation for this model.</p>
         <div id="daylight-options" hidden>
           <div class="field-grid">
-            <label>Date<input id="daylight-date" type="date" min="1900-01-01" max="2100-12-31" required aria-describedby="daylight-status"></label>
-            <label>Hour in Bern<input id="daylight-hour" type="time" step="60" value="12:00" required></label>
+            <label><span data-i18n="lighting.date">Date</span><input id="daylight-date" type="date" min="1900-01-01" max="2100-12-31" required aria-describedby="daylight-status"></label>
+            <label><span data-i18n="lighting.hour">Hour in Bern</span><input id="daylight-hour" type="time" step="60" value="12:00" required></label>
           </div>
-          <div class="sun-row"><span id="daylight-sun-times" class="panel-note"></span><button id="daylight-now" class="small-button">Now</button></div>
+          <div class="sun-row"><span id="daylight-sun-times" class="panel-note"></span><button id="daylight-now" class="small-button" data-i18n="lighting.now">Now</button></div>
           <p id="daylight-status" class="panel-note" role="status" hidden></p>
         </div>
         <div class="panel-divider"></div>
-        <label class="switch-row"><span>Shadows</span><input id="shadows" type="checkbox" role="switch"><span class="switch" aria-hidden="true"></span></label>
-        <label class="range-label" for="brightness"><span>Brightness</span><output id="brightness-value" for="brightness">1.0</output></label>
+        <label class="switch-row"><span data-i18n="lighting.shadows">Shadows</span><input id="shadows" type="checkbox" role="switch"><span class="switch" aria-hidden="true"></span></label>
+        <label class="range-label" for="brightness"><span data-i18n="lighting.brightness">Brightness</span><output id="brightness-value" for="brightness">1.0</output></label>
         <input id="brightness" type="range" min="0.5" max="2" step="0.1" value="1">
-        <button id="reset-lighting" class="quiet-button">Reset lighting</button>
+        <button id="reset-lighting" class="quiet-button" data-i18n="lighting.reset">Reset lighting</button>
       </section>
 
-      <section id="surroundings-panel" class="dropdown surroundings-panel" popover="auto" role="dialog" aria-label="Surroundings" hidden>
-        <label class="switch-row"><span>Show surroundings</span><input id="surroundings" type="checkbox" role="switch" checked autofocus><span class="switch" aria-hidden="true"></span></label>
-        <label id="muted-row" class="switch-row"><span>Grey</span><input id="muted-surroundings" type="checkbox" role="switch" aria-describedby="muted-description" checked><span class="switch" aria-hidden="true"></span></label>
-        <p id="muted-description" class="sr-only">Grey keeps the site quiet behind the building; turn it off to show the surroundings in colour.</p>
-        <p id="surroundings-status" class="panel-note" role="status">Floor plan always hides the site.</p>
-        <button id="retry-surroundings" class="small-button" hidden>Retry surroundings</button>
+      <section id="surroundings-panel" class="dropdown surroundings-panel" popover="auto" role="dialog" data-i18n-attr="aria-label:surroundings.title" hidden>
+        <label class="switch-row"><span data-i18n="surroundings.show">Show surroundings</span><input id="surroundings" type="checkbox" role="switch" checked autofocus><span class="switch" aria-hidden="true"></span></label>
+        <label id="muted-row" class="switch-row"><span data-i18n="surroundings.grey">Grey</span><input id="muted-surroundings" type="checkbox" role="switch" aria-describedby="muted-description" checked><span class="switch" aria-hidden="true"></span></label>
+        <p id="muted-description" class="sr-only" data-i18n="surroundings.greyDescription">Grey keeps the site quiet behind the building; turn it off to show the surroundings in colour.</p>
+        <p id="surroundings-status" class="panel-note" role="status" data-i18n="surroundings.planHides">Floor plan always hides the site.</p>
+        <button id="retry-surroundings" class="small-button" data-i18n="surroundings.retry" hidden>Retry surroundings</button>
       </section>
 
-      <section id="help" class="dropdown help-panel" popover="auto" role="dialog" aria-label="Help and model information" hidden>
-        <div class="segmented" role="tablist" aria-label="Help">
-          <button id="controls-tab" role="tab" aria-selected="true" aria-controls="controls-panel" autofocus>Controls</button>
-          <button id="about-tab" role="tab" aria-selected="false" aria-controls="about-panel" tabindex="-1">About this model</button>
+      <section id="help" class="dropdown help-panel" popover="auto" role="dialog" data-i18n-attr="aria-label:help.label" hidden>
+        <div class="segmented" role="tablist" data-i18n-attr="aria-label:help.tabs">
+          <button id="controls-tab" role="tab" aria-selected="true" aria-controls="controls-panel" autofocus data-i18n="help.controls">Controls</button>
+          <button id="about-tab" role="tab" aria-selected="false" aria-controls="about-panel" tabindex="-1" data-i18n="help.about">About this model</button>
         </div>
         <div id="controls-panel" class="help-body" role="tabpanel" aria-labelledby="controls-tab">
-          <h3 class="eyebrow">View</h3>
+          <h3 class="eyebrow" data-i18n="help.view">View</h3>
           <dl class="guide">
-            <dt>Exterior</dt><dd>The full building and its surroundings.</dd>
-            <dt>Dollhouse</dt><dd>Roofs and outer walls removed to show the interior.</dd>
-            <dt>Floor plan</dt><dd>One level from above; the cut height slider appears in the dock.</dd>
+            <dt data-i18n="mode.orbit">Exterior</dt><dd data-i18n="help.exterior">The full building and its surroundings.</dd>
+            <dt data-i18n="mode.dollhouse">Dollhouse</dt><dd data-i18n="help.dollhouse">Roofs and outer walls removed to show the interior.</dd>
+            <dt data-i18n="mode.plan">Floor plan</dt><dd data-i18n="help.plan">One level from above; the cut height slider appears in the dock.</dd>
           </dl>
-          <h3 class="eyebrow">Navigate</h3>
+          <h3 class="eyebrow" data-i18n="help.navigate">Navigate</h3>
           <dl class="guide">
-            <dt>Orbit</dt><dd>Drag to orbit · right-drag to pan · scroll to zoom. Arrows rotate, <kbd>R</kbd> fits the building.</dd>
-            <dt>Fly</dt><dd><kbd>WASD</kbd> move · drag to look · <kbd>Q</kbd> <kbd>E</kbd> down and up. Passes through walls.</dd>
-            <dt>Walk</dt><dd>Eye level with collisions. <kbd>WASD</kbd> move · drag to look · <kbd>Space</kbd> jump.</dd>
-            <dt>Touch</dt><dd>One finger rotates, two pan or pinch. Walking uses the on-screen pad.</dd>
+            <dt data-i18n="nav.orbit">Orbit</dt><dd data-i18n-html="help.orbit"></dd>
+            <dt data-i18n="nav.fly">Fly</dt><dd data-i18n-html="help.fly"></dd>
+            <dt data-i18n="nav.walk">Walk</dt><dd data-i18n-html="help.walk"></dd>
+            <dt data-i18n="help.touch">Touch</dt><dd data-i18n="help.touchDetail"></dd>
           </dl>
-          <p class="panel-note">Click any element to see what it is. In the model tree, choose a level to show only what belongs to it, or show, hide and isolate parts of the model.</p>
+          <p class="panel-note" data-i18n="help.note"></p>
         </div>
         <div id="about-panel" class="help-body about-body" role="tabpanel" aria-labelledby="about-tab" hidden>
           {{about}}
           <dl class="guide about-facts">
-            <dt>Place</dt><dd>{{place}}</dd>
-            <dt>Version</dt><dd id="model-version">…</dd>
-            <dt>Lighting</dt><dd id="about-lighting">Studio · shadows off</dd>
-            <dt>Quality</dt><dd id="about-quality">Automatic</dd>
+            <dt data-i18n="about.place">Place</dt><dd>{{place}}</dd>
+            <dt data-i18n="about.version">Version</dt><dd id="model-version">…</dd>
+            <dt data-i18n="about.lighting">Lighting</dt><dd id="about-lighting"></dd>
+            <dt data-i18n="about.quality">Quality</dt><dd id="about-quality"></dd>
           </dl>
           {{links}}
           <p id="model-stats" class="model-stats" hidden>Loading model…</p>
         </div>
       </section>
 
-      <div id="menu" class="dropdown menu" popover="auto" role="group" aria-label="More" hidden>
-        <button id="copy-view-link" class="menu-item" disabled><svg aria-hidden="true"><use href="#i-link"/></svg><span>Copy view link</span></button>
+      <div id="menu" class="dropdown menu" popover="auto" role="group" data-i18n-attr="aria-label:menu.more" hidden>
+        <button id="copy-view-link" class="menu-item" disabled><svg aria-hidden="true"><use href="#i-link"/></svg><span data-i18n="menu.copyLink">Copy view link</span></button>
         <p id="share-status" class="menu-note" role="status" hidden></p>
-        <input id="view-link-text" class="menu-input" type="text" readonly aria-label="View link" hidden>
-        <button id="quality-toggle" class="menu-item" aria-expanded="false" aria-controls="quality-options"><svg aria-hidden="true"><use href="#i-settings"/></svg><span>Rendering quality</span><svg class="menu-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-        <div id="quality-options" class="menu-options" role="radiogroup" aria-label="Rendering quality" hidden>
-          <label><input type="radio" name="render-quality" value="auto" checked><span>Automatic</span></label>
-          <label><input type="radio" name="render-quality" value="high"><span>Higher detail</span></label>
-          <label><input type="radio" name="render-quality" value="low"><span>Lower power</span></label>
+        <input id="view-link-text" class="menu-input" type="text" readonly data-i18n-attr="aria-label:menu.linkLabel" hidden>
+        <button id="quality-toggle" class="menu-item" aria-expanded="false" aria-controls="quality-options"><svg aria-hidden="true"><use href="#i-settings"/></svg><span data-i18n="menu.quality">Rendering quality</span><svg class="menu-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+        <div id="quality-options" class="menu-options" role="radiogroup" data-i18n-attr="aria-label:menu.quality" hidden>
+          <label><input type="radio" name="render-quality" value="auto" checked><span data-i18n="quality.auto">Automatic</span></label>
+          <label><input type="radio" name="render-quality" value="high"><span data-i18n="quality.high">Higher detail</span></label>
+          <label><input type="radio" name="render-quality" value="low"><span data-i18n="quality.low">Lower power</span></label>
         </div>
         <button id="fullscreen" class="menu-item"><svg aria-hidden="true"><use href="#i-full"/></svg><span>Fullscreen</span></button>
-        <button id="menu-help" class="menu-item compact-only" popovertarget="help"><svg aria-hidden="true"><use href="#i-info"/></svg><span>Help and controls</span></button>
-        <span class="menu-divider" aria-hidden="true"></span>
-        <a class="menu-item" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span>View on GitHub</span><span class="sr-only"> (opens in a new tab)</span></a>
-        <a class="menu-item" href="../../"><svg aria-hidden="true"><use href="#i-gallery"/></svg><span>All reconstructions</span></a>
+        <!-- Phones keep Help and the links here; wider screens show them in the toolbar. -->
+        <button id="menu-help" class="menu-item compact-only" popovertarget="help"><svg aria-hidden="true"><use href="#i-info"/></svg><span data-i18n="help.title">Help and controls</span></button>
+        <span class="menu-divider compact-only" aria-hidden="true"></span>
+        <a class="menu-item compact-only" href="https://github.com/bbl-dres/reconstruction" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
+        <a class="menu-item compact-only" href="../../"><svg aria-hidden="true"><use href="#i-gallery"/></svg><span data-i18n="menu.gallery">All reconstructions</span></a>
+      </div>
+
+      <div id="language-menu" class="dropdown menu language-menu" popover="auto" role="group" data-i18n-attr="aria-label:language.label" hidden>
+        <div class="menu-options" role="radiogroup" data-i18n-attr="aria-label:language.label">
+          <label lang="en"><input type="radio" name="language" value="en"><span>English</span></label>
+          <label lang="de"><input type="radio" name="language" value="de"><span>Deutsch</span></label>
+          <label lang="fr"><input type="radio" name="language" value="fr"><span>Français</span></label>
+          <label lang="it"><input type="radio" name="language" value="it"><span>Italiano</span></label>
+        </div>
       </div>
 
       <div id="loading" class="loading-card" role="status" aria-live="polite" aria-atomic="true">
-        <span class="eyebrow">BUILDING EXPLORER</span>
-        <h2 id="loading-title">Opening {{name}}</h2>
-        <p id="loading-detail">Finding the model…</p>
-        <progress id="load-progress" max="100" aria-label="Building download progress"></progress>
-        <button id="retry" class="primary-button" hidden>Try again</button>
+        <span class="eyebrow" data-i18n="loading.eyebrow">Building explorer</span>
+        <h2 id="loading-title" data-i18n="loading.opening">Opening {{name}}</h2>
+        <p id="loading-detail" data-i18n="loading.finding">Finding the model…</p>
+        <progress id="load-progress" max="100" data-i18n-attr="aria-label:loading.progress"></progress>
+        <button id="retry" class="primary-button" data-i18n="loading.retry" hidden>Try again</button>
       </div>
 
       <div id="pick-marker" class="pick-marker" aria-hidden="true" hidden></div>
       <section id="inspector" class="inspector" role="dialog" aria-labelledby="element-title" hidden>
         <div class="inspector-head">
           <span class="selection-swatch" aria-hidden="true"></span>
-          <div class="inspector-title"><h2 id="element-title">Building element</h2><p id="element-subtitle"></p></div>
-          <button id="close-inspector" class="ghost-button" aria-label="Close element information"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+          <div class="inspector-title"><h2 id="element-title" data-i18n="inspector.element">Building element</h2><p id="element-subtitle"></p></div>
+          <button id="close-inspector" class="ghost-button" data-i18n-attr="aria-label:inspector.close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
         </div>
-        <p id="element-visibility" class="inspector-warning" hidden>Hidden in the current view.</p>
+        <p id="element-visibility" class="inspector-warning" data-i18n="inspector.hiddenInView" hidden>Hidden in the current view.</p>
         <dl id="element-summary" class="inspector-facts"></dl>
         <div class="inspector-actions">
-          <button id="element-zoom"><svg aria-hidden="true"><use href="#i-full"/></svg><span>Zoom to</span></button>
+          <button id="element-zoom"><svg aria-hidden="true"><use href="#i-full"/></svg><span data-i18n="inspector.zoomTo">Zoom to</span></button>
           <button id="element-hide" aria-pressed="false"><svg aria-hidden="true"><use href="#i-eye-off"/></svg><span>Hide</span></button>
-          <button id="element-reveal"><svg aria-hidden="true"><use href="#i-back"/></svg><span>In tree</span></button>
+          <button id="element-reveal"><svg aria-hidden="true"><use href="#i-back"/></svg><span data-i18n="inspector.inTree">In tree</span></button>
         </div>
-        <details id="element-details" class="inspector-details"><summary>Properties &amp; sources</summary>
+        <details id="element-details" class="inspector-details"><summary data-i18n="inspector.details">Properties &amp; sources</summary>
           <dl id="element-properties" class="inspector-facts detail-facts"></dl>
           <div id="element-sources" class="detail-sources">
-            <h3 class="eyebrow">Sources</h3>
+            <h3 class="eyebrow" data-i18n="inspector.sources">Sources</h3>
             <ul id="element-source-list"></ul>
           </div>
         </details>
       </section>
 
       <div id="touch-walk" class="touch-walk" hidden>
-        <div id="move-pad" class="move-pad" role="group" aria-label="Walking direction">
-          <button data-walk-key="KeyW" class="move-forward" aria-label="Walk forward">↑</button><button data-walk-key="KeyA" class="move-left" aria-label="Walk left">←</button><button data-walk-key="KeyS" class="move-back" aria-label="Walk backward">↓</button><button data-walk-key="KeyD" class="move-right" aria-label="Walk right">→</button>
+        <div id="move-pad" class="move-pad" role="group" data-i18n-attr="aria-label:walk.direction">
+          <button data-walk-key="KeyW" class="move-forward" data-i18n-attr="aria-label:walk.forward">↑</button><button data-walk-key="KeyA" class="move-left" data-i18n-attr="aria-label:walk.left">←</button><button data-walk-key="KeyS" class="move-back" data-i18n-attr="aria-label:walk.back">↓</button><button data-walk-key="KeyD" class="move-right" data-i18n-attr="aria-label:walk.right">→</button>
         </div>
-        <div class="touch-walk-actions"><p>Drag the view to look</p><button id="touch-jump" class="small-button" data-walk-key="Space">Jump</button><div id="touch-fly" hidden><button class="small-button" data-walk-key="KeyE">Rise</button><button class="small-button" data-walk-key="KeyQ">Descend</button></div></div>
+        <div class="touch-walk-actions"><p data-i18n="walk.dragToLook">Drag the view to look</p><button id="touch-jump" class="small-button" data-walk-key="Space" data-i18n="walk.jump">Jump</button><div id="touch-fly" hidden><button class="small-button" data-walk-key="KeyE" data-i18n="walk.rise">Rise</button><button class="small-button" data-walk-key="KeyQ" data-i18n="walk.descend">Descend</button></div></div>
       </div>
       <div id="notice" class="notice" role="status" hidden></div>
       <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
 
-      <p id="navigation-hint" class="navigation-hint">Orbit · drag to orbit, right-drag to pan, scroll to zoom</p>
-      <div id="camera-tools" class="camera-rail" role="group" aria-label="Camera">
-        <button id="reset" aria-label="Fit building" title="Fit building (R)" disabled><svg aria-hidden="true"><use href="#i-reset"/></svg></button>
-        <button id="fit-surroundings" aria-label="Fit site" title="Fit site" hidden><svg aria-hidden="true"><use href="#i-context"/></svg></button>
+      <p id="navigation-hint" class="navigation-hint" data-i18n="nav.orbitHint">Orbit · drag to orbit, right-drag to pan, scroll to zoom</p>
+      <div id="camera-tools" class="camera-rail" role="group" data-i18n-attr="aria-label:camera.label">
+        <button id="reset" data-i18n-attr="aria-label:camera.home title:camera.homeTitle" disabled><svg aria-hidden="true"><use href="#i-home"/></svg></button>
+        <button id="zoom-in" data-i18n-attr="aria-label:camera.zoomIn title:camera.zoomIn" disabled><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button id="zoom-out" data-i18n-attr="aria-label:camera.zoomOut title:camera.zoomOut" disabled><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
       </div>
       <footer class="controls">
-        <nav class="dock" aria-label="View">
-          <button data-mode="orbit" aria-pressed="true" disabled><svg aria-hidden="true"><use href="#i-cube"/></svg><span>Exterior</span></button>
-          <button data-mode="dollhouse" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-dollhouse"/></svg><span>Dollhouse</span></button>
-          <button data-mode="plan" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-plan"/></svg><span class="label-long">Floor plan</span><span class="label-short">Plan</span></button>
-          <div id="cut-control" class="cut-control" hidden><label for="cut-height">Cut</label><input id="cut-height" type="range" min="0.5" max="8" step="0.1" value="2" aria-describedby="cut-description"><output id="cut-value" for="cut-height">2.0 m</output><span id="cut-description" class="sr-only">Cut height above the selected floor.</span></div>
+        <nav class="dock" data-i18n-attr="aria-label:dock.label">
+          <button data-mode="orbit" aria-pressed="true" disabled><svg aria-hidden="true"><use href="#i-cube"/></svg><span data-i18n="mode.orbit">Exterior</span></button>
+          <button data-mode="dollhouse" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-dollhouse"/></svg><span data-i18n="mode.dollhouse">Dollhouse</span></button>
+          <button data-mode="plan" aria-pressed="false" disabled><svg aria-hidden="true"><use href="#i-plan"/></svg><span class="label-long" data-i18n="mode.plan">Floor plan</span><span class="label-short" data-i18n="mode.planShort">Plan</span></button>
+          <div id="cut-control" class="cut-control" hidden><label for="cut-height" data-i18n="dock.cut">Cut</label><input id="cut-height" type="range" min="0.5" max="8" step="0.1" value="2" aria-describedby="cut-description"><output id="cut-value" for="cut-height">2.0 m</output><span id="cut-description" class="sr-only" data-i18n="dock.cutDescription">Cut height above the selected floor.</span></div>
         </nav>
-        <div class="nav-modes" role="group" aria-label="Navigation">
-          <button data-nav="orbit" aria-pressed="true" aria-label="Orbit" title="Orbit · drag to orbit, right-drag to pan, scroll to zoom" disabled><svg aria-hidden="true"><use href="#i-orbit"/></svg></button>
-          <button data-nav="fly" class="fly-button" aria-pressed="false" aria-label="Fly" title="Fly · WASD moves, drag looks, Q/E down and up" disabled><svg aria-hidden="true"><use href="#i-fly"/></svg></button>
-          <button data-nav="walk" aria-pressed="false" aria-label="Walk" title="Walk · WASD moves, drag looks, Space jumps" disabled><svg aria-hidden="true"><use href="#i-walk"/></svg></button>
+        <div class="nav-modes" role="group" data-i18n-attr="aria-label:nav.label">
+          <button data-nav="orbit" aria-pressed="true" data-i18n-attr="aria-label:nav.orbit title:nav.orbitHint" disabled><svg aria-hidden="true"><use href="#i-orbit"/></svg></button>
+          <button data-nav="fly" class="fly-button" aria-pressed="false" data-i18n-attr="aria-label:nav.fly title:nav.flyHint" disabled><svg aria-hidden="true"><use href="#i-fly"/></svg></button>
+          <button data-nav="walk" aria-pressed="false" data-i18n-attr="aria-label:nav.walk title:nav.walkHint" disabled><svg aria-hidden="true"><use href="#i-walk"/></svg></button>
         </div>
       </footer>
     </div>

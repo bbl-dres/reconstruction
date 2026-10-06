@@ -5,13 +5,14 @@ import { LEVELS, WALK_STARTS, visibleInMode, collisionCandidate } from 'building
 import { building } from './building-config.js';
 import { Walker } from './walking.js?v=v019-galleries';
 import { prepareCollisionWorld } from './collision-loader.js?v=v019-galleries';
-import { restoreView, navigateView, settle, toPlan, fromPlan, copyPerspective } from './view-navigation.js?v=lens-2';
+import { restoreView, navigateView, settle, toPlan, fromPlan, copyPerspective, eyeLevelFov } from './view-navigation.js?v=eye-level-1';
 import { readViewURL, writeViewURL } from './view-url.js?v=exterior-default';
-import { createRenderInstances } from './render-instances.js?v=bim-1';
-import { wirePanelTabs, wireDropdowns, wireSidebar, wireResponsiveLayout, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=tree-panel-1';
+import { createRenderInstances } from './render-instances.js?v=overlay-1';
+import { wirePanelTabs, wireDropdowns, wireSidebar, wireResponsiveLayout, wireLanguageMenu, closeDropdowns, dropdownOpen, openDropdown, setRangeDescription } from './interface.js?v=i18n-1';
+import { t, formatNumber, onLanguageChange } from './i18n.js?v=i18n-1';
 import { createSurroundingsStyle } from './surroundings-style.js?v=sky-ibl-1';
 import { parseMetadata, describeElement } from './model-metadata.js?v=archive-levels-1';
-import { wirePicking, highlightElement, highlightElements } from './inspection.js?v=redesign-1';
+import { wirePicking, highlightElement, highlightElements } from './inspection.js?v=overlay-1';
 import { parseBimRegistry, describeProduct } from './bim-registry.js?v=redesign-1';
 import { parseCatalog, chooseModel } from './model-catalog.js?v=archive-levels-1';
 import { Daylight } from './daylight.js?v=sky-ibl-1';
@@ -25,7 +26,6 @@ import { buildModelTree, filterTree, hiddenBy, hiddenMeshes, ancestors, elements
 
 const $ = id => document.getElementById(id);
 const canvas = $('scene');
-const modeNames = { orbit: 'Exterior', dollhouse: 'Dollhouse', plan: 'Floor plan', walk: 'Walk' };
 const modeButtons = [...document.querySelectorAll('[data-mode]')];
 const navButtons = [...document.querySelectorAll('[data-nav]')];
 const keys = new Set();
@@ -66,11 +66,30 @@ const diagnostics = new URL(location.href).searchParams.has('stats');
 // Model tree: hidden and isolated hold node IDs; hiddenMeshes is derived from them.
 const TREE_PAGE = 50, TREE_ROWS = 500;
 const tree = { model: null, loading: true, expanded: new Set(), collapsedInFilter: new Set(), hidden: new Set(), isolated: null, filter: null, shown: new Map(), active: null, hiddenMeshes: new Set() };
-const qualityLabels = { auto: 'Automatic', high: 'Higher detail', low: 'Lower power' };
+const QUALITIES = ['auto', 'high', 'low'];
 const qualityInputs = [...document.querySelectorAll('[name="render-quality"]')];
 const renderQuality = () => qualityInputs.find(input => input.checked)?.value || 'auto';
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const icon = id => `<svg aria-hidden="true"><use href="#${id}"/></svg>`;
+
+// Walk mode moves on foot or in flight; announcements name whichever is active.
+function modeName(mode) {
+  return mode === 'walk' ? t(state.navIntent === 'fly' ? 'nav.fly' : 'nav.walk') : t(`mode.${mode}`);
+}
+
+// The loading card keeps how to produce its text, so a language change re-renders it.
+const loadingText = { title: () => t('loading.opening'), detail: () => t('loading.finding') };
+function showLoading(part, text) {
+  loadingText[part] = text;
+  const element = $(`loading-${part}`), value = text();
+  if (element.textContent !== value) element.textContent = value;
+}
+
+function showCutHeight() {
+  const value = formatNumber(Number($('cut-height').value), 1);
+  $('cut-value').textContent = `${value} m`;
+  setRangeDescription($('cut-height'), t('dock.cutValue', { value }));
+}
 
 function renderScene() {
   if (diagnostics) renderer.info.reset();
@@ -101,7 +120,7 @@ $('surroundings').checked = readPreference('surroundings', true);
 $('muted-surroundings').checked = readPreference('muted-surroundings', true);
 try {
   const quality = localStorage.getItem('building-viewer:quality');
-  if (quality in qualityLabels) qualityInputs.find(input => input.value === quality).checked = true;
+  if (QUALITIES.includes(quality)) qualityInputs.find(input => input.value === quality).checked = true;
 } catch { /* Use automatic quality when storage is unavailable. */ }
 
 function showError(error) {
@@ -112,18 +131,16 @@ function showError(error) {
   collisionAbort.abort(error);
   frameLoop?.stop();
   [...modeButtons, ...navButtons].forEach(button => { button.disabled = true; });
-  for (const id of ['reset', 'lighting-toggle', 'copy-view-link']) $(id).disabled = true;
+  for (const id of ['reset', 'zoom-in', 'zoom-out', 'lighting-toggle', 'copy-view-link']) $(id).disabled = true;
   closeDropdowns();
   closeInspector();
   stopWalking();
   $('camera-tools').hidden = true;
   $('loading').hidden = false;
-  $('loading-title').textContent = 'Unable to open the viewer';
-  $('loading-detail').textContent = location.protocol === 'file:'
-    ? 'Start the local server with “python tools/serve.py” from the repository root, then open the address it prints.'
-    : /fetch|404|not found/i.test(error.message || '')
-      ? 'The building file could not be loaded. Check that the local server is running and the model has been imported, then try again.'
-      : error.message || 'Check that WebGL is enabled and the local model is available.';
+  showLoading('title', () => t('error.title'));
+  showLoading('detail', () => location.protocol === 'file:' ? t('error.localServer')
+    : /fetch|404|not found/i.test(error.message || '') ? t('error.buildingFile')
+      : error.message || t('error.webgl'));
   $('load-progress').hidden = true;
   $('retry').hidden = false;
 }
@@ -155,8 +172,7 @@ function restoreLink() {
   if (!view) return null;
   state.mode = view.mode; state.level = view.level;
   $('cut-height').value = String(view.cut);
-  $('cut-value').textContent = `${view.cut.toFixed(1)} m`;
-  setRangeDescription($('cut-height'), `${view.cut.toFixed(1)} meters above the selected floor`);
+  showCutHeight();
   if (view.surroundings !== undefined) $('surroundings').checked = view.surroundings;
   if (view.muted !== undefined) $('muted-surroundings').checked = view.muted;
   camera = view.mode === 'plan' ? orthographic : view.mode === 'walk' ? walkCamera : perspective;
@@ -165,7 +181,8 @@ function restoreLink() {
   if (!view.snapshot) return false;
   const saved = { ...view.snapshot, position: new THREE.Vector3().fromArray(view.snapshot.position), target: new THREE.Vector3().fromArray(view.snapshot.target) };
   if (view.mode === 'walk') {
-    camera.position.copy(saved.position); camera.lookAt(saved.target); camera.zoom = saved.zoom; camera.updateProjectionMatrix();
+    // Walk always uses the eye-level lens, including links saved with an older zoom.
+    camera.position.copy(saved.position); camera.lookAt(saved.target); camera.zoom = 1; camera.updateProjectionMatrix();
   } else {
     orbit.maxDistance = Math.max(orbit.maxDistance, saved.position.distanceTo(saved.target) * 1.1);
     if (view.mode === 'plan') { saved.position.x = saved.target.x; saved.position.z = saved.target.z; saved.position.y = Math.max(saved.target.y + 150, saved.position.y); }
@@ -183,7 +200,7 @@ function notify(message, duration = 5500) {
 }
 
 function initialize() {
-  if (location.protocol === 'file:') throw new Error('A local HTTP server is required.');
+  if (location.protocol === 'file:') throw new Error(t('error.localServerRequired'));
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: touchPrimary.matches ? 'default' : 'high-performance' });
   renderer.setClearColor(0x000000, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -253,18 +270,18 @@ function initialize() {
 async function loadCatalog() {
   try {
     const response = await fetch(new URL('catalog.json', modelBase), { signal: assetAbort.signal });
-    if (!response.ok) throw new Error('The model catalog could not be loaded. Refresh after importing the model.');
+    if (!response.ok) throw new Error(t('error.catalog'));
     const models = parseCatalog(await response.json());
     const requested = new URL(location.href).searchParams.get('version');
     activeModel = chooseModel(models, requested);
     activeLevels = activeModel.levelDefinitions || LEVELS;
     $('model-version').textContent = activeModel.label;
     $('daylight').disabled = !activeModel.location;
-    document.title = `${config.name} ${activeModel.label} · Building explorer`;
-    $('loading-title').textContent = `Opening ${config.name} · ${activeModel.label}`;
+    document.title = t('app.title', { version: activeModel.label });
+    showLoading('title', () => t('loading.openingVersion', { version: activeModel.label }));
     // Levels are usable as soon as the building is; elements follow with the registry.
     buildTree(null, []);
-    if (requested && activeModel.id !== requested) notify(`That version is no longer published. Opened ${activeModel.label}.`);
+    if (requested && activeModel.id !== requested) notify(t('loading.versionGone', { version: activeModel.label }));
     loadMetadata();
     loadModel();
   } catch (error) { if (!assetAbort.signal.aborted) showError(error); }
@@ -279,13 +296,12 @@ async function loadModel() {
       if (progress.percent === null) $('load-progress').removeAttribute('value');
       else $('load-progress').value = progress.percent;
       const percent = progress.percent === 99 ? 99 : Math.floor(progress.percent / 5) * 5;
-      const detail = progress.phase === 'decode' ? 'Opening geometry and textures…'
-        : progress.percent === null ? 'Starting the building download…'
-          : `Downloading building · ${percent}% of ${(progress.total / 1_000_000).toFixed(1)} MB`;
-      if ($('loading-detail').textContent !== detail) $('loading-detail').textContent = detail;
+      showLoading('detail', () => progress.phase === 'decode' ? t('loading.decoding')
+        : progress.percent === null ? t('loading.starting')
+          : t('loading.downloading', { percent, size: formatNumber(progress.total / 1_000_000, 1) }));
     } });
     pendingRoot = gltf.scene;
-    $('loading-detail').textContent = 'Preparing the building view…';
+    showLoading('detail', () => t('loading.preparing'));
     await paintOpportunity(signal);
     let triangles = 0;
     const materials = new Set();
@@ -311,7 +327,7 @@ async function loadModel() {
     applyVisibility();
     if (!linkRestored) {
       if (state.mode === 'walk') {
-        camera = perspective; frameView(); copyPerspective(perspective, walkCamera); camera = walkCamera;
+        camera = perspective; frameView(); copyPerspective(perspective, walkCamera, { matchLens: false }); camera = walkCamera;
       } else frameView();
     }
     renderer.shadowMap.needsUpdate = true;
@@ -328,12 +344,12 @@ async function loadModel() {
     renderPlaces();
     loadBim();
     [...modeButtons, ...navButtons].forEach(button => { button.disabled = false; });
-    for (const id of ['reset', 'surroundings', 'lighting-toggle', 'copy-view-link']) $(id).disabled = false;
+    for (const id of ['reset', 'zoom-in', 'zoom-out', 'surroundings', 'lighting-toggle', 'copy-view-link']) $(id).disabled = false;
     updateInterface();
     if (state.mode === 'walk') prepareWalk(++state.modeRequest);
     // Give the actual building a paint opportunity before optional context work.
     paintOpportunity(signal).then(updateSurroundings).catch(() => {});
-    $('announcer').textContent = `${config.name} ${activeModel.label} is ready. ${modeNames[state.mode]}. Open Help for navigation controls.`;
+    $('announcer').textContent = t('loading.ready', { version: activeModel.label, mode: modeName(state.mode) });
     invalidate();
   } catch (error) {
     buildingInstances?.dispose(); buildingInstances = null;
@@ -362,7 +378,6 @@ function applyVisibility() {
   }
   const policyLevel = tree.loading ? state.level : 'all';
   for (const mesh of state.meshes) mesh.visible = visibleInMode(mesh, view, policyLevel, activeLevels) && inLevel(mesh) && !tree.hiddenMeshes.has(mesh);
-  clearHighlight?.syncVisibility?.();
   buildingInstances?.sync();
   for (const material of state.materials) {
     const wasClipped = Boolean(material.clippingPlanes?.length);
@@ -390,12 +405,11 @@ function refreshSurroundings() {
       invalidate();
     }
   }
-  $('fit-surroundings').hidden = !visible || !surroundings.root;
   $('retry-surroundings').hidden = !surroundings.error;
-  $('surroundings-status').textContent = surroundings.error
-    || (enabled && state.mode === 'plan' ? 'Paused in floor plan. Floor plan always hides the site.'
-      : enabled && surroundings.loading ? (surroundings.phase !== 'download' ? 'Preparing surroundings…' : surroundings.progress === null ? 'Starting surroundings download…' : `Downloading surroundings · ${surroundings.progress}%`)
-        : 'Floor plan always hides the site.');
+  $('surroundings-status').textContent = surroundings.error ? t('surroundings.unavailable')
+    : enabled && state.mode === 'plan' ? t('surroundings.pausedInPlan')
+      : enabled && surroundings.loading ? (surroundings.phase !== 'download' ? t('surroundings.preparing') : surroundings.progress === null ? t('surroundings.starting') : t('surroundings.downloading', { percent: surroundings.progress }))
+        : t('surroundings.planHides');
   $('muted-row').classList.toggle('dimmed', !enabled);
   $('surroundings-toggle').classList.toggle('surroundings-hidden', !enabled);
 }
@@ -456,7 +470,7 @@ function updateSurroundings() {
     refreshSurroundings();
     if (pendingSiteView && $('surroundings').checked && state.mode === 'orbit') frameView(true);
     pendingSiteView = false;
-    if ($('surroundings').checked && state.mode !== 'plan') $('announcer').textContent = 'Surroundings ready. Use Fit site to see the wider neighborhood.';
+    if ($('surroundings').checked && state.mode !== 'plan') $('announcer').textContent = t('surroundings.ready');
   }).catch(error => {
     surroundings.instances?.dispose(); surroundings.instances = null;
     surroundings.style?.setMuted(false);
@@ -468,8 +482,8 @@ function updateSurroundings() {
     if (signal.aborted) return;
     pendingSiteView = false;
     console.error('Surroundings could not be loaded:', error);
-    surroundings.error = 'Surroundings unavailable.';
-    if ($('surroundings').checked) notify('Surroundings could not be loaded. The building is still available.');
+    surroundings.error = 'unavailable';
+    if ($('surroundings').checked) notify(t('surroundings.failed'));
     $('surroundings').checked = false;
   }).finally(() => {
     surroundings.loading = false;
@@ -586,9 +600,12 @@ async function setMode(mode) {
   const aspect = canvas.clientWidth / canvas.clientHeight;
   if (previous !== 'walk') settle(previous === 'plan' ? plan : orbit);
   stopWalking();
+  // Leaving Walk or Fly while its surfaces are still being prepared drops that notice.
+  if (previous === 'walk' && $('notice').textContent === t('walk.preparing')) $('notice').hidden = true;
   if (previous === 'walk') {
     settle(orbit);
-    copyPerspective(walkCamera, perspective);
+    // Each camera keeps its own lens: eye level on foot, the 45° orbit lens otherwise.
+    copyPerspective(walkCamera, perspective, { matchLens: false });
     orbit.target.copy(walkCamera.position).addScaledVector(walkCamera.getWorldDirection(new THREE.Vector3()), 10);
     orbit.update();
   } else if (previous === 'plan') {
@@ -598,7 +615,7 @@ async function setMode(mode) {
     orbitDirection.copy(perspective.position).sub(orbit.target).normalize();
     toPlan(perspective, orbit.target, orthographic, plan, aspect, buildingBounds.max.y + 150);
   } else if (mode === 'walk') {
-    copyPerspective(perspective, walkCamera);
+    copyPerspective(perspective, walkCamera, { matchLens: false });
     state.walkView = previous === 'dollhouse' ? 'dollhouse' : 'orbit';
   }
   state.mode = mode;
@@ -620,7 +637,7 @@ async function setMode(mode) {
     await prepareWalk(request);
     if (state.mode !== mode || request !== state.modeRequest || !state.ready) return;
   }
-  $('announcer').textContent = modeNames[mode] + (state.level !== 'all' ? ` · ${levelLabel()}` : '');
+  $('announcer').textContent = modeName(mode) + (state.level !== 'all' ? ` · ${levelLabel()}` : '');
   invalidate();
 }
 
@@ -632,7 +649,7 @@ function chooseView(view) {
     state.walkView = view;
     applyVisibility();
     updateInterface();
-    $('announcer').textContent = `${modeNames[view]} · ${state.navIntent === 'fly' ? 'Fly' : 'Walk'}`;
+    $('announcer').textContent = `${modeName(view)} · ${modeName('walk')}`;
     return;
   }
   setMode(view);
@@ -663,7 +680,7 @@ function applyNavigation() {
     else if (startInRoom()) walker.setFlying(false);
     else {
       state.navIntent = 'fly';
-      notify('There is no walking start here. Flying instead.');
+      notify(t('walk.noStart'));
     }
   }
 }
@@ -677,7 +694,7 @@ function startInRoom() {
 async function prepareWalk(request) {
   closeDropdowns();
   if (!state.collision) {
-    const preparing = 'Preparing walking surfaces…';
+    const preparing = t('walk.preparing');
     notify(preparing, 60000);
     try {
       collisionPromise ||= prepareCollisionWorld(state.meshes, collisionAbort.signal, collisionCandidate).then(result => {
@@ -688,7 +705,7 @@ async function prepareWalk(request) {
     } catch (error) {
       if (state.mode !== 'walk' || request !== state.modeRequest || !state.ready) return;
       console.error(error);
-      notify(error.message || 'Walking surfaces could not be prepared. Switch to Orbit and try again.');
+      notify(error.message || t('walk.failed'));
       return;
     } finally {
       if ($('notice').textContent === preparing) $('notice').hidden = true;
@@ -710,13 +727,13 @@ function startWalking() {
 }
 
 function navigationHint() {
-  if (state.mode === 'plan') return touchPrimary.matches ? 'Floor plan · drag to pan, pinch to zoom' : 'Floor plan · drag to pan, scroll to zoom';
-  if (state.mode === 'walk') return state.walker?.flying ? 'Fly · WASD moves, drag looks, Q/E down and up' : 'Walk · WASD moves, drag looks, Space jumps';
-  return touchPrimary.matches ? 'Orbit · drag to orbit, two fingers pan or pinch' : 'Orbit · drag to orbit, right-drag to pan, scroll to zoom';
+  if (state.mode === 'plan') return t(touchPrimary.matches ? 'nav.planHintTouch' : 'nav.planHint');
+  if (state.mode === 'walk') return t(state.walker?.flying ? 'nav.flyHint' : 'nav.walkHint');
+  return t(touchPrimary.matches ? 'nav.orbitHintTouch' : 'nav.orbitHint');
 }
 
 function levelLabel() {
-  return state.level === 'all' ? 'All levels' : activeLevels[state.level]?.label || humanize(state.level);
+  return state.level === 'all' ? t('level.all') : activeLevels[state.level]?.label || humanize(state.level);
 }
 
 function updateNavButtons() {
@@ -732,11 +749,10 @@ function updateInterface() {
   $('cut-control').hidden = view !== 'plan';
   $('navigation-hint').textContent = navigationHint();
   $('sheet-level').textContent = levelLabel();
-  canvas.setAttribute('aria-label', mode === 'plan' ? 'Building floor plan. Drag to pan and pinch or scroll to zoom.' : mode === 'walk' ? 'First person building view. Drag to look around; WASD, arrows or the direction buttons move.' : '3D building. Drag to orbit; pinch or scroll to zoom.');
-  $('canvas-help').textContent = mode === 'walk'
-    ? 'With the viewer focused: WASD or arrows move, dragging looks around and Shift speeds up. Walking, Space jumps; flying, E rises and Q descends. On touch screens, hold the direction buttons. Tab moves to the controls.'
-    : `With the viewer focused: ${mode === 'plan' ? 'arrow keys pan' : 'arrow keys rotate, Shift and arrows pan'}, plus and minus zoom, R fits the building. H opens Help. Tab moves to the controls.`;
+  canvas.setAttribute('aria-label', t(mode === 'plan' ? 'canvas.plan' : mode === 'walk' ? 'canvas.walk' : 'canvas.orbit'));
+  $('canvas-help').textContent = t(mode === 'walk' ? 'canvas.helpWalk' : mode === 'plan' ? 'canvas.helpPlan' : 'canvas.help');
   updateNavButtons();
+  updateZoomButtons();
   updateWalkPad();
   updateSurroundings();
   updateDaylight();
@@ -794,15 +810,15 @@ function setDaylightDate(year, day) {
 
 function updateAboutFacts() {
   const sky = $('daylight').checked && activeModel?.location;
-  $('about-lighting').textContent = `${sky ? 'Sun & sky' : 'Studio'} · shadows ${$('shadows').checked ? 'on' : 'off'}`;
-  $('about-quality').textContent = qualityLabels[renderQuality()];
+  $('about-lighting').textContent = `${t(sky ? 'lighting.sunAndSky' : 'lighting.studioShort')} · ${t($('shadows').checked ? 'about.shadowsOn' : 'about.shadowsOff')}`;
+  $('about-quality').textContent = t(`quality.${renderQuality()}`);
 }
 
 function applyLightingAppearance() {
   // Brightness and shadows apply to studio and daylight alike; Floor plan stays shadow-free for legibility.
   renderer.toneMappingExposure = Number($('brightness').value);
-  $('brightness-value').textContent = Number($('brightness').value).toFixed(1);
-  setRangeDescription($('brightness'), `${Math.round(Number($('brightness').value) * 100)} percent`);
+  $('brightness-value').textContent = formatNumber(Number($('brightness').value), 1);
+  setRangeDescription($('brightness'), t('lighting.brightnessValue', { value: Math.round(Number($('brightness').value) * 100) }));
   const shadows = $('shadows').checked && state.mode !== 'plan';
   if (renderer.shadowMap.enabled !== shadows) {
     renderer.shadowMap.enabled = shadows;
@@ -819,7 +835,7 @@ function updateDaylight() {
   const location = activeModel?.location;
   const enabled = Boolean($('daylight').checked && location);
   $('lighting-toggle').classList.toggle('daylight-active', enabled);
-  $('lighting-state').textContent = enabled ? 'Sun and sky enabled' : 'Studio lighting';
+  $('lighting-state').textContent = t(enabled ? 'lighting.daylightOn' : 'lighting.studio');
   $('daylight-options').hidden = !enabled;
   $('daylight-description').hidden = Boolean(location) || !activeModel;
   applyLightingAppearance();
@@ -831,7 +847,7 @@ function updateDaylight() {
   const selection = calendarSelection($('daylight-date').value);
   $('daylight-date').setAttribute('aria-invalid', String(!selection));
   if (!selection) {
-    $('daylight-status').textContent = 'Choose a valid date between 1900 and 2100 to update daylight.';
+    $('daylight-status').textContent = t('lighting.invalidDate');
     $('daylight-status').hidden = false;
     return; // Leave the rendered sun unchanged while a date is incomplete.
   }
@@ -843,12 +859,12 @@ function updateDaylight() {
   if (result.adjusted) daylightMinutes = actual.hour * 60 + actual.minute;
   $('daylight-hour').value = `${String(actual.hour).padStart(2, '0')}:${String(actual.minute).padStart(2, '0')}`;
   const clock = new Intl.DateTimeFormat('en-GB', { timeZone: location.timeZone, hour: '2-digit', minute: '2-digit' });
-  const eventTime = value => value && Number.isFinite(value.getTime()) ? clock.format(value) : 'none';
-  $('daylight-sun-times').textContent = `Sunrise ${eventTime(result.times.sunrise)} · Sunset ${eventTime(result.times.sunset)}`;
+  const eventTime = value => value && Number.isFinite(value.getTime()) ? clock.format(value) : t('lighting.noEvent');
+  $('daylight-sun-times').textContent = t('lighting.sunTimes', { sunrise: eventTime(result.times.sunrise), sunset: eventTime(result.times.sunset) });
   const notes = [];
-  if (result.adjusted) notes.push('This hour skips forward for daylight saving.');
-  if (result.repeated) notes.push('Using the first occurrence of this repeated autumn hour.');
-  if (state.mode === 'plan') notes.push('Sky is hidden in Floor plan.');
+  if (result.adjusted) notes.push(t('lighting.springForward'));
+  if (result.repeated) notes.push(t('lighting.autumnRepeat'));
+  if (state.mode === 'plan') notes.push(t('lighting.skyHiddenInPlan'));
   $('daylight-status').textContent = notes.join(' ');
   $('daylight-status').hidden = notes.length === 0;
   invalidate();
@@ -873,6 +889,7 @@ function resize() {
   perspective.aspect = width / height;
   perspective.updateProjectionMatrix();
   walkCamera.aspect = width / height;
+  walkCamera.fov = eyeLevelFov(width / height);
   walkCamera.updateProjectionMatrix();
   const halfHeight = orthographic.top;
   orthographic.left = -halfHeight * width / height;
@@ -888,6 +905,42 @@ async function resetView(includeSurroundings = false) {
   if (state.mode === 'walk') await setMode(state.walkView);
   if (state.mode !== 'walk') frameView(includeSurroundings);
   invalidate();
+}
+
+// The camera rail's zoom: closer in Orbit and Floor plan; on foot, a narrower lens for a
+// closer look, never wider than the eye-level view.
+function zoomView(factor) {
+  if (!state.ready) return;
+  if (state.mode === 'walk') {
+    walkCamera.zoom = THREE.MathUtils.clamp(walkCamera.zoom / factor, 1, 4);
+    walkCamera.updateProjectionMatrix();
+    updateZoomButtons();
+    invalidate();
+  } else navigate({ zoom: factor });
+}
+
+function updateZoomButtons() {
+  $('zoom-out').disabled = !state.ready || (state.mode === 'walk' && walkCamera.zoom <= 1);
+  $('zoom-in').disabled = !state.ready || (state.mode === 'walk' && walkCamera.zoom >= 4);
+}
+
+function showFullscreenLabel() {
+  $('fullscreen').querySelector('span').textContent = t(document.fullscreenElement ? 'menu.exitFullscreen' : 'menu.fullscreen');
+}
+
+// The static markup is already translated; this redraws everything the viewer writes itself.
+function refreshLanguage() {
+  if (activeModel) document.title = t('app.title', { version: activeModel.label });
+  showLoading('title', loadingText.title);
+  showLoading('detail', loadingText.detail);
+  showFullscreenLabel();
+  showCutHeight();
+  if (renderer) applyLightingAppearance();
+  updateAboutFacts();
+  renderPlaces();
+  if (selectedElement) renderElementInfo(selectedElement);
+  if (state.ready) updateInterface();
+  $('announcer').textContent = `${t('language.label')}: ${t('language.name')}`;
 }
 
 function navigate(action) {
@@ -918,7 +971,7 @@ function setLevel(level) {
     }
   }
   updateInterface();
-  $('announcer').textContent = `${levelLabel()} · ${modeNames[displayMode()]}`;
+  $('announcer').textContent = `${levelLabel()} · ${modeName(displayMode())}`;
 }
 
 async function loadMetadata() {
@@ -934,7 +987,7 @@ async function loadMetadata() {
   } catch (error) {
     if (assetAbort.signal.aborted) return;
     console.warn('Model annotations unavailable:', error);
-    $('places-note').textContent = 'Saved places are unavailable. The views and the model tree still work.';
+    $('places-note').textContent = t('places.unavailable');
     $('places-note').hidden = false;
   }
 }
@@ -967,10 +1020,10 @@ function fallbackCategory(mesh) {
 // ── Places ──
 
 function renderPlaces() {
-  const groups = [['Saved views', metadata.views], ['Points of interest', metadata.pointsOfInterest]].filter(([, entries]) => entries.length);
+  const groups = [[t('places.views'), metadata.views], [t('places.points'), metadata.pointsOfInterest]].filter(([, entries]) => entries.length);
   $('places-note').hidden = groups.length > 0;
-  if (!groups.length && !state.ready) $('places-note').textContent = 'Loading saved places…';
-  else if (!groups.length) $('places-note').textContent = 'This version has no saved places.';
+  if (!groups.length && !state.ready) $('places-note').textContent = t('places.loading');
+  else if (!groups.length) $('places-note').textContent = t('places.none');
   const items = [];
   for (const [title, entries] of groups) {
     if (groups.length > 1) {
@@ -1007,7 +1060,7 @@ async function visitPlace(entry) {
     pendingSiteView = !surroundings.root;
     updateSurroundings();
     if (surroundings.root) frameView(true);
-    else notify('Loading surroundings. The site view will open when ready.');
+    else notify(t('places.waitingForSite'));
   } else if (view.frame) frameView();
   else {
     const control = state.mode === 'plan' ? plan : orbit;
@@ -1017,7 +1070,7 @@ async function visitPlace(entry) {
     };
     restoreView(saved, camera, control, canvas.clientWidth / canvas.clientHeight);
   }
-  $('announcer').textContent = `${entry.title} · ${modeNames[state.mode]}`;
+  $('announcer').textContent = `${entry.title} · ${modeName(state.mode)}`;
   invalidate();
 }
 
@@ -1057,16 +1110,16 @@ function renderTree() {
     const focus = node.kind === 'storey' && state.level === node.level;
     const pinned = by || tree.isolated === node.id;
     const classes = ['tree-row', `is-${node.kind}`, node === selected && 'selected', focus && 'focus', by && 'is-hidden', pinned && 'pinned'].filter(Boolean).join(' ');
-    const name = escapeHTML(node.name);
+    const name = escapeHTML(node.name), say = (key, params) => escapeHTML(t(key, params));
     const labelState = node.kind === 'storey' ? ` aria-pressed="${focus}"` : node.kind === 'element' ? '' : ` aria-expanded="${open}"`;
-    const hideTitle = by && by !== node ? (by === isolated ? 'Hidden by isolation' : `Hidden with ${escapeHTML(by.name)}`) : 'Show or hide';
+    const hideTitle = by && by !== node ? (by === isolated ? say('tree.hiddenByIsolation') : say('tree.hiddenWith', { name: by.name })) : say('tree.showOrHide');
     return `<li class="${classes}" data-id="${escapeHTML(node.id)}" data-open="${open}" style="--depth:${depth}">`
-      + `<button class="tree-chevron${node.children.length ? '' : ' empty'}" data-action="toggle" tabindex="-1" aria-label="${open ? 'Collapse' : 'Expand'} ${name}">${icon('i-chevron')}</button>`
+      + `<button class="tree-chevron${node.children.length ? '' : ' empty'}" data-action="toggle" tabindex="-1" aria-label="${say(open ? 'tree.collapse' : 'tree.expand', { name: node.name })}">${icon('i-chevron')}</button>`
       + `<button class="tree-label" data-action="select" tabindex="-1" title="${name}"${labelState}><span class="tree-name">${name}</span></button>`
       + `<span class="tree-actions">`
-      + `<button data-action="zoom" tabindex="-1" aria-label="Zoom to ${name}" title="Zoom to">${icon('i-full')}</button>`
-      + `<button data-action="isolate" tabindex="-1" aria-pressed="${tree.isolated === node.id}" aria-label="Isolate ${name}" title="Isolate">${icon('i-isolate')}</button>`
-      + `<button data-action="hide" tabindex="-1" aria-pressed="${Boolean(by)}" aria-label="${by ? 'Show' : 'Hide'} ${name}" title="${hideTitle}">${icon(by ? 'i-eye-off' : 'i-eye')}</button>`
+      + `<button data-action="zoom" tabindex="-1" aria-label="${say('tree.zoomTo', { name: node.name })}" title="${say('tree.zoomTitle')}">${icon('i-full')}</button>`
+      + `<button data-action="isolate" tabindex="-1" aria-pressed="${tree.isolated === node.id}" aria-label="${say('tree.isolate', { name: node.name })}" title="${say('tree.isolateTitle')}">${icon('i-isolate')}</button>`
+      + `<button data-action="hide" tabindex="-1" aria-pressed="${Boolean(by)}" aria-label="${say(by ? 'tree.show' : 'tree.hide', { name: node.name })}" title="${hideTitle}">${icon(by ? 'i-eye-off' : 'i-eye')}</button>`
       + `</span></li>`;
   };
   const visit = (node, depth, showAll) => {
@@ -1081,7 +1134,7 @@ function renderTree() {
     for (const child of node.children) {
       if (!all && !filter.matches.has(child) && !filter.open.has(child)) continue;
       if (count === limit) {
-        rows.push(`<li class="tree-row is-more" data-id="${escapeHTML(node.id)}" style="--depth:${depth + 1}"><span class="tree-chevron empty"></span><button class="tree-more" data-action="more" tabindex="-1">More…</button></li>`);
+        rows.push(`<li class="tree-row is-more" data-id="${escapeHTML(node.id)}" style="--depth:${depth + 1}"><span class="tree-chevron empty"></span><button class="tree-more" data-action="more" tabindex="-1">${escapeHTML(t('tree.more'))}</button></li>`);
         break;
       }
       count++;
@@ -1096,9 +1149,9 @@ function renderTree() {
   }
   const focused = list.contains(document.activeElement);
   list.innerHTML = rows.join('');
-  const status = tree.loading ? 'Loading elements…'
-    : filter && !rows.length ? 'No matching levels or elements.'
-      : truncated ? 'Showing the first matches. Refine the filter to see more.' : '';
+  const status = tree.loading ? t('tree.loadingElements')
+    : filter && !rows.length ? t('tree.noMatches')
+      : truncated ? t('tree.truncated') : '';
   $('tree-status').textContent = status;
   $('tree-status').hidden = !status;
   $('visibility-footer').hidden = !tree.hidden.size && !tree.isolated;
@@ -1142,15 +1195,15 @@ function updateUserVisibility() {
 function toggleHidden(node) {
   const by = hiddenBy(node, tree.hidden, isolatedNode());
   if (by && by !== node) {
-    notify(by === isolatedNode() ? 'Hidden by isolation. Choose Show all to see everything again.' : `Hidden with ${by.name}. Show it there first.`, 2600);
+    notify(by === isolatedNode() ? t('tree.hiddenByIsolationNotice') : t('tree.hiddenWithNotice', { name: by.name }), 2600);
     return;
   }
-  if (tree.hidden.delete(node.id)) $('announcer').textContent = `Showing ${node.name}`;
+  if (tree.hidden.delete(node.id)) $('announcer').textContent = t('tree.shown', { name: node.name });
   else {
     tree.hidden.add(node.id);
     // Hiding a group makes the flags of its contents redundant.
     for (const element of elementsUnder(node)) for (let item = element; item && item !== node; item = item.parent) tree.hidden.delete(item.id);
-    $('announcer').textContent = `Hidden ${node.name}`;
+    $('announcer').textContent = t('tree.hidden', { name: node.name });
   }
   updateUserVisibility();
 }
@@ -1158,14 +1211,14 @@ function toggleHidden(node) {
 function toggleIsolate(node) {
   const on = tree.isolated !== node.id;
   tree.isolated = on ? node.id : null;
-  notify(on ? `Isolated ${node.name}` : 'Isolation cleared', 1600);
+  notify(on ? t('tree.isolated', { name: node.name }) : t('tree.isolationCleared'), 1600);
   updateUserVisibility();
 }
 
 function showAll() {
   tree.hidden.clear(); tree.isolated = null;
   updateUserVisibility();
-  $('announcer').textContent = 'All elements shown';
+  $('announcer').textContent = t('tree.allShown');
 }
 
 function nodeBounds(node) {
@@ -1186,7 +1239,7 @@ async function zoomToNode(node) {
   if (state.mode === 'walk') await setMode(state.walkView);
   revealLevel(node);
   frameBounds(nodeBounds(node));
-  notify(`Framing ${node.name}`, 1600);
+  notify(t('tree.framing', { name: node.name }), 1600);
   if (sidebar.isCompact()) sidebar.dismiss();
 }
 
@@ -1310,35 +1363,35 @@ function renderElementInfo(mesh) {
   const shown = new Set([property('Category'), property('Primary storey')]);
   const row = (label, item, text = item.value) => {
     shown.add(item);
-    return [label, text, item.basis === 'inferred' ? `Inferred · ${item.confidence} confidence` : ''];
+    return [label, text, item.basis === 'inferred' ? t('inspector.inferredNote', { confidence: t(`confidence.${item.confidence}`) }) : ''];
   };
   const summary = [];
   const type = property('Type');
-  if (type) { shown.add(type); if (cleanName(type.value) !== info.title) summary.push(row('Type', type, cleanName(type.value))); }
+  if (type) { shown.add(type); if (cleanName(type.value) !== info.title) summary.push(row(t('inspector.type'), type, cleanName(type.value))); }
   const rooms = property('Rooms');
-  if (rooms) summary.push(row('Room', rooms, rooms.value === 'Not assigned' ? rooms.value : rooms.value.split(/,\s*/).map(humanize).join(', ')));
-  if (property('IFC class')) summary.push(row('Class', property('IFC class')));
-  if (!summary.length && property('Placement')) summary.push(row('Placement', property('Placement'), humanize(property('Placement').value)));
+  if (rooms) summary.push(row(t('inspector.room'), rooms, rooms.value === 'Not assigned' ? t('inspector.notAssigned') : rooms.value.split(/,\s*/).map(humanize).join(', ')));
+  if (property('IFC class')) summary.push(row(t('inspector.class'), property('IFC class')));
+  if (!summary.length && property('Placement')) summary.push(row(t('inspector.placement'), property('Placement'), humanize(property('Placement').value)));
   const extent = info.properties.find(p => p.basis === 'measured' && p.label.startsWith('Model extent'));
-  if (summary.length < 2 && extent) summary.push(row('Size', extent));
+  if (summary.length < 2 && extent) summary.push(row(t('inspector.size'), extent));
   const facts = (list, rows) => list.replaceChildren(...rows.flatMap(([label, text, note, code]) => {
     const term = document.createElement('dt'); term.textContent = label;
     const definition = document.createElement('dd'); definition.textContent = text;
     if (code) definition.className = 'code';
     if (note) {
       const tag = document.createElement('span');
-      tag.className = 'inferred'; tag.textContent = 'inferred'; tag.title = note;
+      tag.className = 'inferred'; tag.textContent = t('inspector.inferred'); tag.title = note;
       definition.append(' ', tag);
     }
     return [term, definition];
   }));
   facts($('element-summary'), summary);
   const details = info.properties.filter(p => !shown.has(p)).map(p => {
-    const [label, text] = tidyProperty(p.label.startsWith('Model extent') ? 'Size' : p.label, p.value);
+    const [label, text] = tidyProperty(p.label.startsWith('Model extent') ? t('inspector.size') : p.label, p.value);
     return [...row(label, p, text), /\bID$/.test(label)];
   });
-  if (info.sourceName && info.sourceName !== info.title) details.push(['Model name', info.sourceName]);
-  details.push(['ID', info.id || 'None supplied', '', Boolean(info.id)]);
+  if (info.sourceName && info.sourceName !== info.title) details.push([t('inspector.modelName'), info.sourceName]);
+  details.push([t('inspector.id'), info.id || t('inspector.noId'), '', Boolean(info.id)]);
   facts($('element-properties'), details);
   const sources = [...new Set(info.properties.map(p => p.source).filter(Boolean))];
   $('element-source-list').replaceChildren(...sources.map(text => Object.assign(document.createElement('li'), { textContent: text })));
@@ -1347,7 +1400,7 @@ function renderElementInfo(mesh) {
   $('element-visibility').hidden = visible;
   const hidden = node ? Boolean(hiddenBy(node, tree.hidden, isolatedNode())) : false;
   $('element-hide').setAttribute('aria-pressed', String(hidden));
-  $('element-hide').querySelector('span').textContent = hidden ? 'Show' : 'Hide';
+  $('element-hide').querySelector('span').textContent = t(hidden ? 'inspector.show' : 'inspector.hide');
   $('element-hide').querySelector('use').setAttribute('href', hidden ? '#i-eye' : '#i-eye-off');
   $('element-hide').disabled = !node;
   $('element-reveal').disabled = !node;
@@ -1357,7 +1410,6 @@ function renderElementInfo(mesh) {
 function inspectElement(mesh, { point = null } = {}) {
   clearHighlight?.();
   const members = bim?.members(mesh) || [mesh];
-  buildingInstances?.select(members);
   selectedElement = mesh;
   $('element-details').open = false;
   const bounds = bim?.bounds(mesh) || mesh.userData.bounds || new THREE.Box3().setFromObject(mesh);
@@ -1365,9 +1417,9 @@ function inspectElement(mesh, { point = null } = {}) {
   $('inspector').hidden = false;
   renderElementInfo(mesh);
   const color = getComputedStyle(document.documentElement).getPropertyValue('--color-selection').trim() || '#38d9ff';
-  clearHighlight = bim?.product(mesh) ? highlightElements(members, color, scene, bim.bounds(mesh)) : highlightElement(mesh, color);
+  clearHighlight = bim?.product(mesh) ? highlightElements(members, color) : highlightElement(mesh, color);
   renderTree();
-  $('announcer').textContent = `Selected ${$('element-title').textContent}. Details are next to the element; Escape closes them.`;
+  $('announcer').textContent = t('inspector.selected', { name: $('element-title').textContent });
   invalidate();
 }
 
@@ -1377,7 +1429,6 @@ function closeInspector() {
   $('inspector').hidden = true;
   $('pick-marker').hidden = true;
   clearHighlight?.(); clearHighlight = null; selectedElement = null; inspectorAnchor = null;
-  buildingInstances?.select(null);
   renderTree();
   if (hadFocus) canvas.focus({ preventScroll: true });
   invalidate();
@@ -1401,9 +1452,10 @@ function placeInspector() {
     for (const key of ['left', 'top']) panel.style.removeProperty(key);
     return;
   }
-  const toolbar = document.querySelector('.toolbar').getBoundingClientRect();
+  const topbar = document.querySelector('.topbar').getBoundingClientRect();
   const controls = document.querySelector('.dock').getBoundingClientRect();
-  const area = { left: 16, right: rect.width - 16, top: toolbar.bottom - rect.top + 12, bottom: controls.top - rect.top - 12 };
+  const rail = $('camera-tools').getBoundingClientRect();
+  const area = { left: 16, right: Math.min(rect.width - 16, rail.left - rect.left - 12), top: topbar.bottom - rect.top + 12, bottom: controls.top - rect.top - 12 };
   // The floating sidebar covers the stage's left side when it reaches below the toolbar.
   const side = $('sidebar').getBoundingClientRect();
   if (side.bottom - rect.top > area.top) area.left = Math.max(0, side.right - rect.left) + 16;
@@ -1426,7 +1478,7 @@ function wireControls() {
     const url = currentViewLink().href;
     const button = $('copy-view-link');
     const label = button.querySelector('span');
-    button.disabled = true; label.textContent = 'Copying link…';
+    button.disabled = true; label.textContent = t('menu.copying');
     $('share-status').hidden = true;
     let timeout;
     try {
@@ -1435,15 +1487,15 @@ function wireControls() {
         timeout = setTimeout(() => reject(new Error('Clipboard unavailable')), 1500);
       })]);
       $('view-link-text').hidden = true;
-      $('share-status').textContent = 'View link copied.';
+      $('share-status').textContent = t('menu.copied');
     } catch {
       $('view-link-text').hidden = false;
-      $('share-status').textContent = 'Copy the selected link below.';
+      $('share-status').textContent = t('menu.copyManually');
       $('view-link-text').value = url;
       $('view-link-text').focus(); $('view-link-text').select();
     } finally {
       clearTimeout(timeout);
-      button.disabled = !state.ready; label.textContent = 'Copy view link';
+      button.disabled = !state.ready; label.textContent = t('menu.copyLink');
       $('share-status').hidden = false;
     }
   });
@@ -1484,6 +1536,8 @@ function wireControls() {
   modeButtons.forEach(button => button.addEventListener('click', () => chooseView(button.dataset.mode)));
   navButtons.forEach(button => button.addEventListener('click', () => chooseNavigation(button.dataset.nav)));
   $('reset').addEventListener('click', () => resetView());
+  $('zoom-in').addEventListener('click', () => zoomView(0.8));
+  $('zoom-out').addEventListener('click', () => zoomView(1.25));
   $('surroundings').addEventListener('change', () => {
     if (!$('surroundings').checked) pendingSiteView = false;
     surroundings.error = '';
@@ -1504,10 +1558,8 @@ function wireControls() {
     $('surroundings').checked = true;
     updateSurroundings();
   });
-  $('fit-surroundings').addEventListener('click', () => resetView(true));
   $('cut-height').addEventListener('input', () => {
-    $('cut-value').textContent = `${Number($('cut-height').value).toFixed(1)} m`;
-    setRangeDescription($('cut-height'), `${Number($('cut-height').value).toFixed(1)} meters above the selected floor`);
+    showCutHeight();
     applyVisibility();
   });
   $('brightness').addEventListener('input', applyLightingAppearance);
@@ -1541,12 +1593,13 @@ function wireControls() {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await $('viewer').requestFullscreen();
-    } catch { notify('Fullscreen is not available in this browser.'); }
+    } catch { notify(t('menu.fullscreenUnavailable')); }
   });
   document.addEventListener('fullscreenchange', () => {
-    $('fullscreen').querySelector('span').textContent = document.fullscreenElement ? 'Exit fullscreen' : 'Fullscreen';
+    showFullscreenLabel();
     resize();
   });
+  showFullscreenLabel();
   window.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !$('inspector').hidden && !event.target.closest?.('.dropdown, input, select')) { closeInspector(); return; }
     if (event.ctrlKey || event.metaKey || event.altKey) return;
@@ -1603,7 +1656,7 @@ function wireControls() {
     event.preventDefault();
     frameLoop.stop();
     collisionAbort.abort();
-    showError(new Error('The graphics connection was lost. Reload the viewer to continue.'));
+    showError(new Error(t('error.contextLost')));
   });
 }
 
@@ -1615,7 +1668,7 @@ function render(time) {
   if (plan.enabled && plan.update()) invalidate();
   if (isWalking() && state.walker) {
     const message = state.walker.update(delta, keys);
-    if (message) notify(message);
+    if (message) notify(t('walk.returned'));
     invalidate();
   }
   if (state.dirty && (!model || state.presented)) {
@@ -1629,7 +1682,10 @@ function render(time) {
 
 $('retry').addEventListener('click', () => location.reload());
 wireDropdowns();
+// The language menu works even when the 3D view cannot start, so errors can be read too.
+wireLanguageMenu();
+onLanguageChange(refreshLanguage);
 wireResponsiveLayout();
-setRangeDescription($('brightness'), '100 percent');
-setRangeDescription($('cut-height'), '2.0 meters above the selected floor');
+setRangeDescription($('brightness'), t('lighting.brightnessValue', { value: 100 }));
+showCutHeight();
 try { initialize(); } catch (error) { showError(error); }

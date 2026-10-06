@@ -50,14 +50,15 @@ test('picking and highlighting affect one placement while its family remains bat
   assert.equal(pickElement(ray, meshes), meshes[2]);
   const matrices = instances.batches[0].instanceMatrix.array.slice();
   const version = instances.batches[0].instanceMatrix.version;
-  instances.select(meshes[2]); const clear = highlightElement(meshes[2]);
+  const clear = highlightElement(meshes[2]);
   assert.equal(instances.batches[0].count, 6); assert.equal(instances.batches[0].material, material);
   assert.deepEqual(instances.batches[0].instanceMatrix.array, matrices);
   assert.equal(instances.batches[0].instanceMatrix.version, version, 'selection does not re-upload unrelated placements');
-  assert.equal(meshes[2].material.polygonOffset, true);
-  assert.equal(meshes[2].layers.isEnabled(0), true); assert.equal(meshes[1].layers.isEnabled(0), false);
-  assert.equal(meshes[2].material.isMeshBasicMaterial, true); assert.equal(meshes[1].material, material);
-  clear(); instances.select(null); assert.equal(instances.batches[0].count, 6); assert.equal(meshes[2].layers.isEnabled(0), false);
+  // The batch keeps drawing the placement; only its overlay children join the render layer.
+  assert.equal(meshes[2].material, material); assert.equal(meshes[2].layers.isEnabled(0), false);
+  assert.equal(meshes[2].children.length, 3); assert.ok(meshes[2].children.every(part => part.layers.isEnabled(0)));
+  assert.equal(meshes[2].children[0].material.polygonOffset, true); assert.equal(meshes[1].children.length, 0);
+  clear(); assert.equal(instances.batches[0].count, 6); assert.equal(meshes[2].children.length, 0);
 });
 
 test('glass, transparent, mirrored, sheared and animated placements retain ordinary rendering', () => {

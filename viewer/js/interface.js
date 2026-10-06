@@ -1,4 +1,5 @@
 import { popupPlacement } from './view-layout.js?v=redesign-1';
+import { LANGUAGES, language, onLanguageChange, setLanguage, t } from './i18n.js?v=i18n-1';
 
 // Roving keyboard focus with automatic activation for local tabs.
 export function wirePanelTabs(tablist, onSelect = () => {}) {
@@ -40,14 +41,14 @@ export function viewportFrame() {
 // Dropdowns stay inside the 3D stage, clear of the sidebar and the bottom controls.
 function panelInsets() {
   const stage = document.getElementById('stage').getBoundingClientRect();
-  const toolbar = getComputedStyle(document.querySelector('.toolbar'));
-  const edge = parseFloat(toolbar.right) || 16;
-  return { left: Math.max(edge, stage.left + edge), right: edge, top: parseFloat(toolbar.top) || 16, bottom: edge };
+  const topbar = getComputedStyle(document.querySelector('.topbar'));
+  const edge = parseFloat(topbar.right) || 16;
+  return { left: Math.max(edge, stage.left + edge), right: edge, top: parseFloat(topbar.top) || 16, bottom: edge };
 }
 
 // Toolbar dropdowns: [panel id, trigger id, preferred width token].
 const DROPDOWNS = [['lighting', 'lighting-toggle', '--dropdown-lighting'], ['surroundings-panel', 'surroundings-toggle', '--dropdown-surroundings'],
-  ['help', 'help-toggle', '--dropdown-help'], ['menu', 'menu-toggle', '--dropdown-menu']];
+  ['language-menu', 'language-toggle', '--dropdown-language'], ['help', 'help-toggle', '--dropdown-help'], ['menu', 'menu-toggle', '--dropdown-menu']];
 
 function closeDropdown(panelId, triggerId) {
   const panel = document.getElementById(panelId);
@@ -137,7 +138,7 @@ export function wireSidebar({ onChange = () => {} } = {}) {
     viewer.classList.toggle('sidebar-collapsed', !open && !compact.matches);
     viewer.classList.toggle('sheet-open', open && compact.matches);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.title = open ? 'Collapse panel' : 'Expand panel';
+    toggle.title = t(open ? 'sidebar.collapse' : 'sidebar.expand');
     sheet.setAttribute('aria-expanded', String(open));
     onChange({ open, compact: compact.matches });
   };
@@ -151,6 +152,7 @@ export function wireSidebar({ onChange = () => {} } = {}) {
   const reset = () => set(!overlay.matches);
   overlay.addEventListener('change', reset);
   compact.addEventListener('change', reset);
+  onLanguageChange(() => { toggle.title = t(open ? 'sidebar.collapse' : 'sidebar.expand'); });
   sync();
   return {
     isOpen: () => open, isCompact: () => compact.matches,
@@ -158,6 +160,27 @@ export function wireSidebar({ onChange = () => {} } = {}) {
     // Overlays and sheets cover the view; close them once the visitor has chosen something to look at.
     dismiss: () => { if (overlay.matches && open) set(false); },
   };
+}
+
+// The toolbar's language button shows the current code; choosing a language closes the menu.
+export function wireLanguageMenu() {
+  const toggle = document.getElementById('language-toggle');
+  const inputs = [...document.querySelectorAll('input[name="language"]')];
+  const sync = () => {
+    document.getElementById('language-code').textContent = language().toUpperCase();
+    const label = `${t('language.label')}: ${t('language.name')}`;
+    toggle.setAttribute('aria-label', label);
+    toggle.title = label;
+    for (const input of inputs) input.checked = input.value === language();
+  };
+  for (const input of inputs) input.addEventListener('change', () => {
+    if (!LANGUAGES.includes(input.value)) return;
+    setLanguage(input.value);
+    closeDropdown('language-menu', 'language-toggle');
+    toggle.focus({ preventScroll: true });
+  });
+  onLanguageChange(sync);
+  sync();
 }
 
 export function wireResponsiveLayout() {

@@ -50,11 +50,18 @@ export function fromPlan(source, target, direction, camera, control, aspect) {
 }
 
 // Keep the same lens as well as position when moving between orbit and POV.
-export function copyPerspective(source, destination) {
+// matchLens keeps the source's effective field of view; otherwise the destination keeps its own lens.
+export function copyPerspective(source, destination, { matchLens = true } = {}) {
   destination.position.copy(source.position);
   destination.quaternion.copy(source.quaternion);
-  destination.zoom = Math.tan(MathUtils.degToRad(destination.fov / 2)) / Math.tan(MathUtils.degToRad(source.getEffectiveFOV() / 2));
+  destination.zoom = matchLens ? Math.tan(MathUtils.degToRad(destination.fov / 2)) / Math.tan(MathUtils.degToRad(source.getEffectiveFOV() / 2)) : 1;
   destination.updateProjectionMatrix();
+}
+
+// Eye-level lens for Walk and Fly: about 90° across on landscape screens, as walkthrough
+// viewers use, held between 60° and 80° vertically so tall phone screens do not bend into a fisheye.
+export function eyeLevelFov(aspect) {
+  return MathUtils.clamp(MathUtils.radToDeg(2 * Math.atan(1 / Math.max(aspect, 0.1))), 60, 80);
 }
 
 export function navigateView(camera, control, { zoom = 1, horizontal = 0, vertical = 0, pan = false }) {

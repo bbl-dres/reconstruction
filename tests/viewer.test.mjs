@@ -312,19 +312,23 @@ archiveTest('picking ignores invisible meshes and surfaces outside the visible f
   assert.equal(pickElement(ray, [roof, floor]), floor);
 });
 
-test('inspection highlighting never mutates shared materials and restores them on close', () => {
+test('inspection highlighting overlays the element, keeps its own look and cleans up on close', () => {
   const material = new THREE.MeshStandardMaterial({ color: 0xabcdef });
   const first = new THREE.Mesh(new THREE.BoxGeometry(), material);
   const second = new THREE.Mesh(first.geometry, material);
   const restore = highlightElement(first);
-  assert.notEqual(first.material, material);
+  assert.equal(first.material, material);
   assert.equal(second.material, material);
   assert.equal(material.emissive.getHex(), 0);
-  assert.equal(first.material.isMeshBasicMaterial, true);
-  assert.equal(first.material.color.getHex(), 0x38d9ff);
-  assert.equal(first.material.toneMapped, false);
-  assert.equal(first.children.length, 1);
-  assert.equal(first.children[0].material.depthTest, false);
+  const [tint, edges, hidden] = first.children;
+  assert.equal(tint.geometry, first.geometry);
+  assert.equal(tint.material.color.getHex(), 0x38d9ff);
+  assert.ok(tint.material.transparent && tint.material.opacity < 0.5, 'a light tint, never an opaque fill');
+  assert.equal(tint.material.depthWrite, false); assert.equal(tint.material.polygonOffset, true);
+  assert.equal(edges.geometry.attributes.position.count, 24, 'a box outlines its twelve edges');
+  assert.equal(edges.material.depthTest, true);
+  assert.equal(hidden.material.depthTest, false); assert.ok(hidden.material.opacity < 0.5);
+  assert.ok(first.children.every(part => part.material.toneMapped === false));
   restore();
   assert.equal(first.material, material);
   assert.equal(first.children.length, 0);

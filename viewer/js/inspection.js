@@ -1,5 +1,5 @@
-import { Box3, Box3Helper, MeshBasicMaterial, Raycaster, Vector2, Vector3 } from 'three';
-import { ELEMENT_LAYER } from './render-instances.js?v=bim-1';
+import { Box3, EdgesGeometry, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, Raycaster, Vector2, Vector3 } from 'three';
+import { ELEMENT_LAYER } from './render-instances.js?v=overlay-1';
 
 export function pickElement(raycaster, meshes, stats) {
   return pickHit(raycaster, meshes, stats)?.object || null;
@@ -79,61 +79,52 @@ export function wirePicking({ canvas, camera, meshes, enabled, onPick, onMiss = 
   });
 }
 
-export function highlightElement(mesh, color = '#38d9ff', { frame: showFrame = true } = {}) {
-  const original = mesh.material;
-  const renderOrder = mesh.renderOrder;
-  // Unlit opaque color remains readable on dark textures, glass and in sunlight.
-  // Each placement owns its temporary material; linked family instances stay intact.
-  const highlight = material => new MeshBasicMaterial({ color, toneMapped: false, fog: false,
-    side: material.side, visible: material.visible, clippingPlanes: material.clippingPlanes,
-    clipIntersection: material.clipIntersection, depthTest: material.depthTest,
-    polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
-  const materials = Array.isArray(original) ? original.map(highlight) : [highlight(original)];
-  mesh.material = Array.isArray(original) ? materials : materials[0];
-  mesh.renderOrder = Math.max(1, renderOrder);
-  if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
-  const frame = new Box3Helper(mesh.geometry.boundingBox, color);
-  frame.name = 'Selection bounds';
-  frame.material.toneMapped = false;
-  frame.material.fog = false;
-  frame.material.depthTest = false;
-  frame.material.depthWrite = false;
-  frame.material.clippingPlanes = materials[0].clippingPlanes;
-  frame.material.clipIntersection = materials[0].clipIntersection;
-  frame.renderOrder = 1000;
-  frame.raycast = () => {};
-  if (showFrame) mesh.add(frame);
+// Visible edges sit exactly on their faces; drawing them slightly towards the eye keeps
+// them from flickering against the surface. Floor plan's orthographic camera moves along z.
+function liftTowardsEye(material) {
+  material.onBeforeCompile = shader => {
+    shader.vertexShader = shader.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
+  mvPosition.xyz = isOrthographic ? mvPosition.xyz + vec3(0.0, 0.0, 0.02) : mvPosition.xyz * 0.997;
+  gl_Position = projectionMatrix * mvPosition;`);
+  };
+  material.customProgramCacheKey = () => 'selection-edges';
+  return material;
+}
+
+// Selection keeps the element's own look: a light tint over its surfaces, its edges in the
+// selection color and its hidden edges faintly through whatever covers them. The overlay
+// is a child of the source node, so it follows the node's visibility, and the node's
+// materials, shared with other placements, are never changed.
+export function highlightElement(mesh, color = '#38d9ff') {
+  const sources = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  const clipping = { clippingPlanes: sources[0].clippingPlanes, clipIntersection: sources[0].clipIntersection };
+  const tints = sources.map(material => new MeshBasicMaterial({ color, transparent: true, opacity: 0.22, depthWrite: false,
+    toneMapped: false, fog: false, side: material.side, visible: material.visible,
+    clippingPlanes: material.clippingPlanes, clipIntersection: material.clipIntersection,
+    polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
+  const shown = sources.some(material => material.visible);
+  const edgeMaterial = liftTowardsEye(new LineBasicMaterial({ color, toneMapped: false, fog: false, visible: shown, ...clipping }));
+  const hiddenMaterial = new LineBasicMaterial({ color, transparent: true, opacity: 0.25, depthTest: false, depthWrite: false,
+    toneMapped: false, fog: false, visible: shown, ...clipping });
+  const edges = new EdgesGeometry(mesh.geometry, 25);
+  const overlay = [
+    Object.assign(new Mesh(mesh.geometry, Array.isArray(mesh.material) ? tints : tints[0]), { name: 'Selection tint', renderOrder: 1 }),
+    Object.assign(new LineSegments(edges, edgeMaterial), { name: 'Selection edges', renderOrder: 2 }),
+    Object.assign(new LineSegments(edges, hiddenMaterial), { name: 'Selection hidden edges', renderOrder: 1000 }),
+  ];
+  for (const part of overlay) { part.raycast = () => {}; mesh.add(part); }
   let restored = false;
   return () => {
     if (restored) return;
     restored = true;
-    mesh.material = original;
-    mesh.renderOrder = renderOrder;
-    frame.removeFromParent();
-    frame.geometry.dispose(); frame.material.dispose();
-    materials.forEach(material => material.dispose());
+    for (const part of overlay) part.removeFromParent();
+    edges.dispose(); edgeMaterial.dispose(); hiddenMaterial.dispose();
+    tints.forEach(material => material.dispose());
   };
 }
 
-export function highlightElements(meshes, color, parent, bounds) {
-  const cleanups = meshes.map(mesh => highlightElement(mesh, color, { frame: false }));
-  const box = bounds?.clone() || new Box3();
-  if (!bounds) for (const mesh of meshes) box.union(mesh.userData.bounds || new Box3().setFromObject(mesh));
-  const frame = new Box3Helper(box, color);
-  frame.name = 'Whole product selection bounds'; frame.raycast = () => {};
-  frame.material.toneMapped = false; frame.material.fog = false;
-  frame.material.depthTest = false; frame.material.depthWrite = false;
-  frame.material.clippingPlanes = (Array.isArray(meshes[0].material) ? meshes[0].material[0] : meshes[0].material).clippingPlanes;
-  frame.material.clipIntersection = (Array.isArray(meshes[0].material) ? meshes[0].material[0] : meshes[0].material).clipIntersection;
-  frame.renderOrder = 1000;
-  parent.add(frame);
-  // The caller supplies the world scene root, whose transform is identity.
-  let restored = false;
-  const clear = () => {
-    if (restored) return; restored = true;
-    cleanups.forEach(clear => clear()); frame.removeFromParent(); frame.geometry.dispose(); frame.material.dispose();
-  };
-  clear.syncVisibility = () => { if (!restored) frame.visible = meshes.some(mesh => mesh.visible); };
-  clear.syncVisibility();
-  return clear;
+// A whole product: every member part is highlighted the same way.
+export function highlightElements(meshes, color) {
+  const cleanups = meshes.map(mesh => highlightElement(mesh, color));
+  return () => cleanups.forEach(clear => clear());
 }

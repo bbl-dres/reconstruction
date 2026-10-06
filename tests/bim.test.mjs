@@ -56,26 +56,26 @@ test('whole products select all material parts and count once across hidden floo
   assert.equal(registry.product(meshes[1]).id, 'chair-0'); assert.equal(registry.members(meshes[0]).length, 2);
   assert.equal(describeProduct(meshes[1], registry).id, 'chair-0');
   const before = instances.batches[0].instanceMatrix.version;
-  const members = registry.members(meshes[0]); instances.select(members);
-  const clear = highlightElements(members, '#38d9ff', scene, registry.bounds(meshes[0]));
-  for (const part of members) { assert.equal(part.layers.isEnabled(0), true); assert.equal(part.material.isMeshBasicMaterial, true); }
-  assert.equal(meshes[2].material, material); assert.equal(meshes[2].layers.isEnabled(0), false);
+  const members = registry.members(meshes[0]);
+  const clear = highlightElements(members, '#38d9ff');
+  for (const part of members) { assert.equal(part.material, material); assert.equal(part.children.length, 3); assert.equal(part.layers.isEnabled(0), false); }
+  assert.equal(meshes[2].children.length, 0);
   assert.equal(instances.batches[0].instanceMatrix.version, before, 'No unrelated matrix upload on selection');
+  // The overlay lives on its parts, so a hidden product never leaves a floating selection behind.
+  assert.equal(scene.children.some(o => o.name.startsWith('Selection')), false);
   meshes.forEach(m => { m.visible = false; }); instances.sync();
-  clear.syncVisibility();
-  assert.equal(scene.children.find(o => o.name === 'Whole product selection bounds').visible, false, 'Hidden product must not leave a floating selection box');
   assert.equal(instances.batches[0].count, 0); assert.equal(registry.counts[0].count, 4);
-  clear(); clear(); instances.select(null);
-  for (const part of members) { assert.equal(part.material, material); assert.equal(part.layers.mask, 1 << ELEMENT_LAYER); }
+  clear(); clear();
+  for (const part of members) { assert.equal(part.material, material); assert.equal(part.children.length, 0); assert.equal(part.layers.mask, 1 << ELEMENT_LAYER); }
   instances.dispose();
 });
 
 test('selecting every member of a render batch never leaks its highlight to neighbors', () => {
   const { scene, meshes, material } = fixture();
   const instances = createRenderInstances(meshes, scene, { cellSize: 1000 });
-  instances.select(new Set(meshes)); const clear = highlightElements(meshes, '#ffffff', scene);
+  const clear = highlightElements(meshes, '#ffffff');
   instances.sync(); assert.equal(instances.batches[0].material, material);
-  clear(); instances.select([]); assert(meshes.every(m => !m.layers.isEnabled(0))); instances.dispose();
+  clear(); assert(meshes.every(m => !m.layers.isEnabled(0) && !m.children.length)); instances.dispose();
 });
 
 test('missing, stale, multiply owned or transformed registries fail closed', () => {

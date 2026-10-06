@@ -29,7 +29,7 @@ export function createRenderInstances(meshes, parent, { cellSize = 24, minimum =
   parent.add(root); parent.updateWorldMatrix(true, false);
   const inverse = new Matrix4().copy(parent.matrixWorld).invert();
   const matrix = new Matrix4(), center = new Vector3();
-  let selected = new Set(), disposed = false;
+  let disposed = false;
   for (const mesh of meshes) {
     if (!supported(mesh)) continue;
     if (mesh.userData.bounds) mesh.userData.bounds.getCenter(center);
@@ -58,7 +58,7 @@ export function createRenderInstances(meshes, parent, { cellSize = 24, minimum =
     if (disposed) return;
     for (const { batch, members } of batches) {
       // Muted/original surroundings use corresponding material replacements.
-      batch.material = members.find(mesh => !selected.has(mesh))?.material || batch.material;
+      batch.material = members[0].material;
       let count = 0;
       for (const mesh of members) {
         if (!visible(mesh)) continue;
@@ -72,14 +72,9 @@ export function createRenderInstances(meshes, parent, { cellSize = 24, minimum =
   sync();
   return {
     root, batches: batches.map(entry => entry.batch), placements: entries.size,
+    // Selection overlays are children of the source node, which stays on the element
+    // layer: a click never uploads instances or changes neighbors.
     sync,
-    select(value) {
-      for (const mesh of selected) if (entries.has(mesh)) mesh.layers.set(ELEMENT_LAYER);
-      selected = new Set(value instanceof Set || Array.isArray(value) ? value : value ? [value] : []);
-      for (const mesh of selected) if (entries.has(mesh)) mesh.layers.enable(0);
-      // Selection draws a depth-biased overlay from the source node. Leave the
-      // batch untouched: no instance upload or changed neighbors on a click.
-    },
     dispose() {
       if (disposed) return;
       disposed = true;
