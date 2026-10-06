@@ -11,7 +11,7 @@
 
 Experimental 3D reconstructions of Swiss federal buildings, made from publicly available data.
 
-The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstruction and shows them as cards or on a map (`#map`). Every reconstruction lives in its own folder under `reconstructions/`. Blender-authored buildings share one viewer and one model pipeline; each building only adds data.
+The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstruction and shows them as cards or on a map (`#map`). Every reconstruction lives in its own folder under `reconstructions/`. Blender-authored buildings share one viewer and one model pipeline; each building only adds data. Every page has the same toolbar and speaks English, German, French and Italian (see [Interface and languages](#interface-and-languages)).
 
 ## Preview
 - Live App: https://bbl-dres.github.io/reconstruction/
@@ -21,15 +21,16 @@ The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstr
 | Reconstruction | What it is |
 |---|---|
 | [Bundeshaus](reconstructions/bundeshaus/) | The Swiss Parliament Building in Bern. No-build Three.js viewer with exterior, dollhouse, floor-plan and walk modes, building inventory and IFC download. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/bundeshaus/). |
-| [Beatrice von Wattenwyl-Haus](reconstructions/von-wattenwyl-haus/) | Archive of the public Matterport tour and an experiment turning its panoramas into a Gaussian splat. The downloaded tour stays local; the splat viewer is published. |
+| [Beatrice von Wattenwyl-Haus](reconstructions/von-wattenwyl-haus/) | Archive of the public Matterport tour and an experiment turning its panoramas into a Gaussian splat. The downloaded tour stays local; the splat viewer is published. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/von-wattenwyl-haus/). |
+| [Landgut Lohn](reconstructions/landgut-lohn/) | The Federal Council's country residence of 1782/83 in Kehrsatz, reconstructed from floor plans, swisstopo LiDAR and a 360° tour, in the shared viewer with building inventory and IFC download. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/landgut-lohn/). |
 
 ## Repository layout
 
 | Path | Content |
 |---|---|
-| `index.html` | Gallery page with a Gallery / Map toggle |
-| `gallery/` | Gallery code (`js/`), data (`data/reconstructions.json`: title, place, summary, link, preview, tags and WGS84 location with its source), preview images and README artwork (`assets/`), [MapLibre GL JS](https://maplibre.org/) 6.11.2 (`vendor/maplibre-gl/`, BSD-3-Clause, checksum in `VERSION.json`) |
-| `viewer/` | Shared Three.js building viewer: `shell.html`, `js/`, `css/`, pinned `vendor/` libraries ([THIRD_PARTY.md](viewer/THIRD_PARTY.md)) |
+| `index.html` | Gallery page with a Gallery / Map toggle and the viewers' toolbar (GitHub, language, help) |
+| `gallery/` | Gallery code (`js/`), data (`data/reconstructions.json`: title, place, summary, link, preview, tags with German, French and Italian `translations`, and WGS84 location with its source; `data/i18n.json`: interface text), preview images and README artwork (`assets/`), [MapLibre GL JS](https://maplibre.org/) 6.11.2 (`vendor/maplibre-gl/`, BSD-3-Clause, checksum in `VERSION.json`) |
+| `viewer/` | Shared Three.js building viewer: `shell.html`, `js/`, `css/` (`app-tools.css`: the toolbar every page shares), pinned `vendor/` libraries ([THIRD_PARTY.md](viewer/THIRD_PARTY.md)) |
 | `tools/model-pipeline/` | Blender → GLB export, Meshopt compression, catalog import, BIM registry, IFC export, audit |
 | `tools/model-checks/` | Blender checks for any building: hygiene, coplanar faces, furniture, Dollhouse audit |
 | `tools/reference-catalog/` | Evidence library intake, validation and offline catalog for a building's `work/` |
@@ -41,6 +42,20 @@ The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstr
 
 Each Blender reconstruction has a **`public/`** folder (committed and published: building configuration, models, previews, docs) and a **`work/`** folder (gitignored: `references/`, `research/`, the living `build/`, frozen `releases/`, `archive/`; layout in [conventions](docs/conventions.md#work-folder)). `work/` is tracked in a private repository per building. See [Contributing](CONTRIBUTING.md) and [Adding a building](docs/adding-a-building.md).
 
+## Interface and languages
+
+The gallery, the 3D viewers and the splat viewers share one toolbar at the top right: **View on GitHub**, **All reconstructions** (in the viewers), the **language** menu and **Help**, plus **More** in the 3D viewer. Its look and phone layout come from [`viewer/css/app-tools.css`](viewer/css/app-tools.css) with the design tokens in [`token.css`](viewer/css/token.css). The gallery links both and places the toolbar at the right end of its header, in line with the cards; the splat viewers carry both inlined. Change the toolbar there, not per page.
+
+The interface is in English, German, French and Italian. The choice is remembered and holds across all pages. Each page has its own table of interface text:
+
+| Page | Interface text |
+|---|---|
+| 3D viewer | [`viewer/data/i18n.json`](viewer/data/i18n.json) |
+| Gallery | [`gallery/data/i18n.json`](gallery/data/i18n.json); the entries in `reconstructions.json` carry their own `translations` (title, place, summary, tags) |
+| Splat viewers | [`reconstructions/von-wattenwyl-haus/viewer/i18n.json`](reconstructions/von-wattenwyl-haus/viewer/i18n.json), inlined by `make_viewer.py` |
+
+Building content in the viewers stays as authored: element, room and level names, saved places and the about pages. German uses Swiss spelling. [`tests/i18n.test.mjs`](tests/i18n.test.mjs) checks that every table and gallery entry is complete. Details: [viewer guide › Languages](docs/viewer-guide.md#languages).
+
 ## Run locally
 
 ```sh
@@ -49,7 +64,9 @@ python tools/serve.py
 
 Open [localhost:8000](http://localhost:8000/) for the gallery or `/reconstructions/<id>/` for a viewer (`--building <id>` prints the link). The pages load data with `fetch`, so they need a web server. The map uses CARTO's Dark Matter vector basemap, loaded from CARTO at runtime. Check that [CARTO's basemap terms](https://carto.com/basemaps) fit the intended use before relying on it for a public site.
 
-To add a reconstruction, follow [Adding a building](docs/adding-a-building.md): copy the template, add a preview image to `gallery/assets/` and an entry to `gallery/data/reconstructions.json`. Locations come from the [swisstopo search API](https://api3.geo.admin.ch/services/sdiservices.html#search) (`SearchServer`, `type=locations`, `sr=4326`) for the building's address.
+Tests need no install: `node --test --test-isolation=none tests/*.test.mjs` and the Python scripts listed in the [viewer guide](docs/viewer-guide.md).
+
+To add a reconstruction, follow [Adding a building](docs/adding-a-building.md): copy the template, add a preview image to `gallery/assets/` and an entry with its German, French and Italian `translations` to `gallery/data/reconstructions.json`. Locations come from the [swisstopo search API](https://api3.geo.admin.ch/services/sdiservices.html#search) (`SearchServer`, `type=locations`, `sr=4326`) for the building's address.
 
 Viewer links shared before this layout (`…/reconstruction/?version=…&view=…`) are forwarded to the Bundeshaus viewer. For that reason the map view uses `#map`, not a `view` parameter.
 

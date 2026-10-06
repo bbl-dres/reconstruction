@@ -3,9 +3,11 @@
 Uses LichtFeld Studio's HTML export (PlayCanvas SuperSplat viewer) and adapts
 it to Matterport coordinates: the export assumes a COLMAP-style Y-down world,
 while these splats are Z-up, so the splat is re-oriented and the start camera
-is placed at a capture position inside the building. It also adds the page
-buttons (Help, View on GitHub, All reconstructions) and a loading card from
-overlay.html, and fixes the viewer for phones (see FIXES).
+is placed at a capture position inside the building. It also adds the building
+viewer's toolbar (View on GitHub, All reconstructions, language, Help) and a
+loading card from overlay.html, with the viewer's styles (viewer/css) and the
+overlay's translations (i18n.json) inlined, and fixes the viewer for phones
+(see FIXES).
 
 The splat either streams as level-of-detail chunks (--lod) or is embedded:
 
@@ -42,6 +44,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OVERLAY = HERE / 'overlay.html'
+# Inlined into the overlay, so the page keeps working offline: the building viewer's design tokens and
+# toolbar styles, and the overlay's interface text in English, German, French and Italian.
+STYLES = [HERE.parents[2] / 'viewer' / 'css' / name for name in ('token.css', 'app-tools.css')]
+TRANSLATIONS = HERE / 'i18n.json'
 DEFAULT_TITLE = 'Beatrice von Wattenwyl-Haus · Gaussian splat'
 SPLAT_TRANSFORM = '@playcanvas/splat-transform@3.9.0'
 # Share of the trained splat kept per level of detail. The viewer uses levels
@@ -311,8 +317,12 @@ def add_overlay(html, count, note=None):
         kept = previous and re.search(r'data-note="([^"]*)"', previous.group(0))
         note = markup.unescape(kept.group(1)) if kept else ''
     html = OVERLAY_BLOCK.sub('', html)
-    stats = ' · '.join(filter(None, [f'{count / 1e6:.1f} million Gaussians', note]))
-    block = OVERLAY.read_text(encoding='utf-8').replace('{{note}}', markup.escape(note)).replace('{{stats}}', markup.escape(stats))
+    styles = '\n'.join(path.read_text(encoding='utf-8').strip() for path in STYLES)
+    # A script may not contain "</" (it would end the script) or "<!--"; both are escaped in the JSON strings.
+    translations = json.dumps(json.loads(TRANSLATIONS.read_text(encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
+    translations = translations.replace('</', '<\\/').replace('<!--', '<\\u0021--')
+    block = (OVERLAY.read_text(encoding='utf-8').replace('{{note}}', markup.escape(note)).replace('{{count}}', str(count))
+             .replace('{{styles}}', styles).replace('{{i18n}}', translations))
     body = re.search(r'<body[^>]*>\n?', html).end()
     return html[:body] + block + html[body:]
 

@@ -430,7 +430,7 @@
         </script>
     </head>
     <body>
-<!-- reconstruction overlay: added by make_viewer.py; styled like the Bundeshaus viewer -->
+<!-- reconstruction overlay: added by make_viewer.py; the toolbar and help are the building viewer's (viewer/css/app-tools.css) -->
 <!--
   This page was exported by LichtFeld Studio. Its viewer bundles the PlayCanvas
   Engine (https://github.com/playcanvas/engine) and the SuperSplat Viewer
@@ -463,144 +463,810 @@
   Logistics (BBL). See https://github.com/bbl-dres/reconstruction.
 -->
 <style>
-  :root { --rc-edge: 32px; }
-  @media (max-width: 900px) { :root { --rc-edge: 24px; } }
-  @media (max-width: 760px) { :root { --rc-edge: 20px; } }
-  .rc-root, .rc-root * { box-sizing: border-box; }
-  .rc-root { font-family: "Segoe UI", system-ui, sans-serif; color: #f2f3f5; }
-  .rc-root svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  .rc-icons { position: absolute; width: 0; height: 0; overflow: hidden; }
-  .rc-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .rc-actions { position: fixed; z-index: 2; top: calc(var(--rc-edge) + env(safe-area-inset-top)); right: calc(var(--rc-edge) + env(safe-area-inset-right)); display: flex; gap: 8px; }
-  .rc-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 12px; border: 1px solid #ffffff24; border-radius: 12px; background: #20242bee; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 4px 16px #0003; color: #f2f3f5; font: 600 .875rem/1.5 "Segoe UI", system-ui, sans-serif; white-space: nowrap; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 140ms ease-out, border-color 140ms ease-out; }
-  .rc-button.rc-strong { border-color: #ffffff3b; }
-  .rc-button:hover { background: #343b47; border-color: #ffffff66; }
-  .rc-button:focus-visible, .rc-close:focus-visible { outline: 2px solid #b9d4ff; outline-offset: 3px; }
-  .rc-button:focus:not(:focus-visible), .rc-close:focus:not(:focus-visible) { outline: none; }
-  @media (max-width: 1199px) {
-    .rc-actions > .rc-button { width: 44px; padding: 0; }
-    .rc-actions > .rc-button > span { display: none; }
+/* Building explorer design tokens. Change theme values here; no build required. */
+:root {
+  color-scheme: dark;
+
+  /* Neutral architecture palette. Warm color is reserved for daylight/evidence. */
+  --color-canvas: #000;
+  --color-text: #f2f3f5;
+  --color-text-secondary: #c1c7d1;
+  --color-text-muted: #a8b0be;
+  --color-text-inverse: #191c22;
+  --color-surface: #191c22;
+  --color-surface-raised: #252a33;
+  --color-surface-hover: #343b47;
+  --color-surface-selected: #edf0f5;
+  --color-surface-selected-hover: #fff;
+  --color-overlay-control: #20242bee;
+  --color-overlay-panel: #191c22fa;
+  --color-overlay-soft: #191c22ee;
+  --color-overlay-hover: #ffffff0b;
+  --color-overlay-pressed: #ffffff14;
+  --color-backdrop: #0005;
+  --color-border: #ffffff24;
+  --color-border-strong: #ffffff3b;
+  --color-border-hover: #ffffff66;
+  --color-border-active: #a6b0c1;
+  --color-focus: #b9d4ff;
+  --color-selection: #38d9ff;
+  --color-daylight: #ffd38a;
+  --color-daylight-border: #bc9864;
+  --color-warning: #e6c99c;
+  --color-evidence: #dac6a4;
+  --color-switch-off: #586171;
+  --color-switch-knob: #c7cfdb;
+  --color-field: #20242b;
+  --color-selection-fill: #38d9ff55;
+  --color-selection-soft: #38d9ff33;
+
+  /* Type uses the system font and respects the browser's default text size. */
+  --font-family: "Segoe UI", system-ui, sans-serif;
+  --text-2xs: .6875rem;
+  --text-xs: .75rem;
+  --text-sm: .8125rem;
+  --text-base: .875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.75rem;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --leading-tight: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --tracking-tight: -.02em;
+  --tracking-eyebrow: .14em;
+
+  /* Spacing scale; 2 px and 6 px are for compact nested controls. */
+  --space-px: 1px;
+  --space-half: 2px;
+  --space-1: 4px;
+  --space-1h: 6px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  --radius-xs: 4px;
+  --radius-row: 6px;
+  --radius-sm: 8px;
+  --radius-inner: 10px;
+  --radius-control: 12px;
+  --radius-toolbar: 14px;
+  --radius-dropdown: 16px;
+  --radius-dock: 18px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+  --border-width: 1px;
+  --focus-width: 2px;
+  --focus-offset: 3px;
+  --control-size: 44px;
+  --control-size-large: 48px;
+  --control-size-compact: 40px;
+  --icon-size: 20px;
+  --icon-size-large: 24px;
+  --icon-size-small: 16px;
+  --icon-stroke: 1.5;
+  --switch-width: 36px;
+  --switch-height: 22px;
+  --switch-knob: 16px;
+  --switch-gap: 3px;
+  --switch-travel: 14px;
+  --disabled-opacity: .45;
+
+  --shadow-control: 0 4px 16px #0003;
+  --shadow-dock: 0 8px 32px #0006;
+  --shadow-panel: 0 16px 60px #0008;
+  --shadow-selected: 0 1px 6px #0003;
+  --shadow-text: 0 1px 4px #000, 0 1px 12px #000;
+  --shadow-crosshair: 0 0 0 1px #0008;
+  --header-scrim: linear-gradient(#000b, #0000);
+  --blur-control: 16px;
+  --blur-panel: 20px;
+  --duration-fast: 140ms;
+  --ease-standard: ease-out;
+  --layer-sticky: 1;
+  --layer-notice: 4;
+  --layer-loading: 5;
+  --layer-popover: 10;
+
+  /* Shared layout rhythm. JS reads resolved insets for dropdowns and the inspector. */
+  --edge: var(--space-6);
+  --bottom-edge: var(--space-7);
+  --inset-top: calc(var(--edge) + env(safe-area-inset-top));
+  --inset-left: calc(var(--edge) + env(safe-area-inset-left));
+  --inset-right: calc(var(--edge) + env(safe-area-inset-right));
+  --inset-bottom: calc(var(--bottom-edge) + env(safe-area-inset-bottom));
+  --sidebar-width: 300px;
+  --tree-row: 34px;
+  --tree-indent: 16px;
+  --sheet-collapsed: 64px;
+  --sheet-open: min(560px, 66dvh);
+  --inspector-width: 300px;
+  --dropdown-lighting: 320px;
+  --dropdown-surroundings: 280px;
+  --dropdown-help: 360px;
+  --dropdown-menu: 232px;
+  --dropdown-language: 200px;
+  --dock-label-size: var(--text-base);
+}
+
+/* Media thresholds are structural CSS constraints, not theme colors/spacing. */
+@media (max-width: 760px) {
+  :root { --edge: var(--space-5); --bottom-edge: var(--space-5); --tree-row: 44px; }
+}
+@media (max-height: 500px) and (min-width: 761px) {
+  :root { --edge: var(--space-4); --bottom-edge: var(--space-4); }
+}
+@media (min-width: 1800px) and (min-height: 900px) {
+  :root { --edge: var(--space-8); --bottom-edge: var(--space-8); --sidebar-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-fast: 0ms; }
+}
+/* Shared page chrome: the toolbar at the top right (.topbar > .toolbar.app-tools), its dropdowns and the
+   help panel. The building viewer loads it before main.css, the gallery loads it directly, and
+   make_viewer.py inlines it into the splat viewers. Theme and scale values live in token.css. */
+
+/* Base for pages without main.css (the gallery and the splat viewers); main.css sets the same globally. */
+:where(.topbar, .dropdown) {
+  font-family: var(--font-family);
+  line-height: var(--leading-normal);
+}
+:where(.topbar, .dropdown) :where(button, input) {
+  font: inherit;
+  color: inherit;
+}
+:where(.topbar, .dropdown) button {
+  cursor: pointer;
+}
+:where(.topbar, .dropdown) svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+:where(.topbar, .dropdown) :is(button, a, input):focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+:where(.topbar, .dropdown) button:focus:not(:focus-visible) {
+  outline: none;
+}
+:where(.topbar, .dropdown)[hidden], :where(.topbar, .dropdown) [hidden] {
+  display: none !important;
+}
+
+/* Shared building blocks. */
+.icon-library {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: calc(-1 * var(--space-px));
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 var(--space-1);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: var(--color-overlay-hover);
+  color: var(--color-text);
+  font: var(--text-2xs) var(--font-family);
+  text-align: center;
+}
+.eyebrow {
+  display: block;
+  margin: 0 0 10px;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.panel-note {
+  margin: var(--space-1) 0 var(--space-half);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+/* Top bar at the top right of every page: links, language, help and, in the viewer, More.
+   The viewer also centres its scene settings in it. */
+.topbar {
+  position: absolute;
+  z-index: 2;
+  top: var(--inset-top);
+  left: var(--inset-left);
+  right: var(--inset-right);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.topbar > * {
+  pointer-events: auto;
+}
+.app-tools {
+  grid-column: 3;
+  justify-self: end;
+}
+.toolbar {
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-overlay-soft);
+  box-shadow: var(--shadow-dock);
+  backdrop-filter: blur(var(--blur-panel));
+  display: flex;
+  align-items: center;
+  gap: var(--space-half);
+  padding: var(--space-1);
+  border-radius: var(--radius-toolbar);
+}
+.toolbar-link {
+  color: inherit;
+  text-decoration: none;
+}
+.language-code {
+  font-size: var(--text-sm);
+  letter-spacing: .04em;
+}
+.language-menu .menu-options {
+  padding: 0;
+}
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-size-compact);
+  padding: 0 var(--space-3) 0 10px;
+  border: 0;
+  border-radius: var(--radius-inner);
+  background: transparent;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.toolbar-button.icon-only {
+  justify-content: center;
+  width: var(--control-size-compact);
+  height: var(--control-size-compact);
+  padding: 0;
+}
+.toolbar-button:hover:not(:disabled) {
+  background: var(--color-overlay-pressed);
+}
+.toolbar-button[aria-expanded=true] {
+  background: var(--color-surface-hover);
+}
+.toolbar-divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 var(--space-1);
+  background: var(--color-border);
+}
+
+/* Dropdowns are native popovers; layout uses block flow so the UA can hide them. */
+.dropdown {
+  position: fixed;
+  inset: auto;
+  z-index: var(--layer-popover);
+  left: var(--dropdown-left, 16px);
+  top: var(--dropdown-top, 80px);
+  width: var(--dropdown-width, var(--dropdown-lighting));
+  max-height: var(--dropdown-maxHeight, calc(100dvh - 96px));
+  margin: 0;
+  padding: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  color: inherit;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-dropdown);
+  background: var(--color-overlay-panel);
+  backdrop-filter: blur(var(--blur-panel));
+  box-shadow: var(--shadow-panel);
+  overflow-wrap: anywhere;
+}
+.dropdown::backdrop {
+  background: transparent;
+}
+.help-panel {
+  padding: var(--space-1) 0 var(--space-2);
+}
+.menu {
+  padding: var(--space-1h);
+}
+
+/* Help panel: optional tabs, then eyebrow headings, guides, notes and link buttons. */
+.segmented {
+  display: flex;
+  gap: var(--space-half);
+  margin: var(--space-2) var(--space-3) 0;
+  padding: 3px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-inner);
+  background: var(--color-overlay-hover);
+}
+.segmented [role=tab] {
+  flex: 1;
+  min-height: 32px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.segmented [aria-selected=true] {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+.help-body {
+  padding: var(--space-3) var(--space-4) var(--space-1);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+.help-body .eyebrow {
+  margin: var(--space-4) 0 10px;
+}
+.help-body .eyebrow:first-child {
+  margin-top: 0;
+}
+.guide {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: var(--space-1h) var(--space-3);
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.guide dt {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+.guide dd {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+.help-body > .panel-note {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+/* A note right under a heading sits as close as a guide does. */
+.help-body > .eyebrow + .panel-note {
+  margin-top: 0;
+}
+.about-body h3 {
+  margin: 0 0 var(--space-1h);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+.about-body .panel-note {
+  margin: 0 0 10px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.about-body a:not(.link-button) {
+  color: var(--color-text);
+}
+.about-facts {
+  margin-top: var(--space-3);
+}
+.about-facts dt {
+  font-weight: var(--weight-normal);
+  color: var(--color-text-muted);
+}
+.about-facts dd {
+  color: var(--color-text);
+}
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1h);
+  margin-top: 14px;
+}
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1h);
+  min-height: 34px;
+  padding: 0 10px;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+.link-button:hover {
+  background: var(--color-overlay-pressed);
+}
+.link-button svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Menus: items, notes and radio options (More, language). */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--control-size-compact);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: left;
+  text-decoration: none;
+}
+.menu-item:hover:not(:disabled) {
+  background: var(--color-overlay-pressed);
+}
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+}
+.menu-item > span:first-of-type {
+  flex: 1;
+}
+.menu-item .menu-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transform: rotate(90deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.menu-item[aria-expanded=true] .menu-chevron {
+  transform: rotate(-90deg);
+}
+.menu-divider {
+  display: block;
+  height: 1px;
+  margin: var(--space-1) var(--space-1h);
+  background: var(--color-border);
+}
+.menu-note {
+  margin: 0 10px var(--space-1h);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.menu-input {
+  display: block;
+  width: calc(100% - 20px);
+  min-height: 36px;
+  margin: 0 10px var(--space-1h);
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+}
+.menu-options {
+  display: grid;
+  gap: var(--space-half);
+  padding: 0 0 var(--space-1) 34px;
+}
+.menu-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 34px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.menu-options label:hover {
+  background: var(--color-overlay-hover);
+}
+.menu-options input {
+  margin: 0;
+  accent-color: var(--color-text);
+}
+
+/* Phones: an icon-only toolbar with the language code in place of the globe, and one-column help.
+   The same breakpoint as the viewer's compact layout. */
+@media (max-width: 760px) {
+  .toolbar {
+    padding: 3px;
+    border-radius: var(--radius-control);
   }
-  /* Help: like the Bundeshaus help panel, under the buttons on wide screens and centred on phones. */
-  .rc-panel { --rc-top: calc(var(--rc-edge) + env(safe-area-inset-top) + 56px); position: fixed; inset: var(--rc-top) calc(var(--rc-edge) + env(safe-area-inset-right)) auto auto; width: 480px; max-width: calc(100vw - 2 * var(--rc-edge)); max-height: calc(100dvh - var(--rc-top) - var(--rc-edge)); margin: 0; padding: 20px; color: inherit; border: 1px solid #ffffff3b; border-radius: 20px; background: #191c22fa; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); box-shadow: 0 16px 60px #0008; overflow-y: auto; overscroll-behavior: contain; overflow-wrap: anywhere; font-size: .875rem; line-height: 1.5; }
-  .rc-panel::backdrop { background: #0005; }
-  /* The viewer turns off touch scrolling and text selection everywhere; the help text needs both. */
-  .rc-panel, .rc-panel * { touch-action: pan-y; -webkit-user-select: text; user-select: text; }
-  @media (max-width: 760px) {
-    .rc-panel { left: 50%; right: auto; transform: translateX(-50%); padding: 16px; }
-    .rc-heading { margin: -16px -16px 20px; padding: 12px 16px; top: -16px; }
+  .toolbar-button {
+    justify-content: center;
+    width: var(--control-size-compact);
+    height: var(--control-size-compact);
+    padding: 0;
+    border-radius: 9px;
   }
-  .rc-heading { position: sticky; top: -20px; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: -20px -20px 20px; padding: 16px 20px; border-bottom: 1px solid #ffffff24; background: #191c22; }
-  .rc-heading h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.3; }
-  .rc-close { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; border-radius: 12px; background: transparent; color: inherit; cursor: pointer; }
-  .rc-close:hover { background: #ffffff14; }
-  .rc-panel h3 { margin: 24px 0 12px; font-size: .875rem; font-weight: 600; }
-  .rc-panel a:not(.rc-button) { color: inherit; }
-  .rc-note { margin: 4px 0 0; font-size: .8125rem; line-height: 1.65; color: #a8b0be; }
-  .rc-points p { margin: 12px 0; color: #c1c7d1; line-height: 1.65; }
-  .rc-points strong { display: block; color: #f2f3f5; font-weight: 600; }
-  .rc-guide { display: grid; grid-template-columns: 76px 1fr; gap: 12px; margin: 0; line-height: 1.65; }
-  .rc-guide dd { margin: 0; color: #c1c7d1; }
-  .rc-guide + .rc-note { margin-top: 16px; }
-  .rc-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .rc-links .rc-button { white-space: normal; }
-  .rc-stats { margin: 16px 0 0; font-size: .75rem; line-height: 1.65; color: #a8b0be; }
-  @media (max-width: 420px) {
-    .rc-guide { grid-template-columns: 1fr; gap: 4px; }
-    .rc-guide dt:not(:first-child) { margin-top: 12px; }
+  .toolbar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
-  /* Loading: like the Bundeshaus loading card. It replaces the viewer's own loading bar. */
+  .toolbar-divider, .language-toggle > svg {
+    display: none;
+  }
+  .guide {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+  .guide dt:not(:first-child) {
+    margin-top: var(--space-2);
+  }
+}
+</style>
+<style>
+  /* The overlay's own parts; the design tokens and the toolbar above come from viewer/css. */
   html { background: #000; color-scheme: dark; }
+  .rc-root { font-family: var(--font-family); color: var(--color-text); }
+  /* The viewer turns off touch scrolling and text selection everywhere; the help needs both. */
+  .dropdown, .dropdown * { touch-action: pan-y; -webkit-user-select: text; user-select: text; }
+  /* Loading: like the building viewer's loading card. It replaces the viewer's own loading bar. */
   #loadingWrap { display: none !important; }
-  .rc-loading { position: fixed; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(370px, calc(100vw - 2 * var(--rc-edge))); max-height: calc(100dvh - 2 * var(--rc-edge)); overflow-y: auto; padding: 28px; text-align: center; border: 1px solid #ffffff3b; border-radius: 20px; background: #191c22fa; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); box-shadow: 0 16px 60px #0008; transition: opacity 300ms ease-out, visibility 0s 300ms; }
+  .rc-loading { position: fixed; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(370px, calc(100vw - 2 * var(--edge))); max-height: calc(100dvh - 2 * var(--edge)); overflow-y: auto; padding: var(--space-7); text-align: center; border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-panel); background: var(--color-overlay-panel); -webkit-backdrop-filter: blur(var(--blur-panel)); backdrop-filter: blur(var(--blur-panel)); box-shadow: var(--shadow-panel); transition: opacity 300ms ease-out, visibility 0s 300ms; }
   .rc-loading.rc-done { opacity: 0; visibility: hidden; }
-  .rc-eyebrow { display: block; margin-bottom: 16px; font-size: .6875rem; font-weight: 600; letter-spacing: .14em; color: #a8b0be; }
-  .rc-loading h2 { margin: 0 0 12px; font-size: 1.75rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.3; }
-  .rc-loading p { margin: 0; font-size: .875rem; line-height: 1.65; color: #c1c7d1; }
-  .rc-loading progress { display: block; width: 100%; height: 4px; margin-top: 24px; border: 0; border-radius: 4px; -webkit-appearance: none; appearance: none; background: #586171; accent-color: #f2f3f5; }
-  .rc-loading progress::-webkit-progress-bar { background: #586171; border-radius: 4px; }
-  .rc-loading progress::-webkit-progress-value { background: #f2f3f5; border-radius: 4px; }
-  .rc-loading progress::-moz-progress-bar { background: #f2f3f5; border-radius: 4px; }
+  .rc-loading .eyebrow { margin-bottom: var(--space-4); }
+  .rc-loading h2 { margin: 0 0 var(--space-3); font-size: var(--text-3xl); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight); line-height: var(--leading-tight); }
+  .rc-loading p { margin: 0; font-size: var(--text-base); line-height: var(--leading-relaxed); color: var(--color-text-secondary); }
+  .rc-loading progress { display: block; width: 100%; height: 4px; margin-top: var(--space-6); border: 0; border-radius: var(--radius-xs); -webkit-appearance: none; appearance: none; background: var(--color-switch-off); accent-color: var(--color-text); }
+  .rc-loading progress::-webkit-progress-bar { background: var(--color-switch-off); border-radius: var(--radius-xs); }
+  .rc-loading progress::-webkit-progress-value { background: var(--color-text); border-radius: var(--radius-xs); }
+  .rc-loading progress::-moz-progress-bar { background: var(--color-text); border-radius: var(--radius-xs); }
   .rc-loading.rc-error progress { display: none; }
   /* Navigation tip, shown once per browser after the first frame: the double tap is not discoverable otherwise. */
-  .rc-tip { position: fixed; z-index: 2; left: 50%; bottom: calc(var(--rc-edge) + env(safe-area-inset-bottom) + 60px); transform: translateX(-50%); display: flex; align-items: center; gap: 4px; width: max-content; max-width: calc(100vw - 2 * var(--rc-edge)); padding: 4px 4px 4px 16px; border: 1px solid #ffffff3b; border-radius: 12px; background: #20242bee; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 4px 16px #0003; font-size: .875rem; line-height: 1.5; transition: opacity 300ms ease-out, visibility 0s 300ms; }
+  .rc-tip { position: fixed; z-index: 2; left: 50%; bottom: calc(var(--edge) + env(safe-area-inset-bottom) + 60px); transform: translateX(-50%); display: flex; align-items: center; gap: var(--space-1); width: max-content; max-width: calc(100vw - 2 * var(--edge)); padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-overlay-control); -webkit-backdrop-filter: blur(var(--blur-control)); backdrop-filter: blur(var(--blur-control)); box-shadow: var(--shadow-control); font-size: var(--text-base); line-height: var(--leading-normal); transition: opacity 300ms ease-out, visibility 0s 300ms; }
   .rc-tip[hidden] { display: none; }
   .rc-nowrap { white-space: nowrap; }
   /* Touches pass through the tip to the house; only its close button takes them. */
   .rc-tip { pointer-events: none; }
-  .rc-tip button { pointer-events: auto; }
+  .rc-tip button { display: grid; place-items: center; width: var(--control-size); height: var(--control-size); padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: inherit; cursor: pointer; pointer-events: auto; }
+  .rc-tip button:hover { background: var(--color-overlay-pressed); }
+  .rc-tip button:focus-visible { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
+  .rc-tip svg { width: var(--icon-size); height: var(--icon-size); fill: none; stroke: currentColor; stroke-width: var(--icon-stroke); stroke-linecap: round; stroke-linejoin: round; }
   .rc-tip.rc-done { opacity: 0; visibility: hidden; }
   @media (prefers-reduced-motion: reduce) { .rc-tip, .rc-loading { transition: none; } }
   @media (max-height: 500px) {
-    .rc-loading { padding: 20px; }
-    .rc-eyebrow { display: none; }
-    .rc-loading h2 { font-size: 1.125rem; margin-bottom: 8px; }
-    .rc-loading progress { margin-top: 16px; }
+    .rc-loading { padding: var(--space-5); }
+    .rc-loading .eyebrow { display: none; }
+    .rc-loading h2 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+    .rc-loading progress { margin-top: var(--space-4); }
   }
 </style>
 <div class="rc-root">
-  <svg class="rc-icons" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <symbol id="rc-i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v1"/></symbol>
     <symbol id="rc-i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4s-1.2-.4-4.1 1.5a14 14 0 0 0-7.4 0C4.7-.3 3.5.1 3.5.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.6v4" transform="translate(1 1) scale(.9)"/></symbol>
     <symbol id="rc-i-gallery" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+    <symbol id="rc-i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3C9.5 5.6 8.2 8.6 8.2 12s1.3 6.4 3.8 9"/></symbol>
     <symbol id="rc-i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
     <symbol id="rc-i-external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14M10 3H3v18h18v-7"/></symbol>
   </svg>
-  <nav class="rc-actions" aria-label="Page">
-    <button id="rc-help-toggle" type="button" class="rc-button" aria-label="Help and model information" aria-haspopup="dialog" aria-controls="rc-help" title="Help and controls"><svg aria-hidden="true"><use href="#rc-i-info"/></svg><span>Help</span></button>
-    <a class="rc-button rc-strong" href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub (opens in a new tab)" title="View on GitHub (opens in a new tab)"><svg aria-hidden="true"><use href="#rc-i-github"/></svg><span>View on GitHub</span></a>
-    <a class="rc-button" href="../../../../" aria-label="All reconstructions" title="All reconstructions"><svg aria-hidden="true"><use href="#rc-i-gallery"/></svg><span>All reconstructions</span></a>
-  </nav>
-  <dialog id="rc-help" class="rc-panel" aria-labelledby="rc-help-heading">
-    <div class="rc-heading"><h2 id="rc-help-heading">Explore the house</h2><button data-close type="button" class="rc-close" aria-label="Close help" autofocus><svg aria-hidden="true"><use href="#rc-i-close"/></svg></button></div>
-    <h3>House &amp; capture</h3>
-    <p class="rc-note">The Beatrice von Wattenwyl-Haus at Junkerngasse 59 in Bern’s old town is where the Federal Council receives official guests. This view is a 3D Gaussian splat, trained from the panoramas of the house’s public Matterport tour.</p>
-    <div class="rc-points">
-      <p><strong>Sharp at capture positions</strong> Where the panoramas were taken, rooms look much as photographed.</p>
-      <p><strong>Soft between them</strong> The positions are about 1.7 m apart at one height, so views away from them turn foggy. This is not a measured model.</p>
+  <!-- The building viewer's toolbar (viewer/shell.html): GitHub, All reconstructions, language and help. Text comes from i18n.json. -->
+  <div class="topbar">
+    <div class="toolbar app-tools" role="group" aria-label="Links, language and help" data-i18n-attr="aria-label:toolbar.label">
+      <a class="toolbar-button icon-only toolbar-link" href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus" target="_blank" rel="noopener noreferrer" title="View on GitHub" data-i18n-attr="title:menu.github"><svg aria-hidden="true"><use href="#rc-i-github"/></svg><span class="sr-only" data-i18n="menu.github">View on GitHub</span><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
+      <a class="toolbar-button toolbar-link gallery-link" href="../../../../" title="All reconstructions" data-i18n-attr="title:menu.gallery"><svg aria-hidden="true"><use href="#rc-i-gallery"/></svg><span class="toolbar-label" data-i18n="menu.gallery">All reconstructions</span></a>
+      <span class="toolbar-divider" aria-hidden="true"></span>
+      <button id="rc-language-toggle" type="button" class="toolbar-button language-toggle" popovertarget="rc-language-menu" aria-controls="rc-language-menu" aria-haspopup="true" aria-expanded="false" aria-label="Language: English"><svg aria-hidden="true"><use href="#rc-i-globe"/></svg><span id="rc-language-code" class="language-code" aria-hidden="true">EN</span></button>
+      <button id="rc-help-toggle" type="button" class="toolbar-button icon-only help-toggle" popovertarget="rc-help" aria-controls="rc-help" aria-haspopup="dialog" aria-expanded="false" aria-label="Help and model information" title="Help and controls" data-i18n-attr="aria-label:help.label title:help.title"><svg aria-hidden="true"><use href="#rc-i-info"/></svg></button>
     </div>
-    <h3>Move around</h3>
-    <dl class="rc-guide">
-      <dt>Mouse</dt><dd>Drag to look around, double-click a spot to walk there, scroll to move forward or back, right-drag to move sideways.</dd>
-      <dt>Touch</dt><dd>Drag with one finger to look around. Double-tap a spot to walk there: the floor to stand on it, a wall or picture to walk up to it. Pinch to step forward or back.</dd>
-      <dt>Keyboard</dt><dd>WASD or the arrow keys move, Q and E go down and up, Shift moves faster. F frames the whole house, R returns to the start view.</dd>
-      <dt>Orbit</dt><dd>The camera buttons at the bottom right switch between this walking view and orbiting a point: drag to orbit, scroll or pinch to zoom, double-click or double-tap to choose the point.</dd>
-    </dl>
-    <p class="rc-note"><strong>Settings</strong>, at the bottom right, switch between high and low quality rendering. Touch screens start in low quality, which keeps phones responsive.</p>
-    <div class="rc-links">
-      <a class="rc-button" href="https://www.bbl.admin.ch/de/besichtigung" target="_blank" rel="noopener noreferrer">Virtual tours (BBL)<svg aria-hidden="true"><use href="#rc-i-external"/></svg><span class="rc-sr-only"> (opens in a new tab)</span></a>
-      <a class="rc-button" href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus" target="_blank" rel="noopener noreferrer">View on GitHub<svg aria-hidden="true"><use href="#rc-i-external"/></svg><span class="rc-sr-only"> (opens in a new tab)</span></a>
+  </div>
+  <section id="rc-help" class="dropdown help-panel" popover="auto" role="dialog" aria-label="Help and model information" data-i18n-attr="aria-label:help.label" hidden>
+    <div class="segmented" role="tablist" aria-label="Help" data-i18n-attr="aria-label:help.tabs">
+      <button id="rc-controls-tab" type="button" role="tab" aria-selected="true" aria-controls="rc-controls-panel" autofocus data-i18n="help.controls">Controls</button>
+      <button id="rc-about-tab" type="button" role="tab" aria-selected="false" aria-controls="rc-about-panel" tabindex="-1" data-i18n="help.about">About this model</button>
     </div>
-    <p class="rc-stats" data-note="LichtFeld Studio, 60,000 steps, all 106 positions, camera poses from COLMAP with LoMa">3.0 million Gaussians · LichtFeld Studio, 60,000 steps, all 106 positions, camera poses from COLMAP with LoMa</p>
-  </dialog>
+    <div id="rc-controls-panel" class="help-body" role="tabpanel" aria-labelledby="rc-controls-tab">
+      <h3 class="eyebrow" data-i18n="help.move">Move around</h3>
+      <dl class="guide">
+        <dt data-i18n="help.mouse">Mouse</dt><dd data-i18n="help.mouseDetail"></dd>
+        <dt data-i18n="help.touch">Touch</dt><dd data-i18n="help.touchDetail"></dd>
+        <dt data-i18n="help.keyboard">Keyboard</dt><dd data-i18n-html="help.keyboardDetail"></dd>
+        <dt data-i18n="help.orbit">Orbit</dt><dd data-i18n="help.orbitDetail"></dd>
+      </dl>
+      <p class="panel-note" data-i18n="help.settings"></p>
+    </div>
+    <div id="rc-about-panel" class="help-body about-body" role="tabpanel" aria-labelledby="rc-about-tab" hidden>
+      <h3 data-i18n="about.capture">House &amp; capture</h3>
+      <p class="panel-note" data-i18n="about.house"></p>
+      <h3 data-i18n="about.sharp">Sharp at capture positions</h3>
+      <p class="panel-note" data-i18n="about.sharpDetail"></p>
+      <h3 data-i18n="about.soft">Soft between them</h3>
+      <p class="panel-note" data-i18n="about.softDetail"></p>
+      <dl class="guide about-facts">
+        <dt data-i18n="about.place">Place</dt><dd>Junkerngasse 59, 3011 Bern</dd>
+        <dt data-i18n="about.splat">Splat</dt><dd id="rc-stats" data-count="2980490" data-note="LichtFeld Studio, 60,000 steps, all 106 positions, camera poses from COLMAP with LoMa"></dd>
+      </dl>
+      <div class="project-links">
+        <a class="link-button" href="https://www.bbl.admin.ch/de/besichtigung" target="_blank" rel="noopener noreferrer"><span data-i18n="about.tours">Virtual tours (BBL)</span><svg aria-hidden="true"><use href="#rc-i-external"/></svg><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
+        <a class="link-button" href="https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/von-wattenwyl-haus" target="_blank" rel="noopener noreferrer"><span data-i18n="menu.github">View on GitHub</span><svg aria-hidden="true"><use href="#rc-i-external"/></svg><span class="sr-only" data-i18n="link.newTab"> (opens in a new tab)</span></a>
+      </div>
+    </div>
+  </section>
+  <div id="rc-language-menu" class="dropdown menu language-menu" popover="auto" role="group" aria-label="Language" data-i18n-attr="aria-label:language.label" hidden>
+    <div class="menu-options" role="radiogroup" aria-label="Language" data-i18n-attr="aria-label:language.label">
+      <label lang="en"><input type="radio" name="rc-language" value="en"><span>English</span></label>
+      <label lang="de"><input type="radio" name="rc-language" value="de"><span>Deutsch</span></label>
+      <label lang="fr"><input type="radio" name="rc-language" value="fr"><span>Français</span></label>
+      <label lang="it"><input type="radio" name="rc-language" value="it"><span>Italiano</span></label>
+    </div>
+  </div>
   <div id="rc-loading" class="rc-loading" role="status" aria-live="polite" aria-atomic="true">
-    <span class="rc-eyebrow">SPLAT VIEWER</span>
+    <span class="eyebrow" data-i18n="loading.eyebrow">Splat viewer</span>
     <h2 id="rc-loading-title">Opening Beatrice von Wattenwyl-Haus</h2>
     <p id="rc-loading-detail">Starting the download…</p>
-    <progress id="rc-load-progress" max="100" aria-label="Splat download progress"></progress>
+    <progress id="rc-load-progress" max="100" aria-label="Splat download progress" data-i18n-attr="aria-label:loading.progress"></progress>
   </div>
-  <div id="rc-tip" class="rc-tip" role="status" hidden><span id="rc-tip-text"></span><button type="button" class="rc-close" aria-label="Hide tip"><svg aria-hidden="true"><use href="#rc-i-close"/></svg></button></div>
+  <div id="rc-tip" class="rc-tip" role="status" hidden><span id="rc-tip-text"></span><button type="button" aria-label="Hide tip" data-i18n-attr="aria-label:tip.hide"><svg aria-hidden="true"><use href="#rc-i-close"/></svg></button></div>
 </div>
 <script>
-  (() => {
-    const dialog = document.getElementById('rc-help');
-    const trigger = document.getElementById('rc-help-toggle');
-    trigger.addEventListener('click', () => dialog.showModal());
-    dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => trigger.focus({ preventScroll: true }));
-    // A backdrop click dismisses, as in the Bundeshaus viewer.
-    let startedOutside = false;
-    const outside = event => {
-      const rect = dialog.getBoundingClientRect();
-      return event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+  // Interface text in English, German, French and Italian: i18n.json beside overlay.html, inlined by
+  // make_viewer.py so the page also works offline. The choice is shared with the building viewers and the gallery.
+  window.rcText = (() => {
+    const tables = {"en":{"language.name":"English","language.label":"Language","toolbar.label":"Links, language and help","menu.github":"View on GitHub","menu.gallery":"All reconstructions","link.newTab":" (opens in a new tab)","help.label":"Help and model information","help.title":"Help and controls","help.tabs":"Help","help.controls":"Controls","help.about":"About this model","help.move":"Move around","help.mouse":"Mouse","help.mouseDetail":"Drag to look around, double-click a spot to walk there, scroll to move forward or back, right-drag to move sideways.","help.touch":"Touch","help.touchDetail":"Drag with one finger to look around. Double-tap a spot to walk there: the floor to stand on it, a wall or picture to walk up to it. Pinch to step forward or back.","help.keyboard":"Keyboard","help.keyboardDetail":"<kbd>WASD<\/kbd> or the arrow keys move, <kbd>Q<\/kbd> <kbd>E<\/kbd> go down and up, <kbd>Shift<\/kbd> moves faster. <kbd>F<\/kbd> frames the whole house, <kbd>R<\/kbd> returns to the start view.","help.orbit":"Orbit","help.orbitDetail":"The camera buttons at the bottom right switch between this walking view and orbiting a point: drag to orbit, scroll or pinch to zoom, double-click or double-tap to choose the point.","help.settings":"Settings, at the bottom right, switch between high and low quality rendering. Touch screens start in low quality, which keeps phones responsive.","about.capture":"House & capture","about.house":"The Beatrice von Wattenwyl-Haus at Junkerngasse 59 in Bern’s old town is where the Federal Council receives official guests. This view is a 3D Gaussian splat, trained from the panoramas of the house’s public Matterport tour.","about.sharp":"Sharp at capture positions","about.sharpDetail":"Where the panoramas were taken, rooms look much as photographed.","about.soft":"Soft between them","about.softDetail":"The positions are about 1.7 m apart at one height, so views away from them turn foggy. This is not a measured model.","about.place":"Place","about.splat":"Splat","about.stats":"{count} million Gaussians","about.tours":"Virtual tours (BBL)","loading.eyebrow":"Splat viewer","loading.opening":"Opening {name}","loading.progress":"Splat download progress","loading.starting":"Starting the download…","loading.downloading":"Downloading the splat · {percent}% of {size} MB","loading.preparing":"Preparing the splat…","loading.preparingPercent":"Preparing the splat · {percent}%","loading.streaming":"Loading the splat…","loading.streamingPercent":"Loading the splat · {percent}%","loading.rendering":"Rendering the first view…","loading.stalled":"Still loading. If nothing changes, check the connection and reload the page.","loading.interrupted":"The download was interrupted","loading.reload":"Reload the page to try again.","loading.noWebgl":"This browser cannot show the splat","loading.noWebglDetail":"The viewer needs WebGL 2. Try a current version of Chrome, Edge, Firefox or Safari.","tip.look":"Drag to look around","tip.walkTouch":"Double-tap to walk there","tip.walkMouse":"Double-click to walk there","tip.pinch":"Pinch to step","tip.keys":"WASD to move","tip.hide":"Hide tip"},"de":{"language.name":"Deutsch","language.label":"Sprache","toolbar.label":"Links, Sprache und Hilfe","menu.github":"Auf GitHub ansehen","menu.gallery":"Alle Rekonstruktionen","link.newTab":" (öffnet in einem neuen Tab)","help.label":"Hilfe und Modellinformationen","help.title":"Hilfe und Steuerung","help.tabs":"Hilfe","help.controls":"Steuerung","help.about":"Über dieses Modell","help.move":"Bewegen","help.mouse":"Maus","help.mouseDetail":"Ziehen, um sich umzusehen; eine Stelle doppelt klicken, um dorthin zu gehen; scrollen, um vor- oder zurückzugehen; mit der rechten Maustaste ziehen, um seitwärts zu gehen.","help.touch":"Touch","help.touchDetail":"Mit einem Finger ziehen, um sich umzusehen. Eine Stelle doppelt tippen, um dorthin zu gehen: den Boden, um dort zu stehen, eine Wand oder ein Bild, um davor zu treten. Mit zwei Fingern zoomen, um vor- oder zurückzugehen.","help.keyboard":"Tastatur","help.keyboardDetail":"<kbd>WASD<\/kbd> oder die Pfeiltasten bewegen, <kbd>Q<\/kbd> <kbd>E<\/kbd> sinken und steigen, <kbd>Umschalt<\/kbd> beschleunigt. <kbd>F<\/kbd> zeigt das ganze Haus, <kbd>R<\/kbd> kehrt zur Startansicht zurück.","help.orbit":"Umkreisen","help.orbitDetail":"Die Kamera-Schaltflächen unten rechts wechseln zwischen dieser Gehansicht und dem Umkreisen eines Punkts: ziehen zum Umkreisen, scrollen oder mit zwei Fingern zoomen, doppelt klicken oder tippen, um den Punkt zu wählen.","help.settings":"Die Einstellungen unten rechts wechseln zwischen hoher und niedriger Darstellungsqualität. Touchscreens starten mit niedriger Qualität, damit Telefone flüssig bleiben.","about.capture":"Haus und Aufnahme","about.house":"Im Beatrice von Wattenwyl-Haus an der Junkerngasse 59 in der Berner Altstadt empfängt der Bundesrat offizielle Gäste. Diese Ansicht ist ein 3D-Gaussian-Splat, trainiert aus den Panoramen des öffentlichen Matterport-Rundgangs durch das Haus.","about.sharp":"Scharf an den Aufnahmepositionen","about.sharpDetail":"Wo die Panoramen aufgenommen wurden, sehen die Räume fast wie fotografiert aus.","about.soft":"Unscharf dazwischen","about.softDetail":"Die Positionen liegen etwa 1,7 m auseinander und alle auf einer Höhe, daher werden Ansichten abseits davon neblig. Dies ist kein vermessenes Modell.","about.place":"Ort","about.splat":"Splat","about.stats":"{count} Millionen Gaussians","about.tours":"Virtuelle Rundgänge (BBL)","loading.eyebrow":"Splat-Viewer","loading.opening":"{name} wird geöffnet","loading.progress":"Fortschritt des Splat-Downloads","loading.starting":"Download startet…","loading.downloading":"Splat wird geladen · {percent} % von {size} MB","loading.preparing":"Splat wird vorbereitet…","loading.preparingPercent":"Splat wird vorbereitet · {percent} %","loading.streaming":"Splat wird geladen…","loading.streamingPercent":"Splat wird geladen · {percent} %","loading.rendering":"Erste Ansicht wird dargestellt…","loading.stalled":"Wird noch geladen. Falls sich nichts ändert, prüfen Sie die Verbindung und laden Sie die Seite neu.","loading.interrupted":"Der Download wurde unterbrochen","loading.reload":"Laden Sie die Seite neu, um es erneut zu versuchen.","loading.noWebgl":"Dieser Browser kann den Splat nicht anzeigen","loading.noWebglDetail":"Der Viewer benötigt WebGL 2. Versuchen Sie eine aktuelle Version von Chrome, Edge, Firefox oder Safari.","tip.look":"Ziehen zum Umsehen","tip.walkTouch":"Doppelt tippen, um hinzugehen","tip.walkMouse":"Doppelklicken, um hinzugehen","tip.pinch":"Zwei Finger zum Gehen","tip.keys":"WASD zum Bewegen","tip.hide":"Tipp ausblenden"},"fr":{"language.name":"Français","language.label":"Langue","toolbar.label":"Liens, langue et aide","menu.github":"Voir sur GitHub","menu.gallery":"Toutes les reconstructions","link.newTab":" (s’ouvre dans un nouvel onglet)","help.label":"Aide et informations sur le modèle","help.title":"Aide et commandes","help.tabs":"Aide","help.controls":"Commandes","help.about":"À propos de ce modèle","help.move":"Se déplacer","help.mouse":"Souris","help.mouseDetail":"Faites glisser pour regarder autour ; double-cliquez sur un endroit pour vous y rendre ; utilisez la molette pour avancer ou reculer ; faites glisser avec le bouton droit pour vous déplacer latéralement.","help.touch":"Tactile","help.touchDetail":"Faites glisser un doigt pour regarder autour. Touchez deux fois un endroit pour vous y rendre : le sol pour vous y placer, un mur ou un tableau pour vous en approcher. Pincez pour avancer ou reculer.","help.keyboard":"Clavier","help.keyboardDetail":"<kbd>WASD<\/kbd> ou les flèches font avancer, <kbd>Q<\/kbd> <kbd>E<\/kbd> font descendre et monter, <kbd>Maj<\/kbd> accélère. <kbd>F<\/kbd> cadre toute la maison, <kbd>R<\/kbd> revient à la vue de départ.","help.orbit":"Orbite","help.orbitDetail":"Les boutons de caméra en bas à droite passent de cette vue de marche à l’orbite autour d’un point : faites glisser pour tourner, utilisez la molette ou pincez pour zoomer, double-cliquez ou touchez deux fois pour choisir le point.","help.settings":"Les réglages, en bas à droite, passent d’un rendu de haute qualité à un rendu de basse qualité. Les écrans tactiles démarrent en basse qualité, ce qui garde les téléphones réactifs.","about.capture":"Maison et prise de vue","about.house":"La maison Beatrice von Wattenwyl, Junkerngasse 59 dans la vieille ville de Berne, est le lieu où le Conseil fédéral reçoit ses hôtes officiels. Cette vue est un splat gaussien 3D, entraîné à partir des panoramas de la visite Matterport publique de la maison.","about.sharp":"Net aux positions de prise de vue","about.sharpDetail":"Là où les panoramas ont été pris, les pièces ressemblent beaucoup aux photos.","about.soft":"Flou entre elles","about.softDetail":"Les positions sont espacées d’environ 1,7 m, toutes à la même hauteur ; loin d’elles, la vue devient brumeuse. Ce n’est pas un modèle mesuré.","about.place":"Lieu","about.splat":"Splat","about.stats":"{count} millions de gaussiennes","about.tours":"Visites virtuelles (OFCL)","loading.eyebrow":"Visionneuse de splat","loading.opening":"Ouverture de {name}","loading.progress":"Progression du téléchargement du splat","loading.starting":"Démarrage du téléchargement…","loading.downloading":"Téléchargement du splat · {percent} % de {size} Mo","loading.preparing":"Préparation du splat…","loading.preparingPercent":"Préparation du splat · {percent} %","loading.streaming":"Chargement du splat…","loading.streamingPercent":"Chargement du splat · {percent} %","loading.rendering":"Affichage de la première vue…","loading.stalled":"Chargement en cours. Si rien ne change, vérifiez la connexion et rechargez la page.","loading.interrupted":"Le téléchargement a été interrompu","loading.reload":"Rechargez la page pour réessayer.","loading.noWebgl":"Ce navigateur ne peut pas afficher le splat","loading.noWebglDetail":"La visionneuse nécessite WebGL 2. Essayez une version récente de Chrome, Edge, Firefox ou Safari.","tip.look":"Glisser pour regarder","tip.walkTouch":"Toucher deux fois pour s’y rendre","tip.walkMouse":"Double-cliquer pour s’y rendre","tip.pinch":"Pincer pour avancer","tip.keys":"WASD pour se déplacer","tip.hide":"Masquer l’astuce"},"it":{"language.name":"Italiano","language.label":"Lingua","toolbar.label":"Link, lingua e guida","menu.github":"Vedi su GitHub","menu.gallery":"Tutte le ricostruzioni","link.newTab":" (si apre in una nuova scheda)","help.label":"Guida e informazioni sul modello","help.title":"Guida e comandi","help.tabs":"Guida","help.controls":"Comandi","help.about":"Informazioni sul modello","help.move":"Muoversi","help.mouse":"Mouse","help.mouseDetail":"Trascina per guardarti intorno, fai doppio clic su un punto per raggiungerlo, scorri per avanzare o indietreggiare, trascina con il tasto destro per spostarti di lato.","help.touch":"Tocco","help.touchDetail":"Trascina con un dito per guardarti intorno. Tocca due volte un punto per raggiungerlo: il pavimento per fermarti lì, una parete o un quadro per avvicinarti. Pizzica per avanzare o indietreggiare.","help.keyboard":"Tastiera","help.keyboardDetail":"<kbd>WASD<\/kbd> o le frecce per muoverti, <kbd>Q<\/kbd> <kbd>E<\/kbd> per scendere e salire, <kbd>Maiusc<\/kbd> per andare più veloce. <kbd>F<\/kbd> inquadra tutta la casa, <kbd>R<\/kbd> torna alla vista iniziale.","help.orbit":"Orbita","help.orbitDetail":"I pulsanti della fotocamera in basso a destra passano da questa vista a piedi all’orbita attorno a un punto: trascina per orbitare, scorri o pizzica per zoomare, fai doppio clic o tocca due volte per scegliere il punto.","help.settings":"Le impostazioni in basso a destra passano dal rendering di alta qualità a quello di bassa qualità. Gli schermi tattili partono in bassa qualità, così i telefoni restano reattivi.","about.capture":"Casa e ripresa","about.house":"La casa Beatrice von Wattenwyl, in Junkerngasse 59 nel centro storico di Berna, è il luogo in cui il Consiglio federale riceve gli ospiti ufficiali. Questa vista è uno splat gaussiano 3D, addestrato dalle panoramiche del tour Matterport pubblico della casa.","about.sharp":"Nitido nei punti di ripresa","about.sharpDetail":"Dove sono state scattate le panoramiche, le stanze appaiono quasi come nelle foto.","about.soft":"Sfocato tra un punto e l’altro","about.softDetail":"I punti distano circa 1,7 m e sono tutti alla stessa altezza, quindi lontano da essi la vista diventa nebbiosa. Non è un modello rilevato.","about.place":"Luogo","about.splat":"Splat","about.stats":"{count} milioni di gaussiane","about.tours":"Tour virtuali (UFCL)","loading.eyebrow":"Visualizzatore splat","loading.opening":"Apertura di {name}","loading.progress":"Avanzamento del download dello splat","loading.starting":"Avvio del download…","loading.downloading":"Download dello splat · {percent}% di {size} MB","loading.preparing":"Preparazione dello splat…","loading.preparingPercent":"Preparazione dello splat · {percent}%","loading.streaming":"Caricamento dello splat…","loading.streamingPercent":"Caricamento dello splat · {percent}%","loading.rendering":"Visualizzazione della prima vista…","loading.stalled":"Caricamento in corso. Se non cambia nulla, verifica la connessione e ricarica la pagina.","loading.interrupted":"Il download è stato interrotto","loading.reload":"Ricarica la pagina per riprovare.","loading.noWebgl":"Questo browser non può mostrare lo splat","loading.noWebglDetail":"Il visualizzatore richiede WebGL 2. Prova una versione recente di Chrome, Edge, Firefox o Safari.","tip.look":"Trascina per guardare","tip.walkTouch":"Tocca due volte per andarci","tip.walkMouse":"Doppio clic per andarci","tip.pinch":"Pizzica per avanzare","tip.keys":"WASD per muoverti","tip.hide":"Nascondi il suggerimento"}};
+    const storageKey = 'building-viewer:language';
+    const listeners = [];
+    let current = 'en';
+    try { const stored = localStorage.getItem(storageKey); if (stored in tables) current = stored; } catch { /* storage blocked: English */ }
+    const t = (key, params = {}) => (tables[current][key] ?? tables.en[key] ?? key)
+      .replace(/\{(\w+)\}/g, (match, name) => name in params ? String(params[name]) : match);
+    const root = document.querySelector('.rc-root');
+    // As in the viewer: data-i18n sets text, data-i18n-html our own <kbd> markup, and data-i18n-attr attributes (attribute:key pairs).
+    function translate() {
+      document.documentElement.lang = current;
+      for (const element of root.querySelectorAll('[data-i18n]')) element.textContent = t(element.dataset.i18n);
+      for (const element of root.querySelectorAll('[data-i18n-html]')) element.innerHTML = t(element.dataset.i18nHtml);
+      for (const element of root.querySelectorAll('[data-i18n-attr]')) {
+        for (const pair of element.dataset.i18nAttr.trim().split(/\s+/)) {
+          const [attribute, key] = pair.split(':');
+          element.setAttribute(attribute, t(key));
+        }
+      }
+      for (const listener of listeners) listener();
+    }
+    return {
+      t, translate,
+      language: () => current,
+      number: (value, digits) => new Intl.NumberFormat(current, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value),
+      onChange: listener => listeners.push(listener),
+      set(next) {
+        if (!(next in tables) || next === current) return;
+        current = next;
+        try { localStorage.setItem(storageKey, next); } catch { /* the choice lasts for this visit */ }
+        translate();
+      },
     };
-    dialog.addEventListener('pointerdown', event => { startedOutside = event.target === dialog && outside(event); });
-    dialog.addEventListener('click', event => {
-      if (startedOutside && event.target === dialog && outside(event)) dialog.close();
-      startedOutside = false;
+  })();
+
+  // Toolbar: the language menu and Help are native popovers below their buttons, placed as in the viewer.
+  (() => {
+    const { t, onChange } = window.rcText;
+    const $ = id => document.getElementById(id);
+    const topbar = document.querySelector('.rc-root .topbar');
+    const dropdowns = [['rc-help', 'rc-help-toggle', '--dropdown-help'], ['rc-language-menu', 'rc-language-toggle', '--dropdown-language']];
+    // The viewer's shortcuts (WASD, F, R, arrows) listen on the window: keys used in the toolbar and its panels stay here.
+    for (const element of [topbar, $('rc-help'), $('rc-language-menu')]) element.addEventListener('keydown', event => event.stopPropagation());
+
+    // Right-aligned with the button, inside the screen; phones and short landscape screens use the available height.
+    function place(panel, trigger, widthToken) {
+      const bar = getComputedStyle(topbar);
+      const edge = parseFloat(bar.right) || 16, inset = parseFloat(bar.top) || 16;
+      const view = { left: visualViewport?.offsetLeft || 0, top: visualViewport?.offsetTop || 0, width: visualViewport?.width || innerWidth, height: visualViewport?.height || innerHeight };
+      const anchor = trigger.getBoundingClientRect();
+      const width = Math.max(1, Math.min(parseFloat(getComputedStyle(document.documentElement).getPropertyValue(widthToken)) || 320, view.width - 2 * edge));
+      const left = Math.max(view.left + edge, Math.min(anchor.right - width, view.left + view.width - width - edge));
+      const top = view.width <= 420 || view.height <= 500 ? view.top + inset
+        : Math.max(view.top + inset, Math.min(anchor.bottom + 10, view.top + view.height - edge - 104));
+      const placement = { left, top, width, maxHeight: Math.max(1, view.top + view.height - top - edge) };
+      for (const [key, value] of Object.entries(placement)) panel.style.setProperty(`--dropdown-${key}`, `${value}px`);
+    }
+    const popovers = typeof HTMLElement.prototype.showPopover === 'function';
+    const close = (panel, trigger) => {
+      if (popovers) { if (panel.matches(':popover-open')) panel.hidePopover(); }
+      else { panel.hidden = true; trigger.setAttribute('aria-expanded', 'false'); }
+    };
+    for (const [panelId, triggerId, widthToken] of dropdowns) {
+      const panel = $(panelId), trigger = $(triggerId);
+      if (popovers) {
+        panel.hidden = false;
+        panel.addEventListener('beforetoggle', event => {
+          if (event.newState === 'open') place(panel, trigger, widthToken);
+          trigger.setAttribute('aria-expanded', String(event.newState === 'open'));
+        });
+      } else {
+        // Older browsers: a disclosure that closes on Escape and on a click elsewhere.
+        trigger.addEventListener('click', () => {
+          const opening = panel.hidden;
+          for (const [otherPanel, otherTrigger] of dropdowns) close($(otherPanel), $(otherTrigger));
+          if (!opening) return;
+          place(panel, trigger, widthToken);
+          panel.hidden = false;
+          trigger.setAttribute('aria-expanded', 'true');
+          (panel.querySelector('[autofocus]') || panel.querySelector('button, input, a'))?.focus({ preventScroll: true });
+        });
+        document.addEventListener('pointerdown', event => { if (!panel.hidden && !panel.contains(event.target) && !trigger.contains(event.target)) close(panel, trigger); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && !panel.hidden) { close(panel, trigger); trigger.focus(); } }, true);
+      }
+      const reposition = () => { if (trigger.getAttribute('aria-expanded') === 'true') place(panel, trigger, widthToken); };
+      addEventListener('resize', reposition);
+      visualViewport?.addEventListener('resize', reposition);
+    }
+
+    // Help tabs, as in the viewer: arrow keys, Home and End move between them.
+    const tabs = [...document.querySelectorAll('#rc-help [role=tab]')];
+    const select = tab => {
+      for (const item of tabs) {
+        const active = item === tab;
+        item.setAttribute('aria-selected', String(active));
+        item.tabIndex = active ? 0 : -1;
+        $(item.getAttribute('aria-controls')).hidden = !active;
+      }
+    };
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', event => {
+        const index = tabs.indexOf(tab);
+        const next = { ArrowRight: (index + 1) % tabs.length, ArrowLeft: (index + tabs.length - 1) % tabs.length, Home: 0, End: tabs.length - 1 }[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        select(tabs[next]);
+        tabs[next].focus();
+      });
+    }
+
+    // The language button shows the current code; choosing a language closes the menu.
+    const inputs = [...document.querySelectorAll('input[name="rc-language"]')];
+    for (const input of inputs) input.addEventListener('change', () => {
+      window.rcText.set(input.value);
+      close($('rc-language-menu'), $('rc-language-toggle'));
+      $('rc-language-toggle').focus({ preventScroll: true });
     });
-    // Keep the viewer's shortcuts (WASD, F, R, Escape) from acting behind the open dialog.
-    dialog.addEventListener('keydown', event => event.stopPropagation());
+    onChange(() => {
+      const label = `${t('language.label')}: ${t('language.name')}`;
+      $('rc-language-code').textContent = window.rcText.language().toUpperCase();
+      $('rc-language-toggle').setAttribute('aria-label', label);
+      $('rc-language-toggle').title = label;
+      for (const input of inputs) input.checked = input.value === window.rcText.language();
+    });
+    // Splat size (set by make_viewer.py) in the language's number format, then the authored note.
+    const stats = $('rc-stats');
+    onChange(() => {
+      const count = t('about.stats', { count: window.rcText.number(Number(stats.dataset.count) / 1e6, 1) });
+      stats.textContent = [count, stats.dataset.note].filter(Boolean).join(' · ');
+    });
+    window.rcText.translate();
   })();
 
   // Loading. An embedded splat follows at the end of this page as script chunks
@@ -609,21 +1275,34 @@
   // rcSplat.response. A streamed splat calls rcSplat.stream() instead, and the
   // card follows the viewer's own loading of the levels of detail.
   window.rcSplat = (() => {
+    const { t, onChange } = window.rcText;
+    const pageSize = '3';
     const card = document.getElementById('rc-loading');
     const title = document.getElementById('rc-loading-title');
     const detail = document.getElementById('rc-loading-detail');
     const bar = document.getElementById('rc-load-progress');
+    // The card keeps keys, not text, so a language change redraws it.
+    let heading = ['loading.opening', { name: 'Beatrice von Wattenwyl-Haus' }];
+    let message = ['loading.starting'];
     let changed = Date.now();
-    const say = text => { if (detail.textContent !== text) { detail.textContent = text; changed = Date.now(); } };
+    const say = (key, params) => {
+      message = [key, params];
+      const text = t(key, params);
+      if (detail.textContent !== text) { detail.textContent = text; changed = Date.now(); }
+    };
+    const redraw = () => { title.textContent = t(...heading); detail.textContent = t(...message); };
+    onChange(redraw);
+    redraw();
     // A stalled download or a splat that fails to load would otherwise leave the card unchanged.
     const watchdog = setInterval(() => {
       if (card.classList.contains('rc-done') || card.classList.contains('rc-error')) return clearInterval(watchdog);
-      if (Date.now() - changed > 30000) say('Still loading. If nothing changes, check the connection and reload the page.');
+      if (Date.now() - changed > 30000) say('loading.stalled');
     }, 5000);
-    const fail = (heading, text) => {
+    const fail = (headingKey, key) => {
       card.classList.add('rc-error');
-      title.textContent = heading;
-      say(text);
+      heading = [headingKey];
+      title.textContent = t(headingKey);
+      say(key);
     };
     const decode = Uint8Array.fromBase64 ? text => Uint8Array.fromBase64(text) : text => {
       const binary = atob(text), bytes = new Uint8Array(binary.length);
@@ -635,7 +1314,7 @@
     const response = new Promise(done => { resolve = done; });
 
     const probe = document.createElement('canvas').getContext('webgl2');
-    if (!probe) fail('This browser cannot show the splat', 'The viewer needs WebGL 2. Try a current version of Chrome, Edge, Firefox or Safari.');
+    if (!probe) fail('loading.noWebgl', 'loading.noWebglDetail');
     else probe.getExtension('WEBGL_lose_context')?.loseContext();
 
     // Then the viewer decodes or streams the splat; follow its own progress until the first frame.
@@ -654,14 +1333,15 @@
       try { if (localStorage.getItem('rc-move-tip')) return; } catch { /* storage blocked: show it anyway */ }
       const touch = matchMedia('(pointer: coarse)').matches;
       // Each phrase stays on one line, so narrow screens break between phrases.
-      const phrases = touch ? ['Drag to look around', 'Double-tap to walk there', 'Pinch to step']
-                            : ['Drag to look around', 'Double-click to walk there', 'WASD to move'];
-      document.getElementById('rc-tip-text').replaceChildren(...phrases.flatMap((phrase, i) => {
+      const phrases = touch ? ['tip.look', 'tip.walkTouch', 'tip.pinch'] : ['tip.look', 'tip.walkMouse', 'tip.keys'];
+      const render = () => document.getElementById('rc-tip-text').replaceChildren(...phrases.flatMap((key, i) => {
         const part = document.createElement('span');
         part.className = 'rc-nowrap';
-        part.textContent = phrase;
+        part.textContent = t(key);
         return i ? [' · ', part] : [part];
       }));
+      render();
+      onChange(render);
       let last = 0;
       const hide = () => {
         tip.classList.add('rc-done');
@@ -680,13 +1360,14 @@
       tip.hidden = false;
     }
     document.addEventListener('DOMContentLoaded', () => {
-      if (!finished) return fail('The download was interrupted', 'Reload the page to try again.');
+      if (!finished) return fail('loading.interrupted', 'loading.reload');
       const text = document.getElementById('loadingText');
       if (text) new MutationObserver(() => {
         const percent = parseInt(text.textContent, 10);
         if (!(percent >= 0) || card.classList.contains('rc-error')) return;
         bar.value = percent;
-        say(percent < 100 ? `${streamed ? 'Loading' : 'Preparing'} the splat · ${Math.floor(percent / 5) * 5}%` : 'Rendering the first view…');
+        if (percent < 100) say(streamed ? 'loading.streamingPercent' : 'loading.preparingPercent', { percent: Math.floor(percent / 5) * 5 });
+        else say('loading.rendering');
       }).observe(text, { childList: true, characterData: true, subtree: true });
     });
 
@@ -697,7 +1378,7 @@
         document.currentScript?.remove(); // the decoded bytes replace the page text
         if (card.classList.contains('rc-error')) return;
         bar.value = fraction * 100;
-        say(`Downloading the splat · ${Math.floor(fraction * 20) * 5}% of 3 MB`);
+        say('loading.downloading', { percent: Math.floor(fraction * 20) * 5, size: pageSize });
       },
       done() {
         finished = true;
@@ -706,14 +1387,14 @@
         parts.length = 0;
         if (card.classList.contains('rc-error')) return;
         bar.value = 0;
-        say('Preparing the splat…');
+        say('loading.preparing');
       },
       stream() {
         finished = streamed = true;
         document.currentScript?.remove();
         if (card.classList.contains('rc-error')) return;
         bar.removeAttribute('value');
-        say('Loading the splat…');
+        say('loading.streaming');
       },
     };
   })();

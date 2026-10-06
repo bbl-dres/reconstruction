@@ -1,0 +1,414 @@
+/* Shared page chrome: the toolbar at the top right (.topbar > .toolbar.app-tools), its dropdowns and the
+   help panel. The building viewer loads it before main.css, the gallery loads it directly, and
+   make_viewer.py inlines it into the splat viewers. Theme and scale values live in token.css. */
+
+/* Base for pages without main.css (the gallery and the splat viewers); main.css sets the same globally. */
+:where(.topbar, .dropdown) {
+  font-family: var(--font-family);
+  line-height: var(--leading-normal);
+}
+:where(.topbar, .dropdown) :where(button, input) {
+  font: inherit;
+  color: inherit;
+}
+:where(.topbar, .dropdown) button {
+  cursor: pointer;
+}
+:where(.topbar, .dropdown) svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+:where(.topbar, .dropdown) :is(button, a, input):focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+:where(.topbar, .dropdown) button:focus:not(:focus-visible) {
+  outline: none;
+}
+:where(.topbar, .dropdown)[hidden], :where(.topbar, .dropdown) [hidden] {
+  display: none !important;
+}
+
+/* Shared building blocks. */
+.icon-library {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: calc(-1 * var(--space-px));
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 var(--space-1);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: var(--color-overlay-hover);
+  color: var(--color-text);
+  font: var(--text-2xs) var(--font-family);
+  text-align: center;
+}
+.eyebrow {
+  display: block;
+  margin: 0 0 10px;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.panel-note {
+  margin: var(--space-1) 0 var(--space-half);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+/* Top bar at the top right of every page: links, language, help and, in the viewer, More.
+   The viewer also centres its scene settings in it. */
+.topbar {
+  position: absolute;
+  z-index: 2;
+  top: var(--inset-top);
+  left: var(--inset-left);
+  right: var(--inset-right);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.topbar > * {
+  pointer-events: auto;
+}
+.app-tools {
+  grid-column: 3;
+  justify-self: end;
+}
+.toolbar {
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-overlay-soft);
+  box-shadow: var(--shadow-dock);
+  backdrop-filter: blur(var(--blur-panel));
+  display: flex;
+  align-items: center;
+  gap: var(--space-half);
+  padding: var(--space-1);
+  border-radius: var(--radius-toolbar);
+}
+.toolbar-link {
+  color: inherit;
+  text-decoration: none;
+}
+.language-code {
+  font-size: var(--text-sm);
+  letter-spacing: .04em;
+}
+.language-menu .menu-options {
+  padding: 0;
+}
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-size-compact);
+  padding: 0 var(--space-3) 0 10px;
+  border: 0;
+  border-radius: var(--radius-inner);
+  background: transparent;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.toolbar-button.icon-only {
+  justify-content: center;
+  width: var(--control-size-compact);
+  height: var(--control-size-compact);
+  padding: 0;
+}
+.toolbar-button:hover:not(:disabled) {
+  background: var(--color-overlay-pressed);
+}
+.toolbar-button[aria-expanded=true] {
+  background: var(--color-surface-hover);
+}
+.toolbar-divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 var(--space-1);
+  background: var(--color-border);
+}
+
+/* Dropdowns are native popovers; layout uses block flow so the UA can hide them. */
+.dropdown {
+  position: fixed;
+  inset: auto;
+  z-index: var(--layer-popover);
+  left: var(--dropdown-left, 16px);
+  top: var(--dropdown-top, 80px);
+  width: var(--dropdown-width, var(--dropdown-lighting));
+  max-height: var(--dropdown-maxHeight, calc(100dvh - 96px));
+  margin: 0;
+  padding: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  color: inherit;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-dropdown);
+  background: var(--color-overlay-panel);
+  backdrop-filter: blur(var(--blur-panel));
+  box-shadow: var(--shadow-panel);
+  overflow-wrap: anywhere;
+}
+.dropdown::backdrop {
+  background: transparent;
+}
+.help-panel {
+  padding: var(--space-1) 0 var(--space-2);
+}
+.menu {
+  padding: var(--space-1h);
+}
+
+/* Help panel: optional tabs, then eyebrow headings, guides, notes and link buttons. */
+.segmented {
+  display: flex;
+  gap: var(--space-half);
+  margin: var(--space-2) var(--space-3) 0;
+  padding: 3px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-inner);
+  background: var(--color-overlay-hover);
+}
+.segmented [role=tab] {
+  flex: 1;
+  min-height: 32px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.segmented [aria-selected=true] {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+.help-body {
+  padding: var(--space-3) var(--space-4) var(--space-1);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+.help-body .eyebrow {
+  margin: var(--space-4) 0 10px;
+}
+.help-body .eyebrow:first-child {
+  margin-top: 0;
+}
+.guide {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: var(--space-1h) var(--space-3);
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.guide dt {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+.guide dd {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+.help-body > .panel-note {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+/* A note right under a heading sits as close as a guide does. */
+.help-body > .eyebrow + .panel-note {
+  margin-top: 0;
+}
+.about-body h3 {
+  margin: 0 0 var(--space-1h);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+.about-body .panel-note {
+  margin: 0 0 10px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.about-body a:not(.link-button) {
+  color: var(--color-text);
+}
+.about-facts {
+  margin-top: var(--space-3);
+}
+.about-facts dt {
+  font-weight: var(--weight-normal);
+  color: var(--color-text-muted);
+}
+.about-facts dd {
+  color: var(--color-text);
+}
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1h);
+  margin-top: 14px;
+}
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1h);
+  min-height: 34px;
+  padding: 0 10px;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+.link-button:hover {
+  background: var(--color-overlay-pressed);
+}
+.link-button svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Menus: items, notes and radio options (More, language). */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--control-size-compact);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: left;
+  text-decoration: none;
+}
+.menu-item:hover:not(:disabled) {
+  background: var(--color-overlay-pressed);
+}
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+}
+.menu-item > span:first-of-type {
+  flex: 1;
+}
+.menu-item .menu-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transform: rotate(90deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.menu-item[aria-expanded=true] .menu-chevron {
+  transform: rotate(-90deg);
+}
+.menu-divider {
+  display: block;
+  height: 1px;
+  margin: var(--space-1) var(--space-1h);
+  background: var(--color-border);
+}
+.menu-note {
+  margin: 0 10px var(--space-1h);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.menu-input {
+  display: block;
+  width: calc(100% - 20px);
+  min-height: 36px;
+  margin: 0 10px var(--space-1h);
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+}
+.menu-options {
+  display: grid;
+  gap: var(--space-half);
+  padding: 0 0 var(--space-1) 34px;
+}
+.menu-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 34px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.menu-options label:hover {
+  background: var(--color-overlay-hover);
+}
+.menu-options input {
+  margin: 0;
+  accent-color: var(--color-text);
+}
+
+/* Phones: an icon-only toolbar with the language code in place of the globe, and one-column help.
+   The same breakpoint as the viewer's compact layout. */
+@media (max-width: 760px) {
+  .toolbar {
+    padding: 3px;
+    border-radius: var(--radius-control);
+  }
+  .toolbar-button {
+    justify-content: center;
+    width: var(--control-size-compact);
+    height: var(--control-size-compact);
+    padding: 0;
+    border-radius: 9px;
+  }
+  .toolbar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .toolbar-divider, .language-toggle > svg {
+    display: none;
+  }
+  .guide {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+  .guide dt:not(:first-child) {
+    margin-top: var(--space-2);
+  }
+}

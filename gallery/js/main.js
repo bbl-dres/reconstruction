@@ -1,5 +1,8 @@
 // Gallery (default) and map views of gallery/data/reconstructions.json. Image paths in it are relative to the site root.
-import { make, openLink, previewImage } from './dom.js';
+// Interface text is in gallery/data/i18n.json; the toolbar, its dropdowns and the language choice are the viewer's.
+import { loadLanguages, onLanguageChange, t, translate } from '../../viewer/js/i18n.js?v=i18n-1';
+import { wireDropdowns, wireLanguageMenu } from '../../viewer/js/interface.js?v=app-tools-1';
+import { inLanguage, make, openLink, previewImage } from './dom.js';
 
 const $ = id => document.getElementById(id);
 let items = [];
@@ -10,7 +13,8 @@ function showStatus(message) {
   $('status').hidden = false;
 }
 
-function card(item) {
+function card(entry) {
+  const item = inLanguage(entry);
   const image = previewImage(item.preview, { width: 960, height: 600, loading: 'lazy' });
   const body = make('div', { className: 'card-body' },
     make('h2', { textContent: item.title }),
@@ -25,7 +29,7 @@ function ensureMap() {
   mapView ||= import('./map.js').then(({ createMap }) => createMap($('map'), items)).catch(error => {
     console.error(error);
     mapView = null;
-    showStatus('The map could not be loaded. Check the connection to the basemap service, or use the gallery.');
+    showStatus(t('status.mapFailed'));
     throw error;
   });
   return mapView;
@@ -43,6 +47,25 @@ function setView(view, { remember = true } = {}) {
 for (const button of document.querySelectorAll('[data-view]')) button.addEventListener('click', () => setView(button.dataset.view));
 window.addEventListener('hashchange', () => setView(location.hash === '#map' ? 'map' : 'gallery', { remember: false }));
 
+// Without its interface text the page stays in English and says why; the viewer treats a missing table the same way.
+try {
+  await loadLanguages(new URL('../data/i18n.json', import.meta.url));
+} catch (error) {
+  $('language-toggle').hidden = true;
+  showStatus(location.protocol === 'file:'
+    ? 'Open this page through a web server (for example: python tools/serve.py) to load the reconstructions.'
+    : 'This page could not be loaded completely. Please reload it.');
+  throw error;
+}
+translate(document);
+document.title = t('page.title');
+onLanguageChange(() => {
+  document.title = t('page.title');
+  if (items.length) $('gallery').replaceChildren(...items.map(card));
+});
+wireDropdowns();
+wireLanguageMenu();
+
 try {
   const response = await fetch(new URL('../data/reconstructions.json', import.meta.url));
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -50,8 +73,6 @@ try {
   $('gallery').replaceChildren(...items.map(card));
 } catch (error) {
   console.error(error);
-  showStatus(location.protocol === 'file:'
-    ? 'Open this page through a web server (for example: python tools/serve.py) to load the reconstructions.'
-    : 'The list of reconstructions could not be loaded. Please reload the page.');
+  showStatus(t('status.listFailed'));
 }
 setView(location.hash === '#map' ? 'map' : 'gallery', { remember: false });

@@ -62,3 +62,65 @@ test('strings fall back to English, then to the key, and numbers follow the lang
     Object.assign(globalThis, saved);
   }
 });
+
+// The gallery and the splat viewers carry the same toolbar and language menu, each with its own table.
+const pages = {
+  gallery: {
+    tables: JSON.parse(await readFile(new URL('../gallery/data/i18n.json', import.meta.url), 'utf8')),
+    sources: await Promise.all(['../index.html', '../gallery/js/main.js', '../gallery/js/dom.js', '../gallery/js/map.js']
+      .map(path => readFile(new URL(path, import.meta.url), 'utf8'))),
+    markup: ['a'],  // the footer credits link their sources
+    shared: ['language.label', 'language.name'],  // the viewer's language menu (interface.js) labels its button with these
+  },
+  splat: {
+    tables: JSON.parse(await readFile(new URL('../reconstructions/von-wattenwyl-haus/viewer/i18n.json', import.meta.url), 'utf8')),
+    sources: [await readFile(new URL('../reconstructions/von-wattenwyl-haus/viewer/overlay.html', import.meta.url), 'utf8')],
+    markup: ['kbd'],
+  },
+};
+
+for (const [page, { tables: table, sources, markup, shared = [] }] of Object.entries(pages)) {
+  test(`${page}: every language shares the keys, placeholders and markup, in Swiss German spelling`, () => {
+    assert.deepEqual(Object.keys(table).sort(), ['de', 'en', 'fr', 'it']);
+    const keys = Object.keys(table.en).sort();
+    for (const [language, strings] of Object.entries(table)) {
+      assert.deepEqual(Object.keys(strings).sort(), keys, language);
+      for (const key of keys) {
+        assert.ok(strings[key].trim(), `${language} ${key} is empty`);
+        assert.deepEqual(placeholders(strings[key]), placeholders(table.en[key]), `${language} ${key} placeholders`);
+        assert.deepEqual(tags(strings[key]), tags(table.en[key]), `${language} ${key} markup`);
+        assert.ok(tags(strings[key]).every(tag => markup.includes(tag)), `${language} ${key} markup`);
+      }
+    }
+    for (const [key, text] of Object.entries(table.de)) assert.ok(!text.includes('ß'), key);
+  });
+
+  test(`${page}: every key the page asks for exists, and every key is used`, () => {
+    // Markup attributes, and keys in quotes in code: t('key'), say('key'), button(…, 'key', …), dataset: { i18n: 'key' }.
+    const requested = new Set(shared);
+    for (const source of sources) {
+      for (const [, key] of source.matchAll(/data-i18n(?:-html)?="([^"]+)"/g)) requested.add(key);
+      for (const [, pairs] of source.matchAll(/data-i18n-attr="([^"]+)"/g)) for (const pair of pairs.trim().split(/\s+/)) requested.add(pair.split(':')[1]);
+      for (const [, key] of source.matchAll(/'([a-z]+\.[A-Za-z]+)'/g)) requested.add(key);
+    }
+    for (const key of requested) assert.ok(key in table.en, `missing key ${key}`);
+    for (const key of Object.keys(table.en)) assert.ok(requested.has(key), `unused key ${key}`);
+  });
+}
+
+test('gallery entries translate title, place, summary and tags into German, French and Italian', async () => {
+  const { reconstructions } = JSON.parse(await readFile(new URL('../gallery/data/reconstructions.json', import.meta.url), 'utf8'));
+  for (const entry of reconstructions) {
+    assert.deepEqual(Object.keys(entry.translations).sort(), ['de', 'fr', 'it'], entry.id);
+    for (const [language, fields] of Object.entries(entry.translations)) {
+      for (const [field, value] of Object.entries(fields)) {
+        assert.ok(['title', 'place', 'summary', 'tags'].includes(field), `${entry.id} ${language}: ${field} is not translatable`);
+        assert.equal(typeof value, typeof entry[field], `${entry.id} ${language} ${field}`);
+      }
+      // Summaries and tags are always translated; names and places only where the language has its own.
+      assert.ok(fields.summary && fields.tags, `${entry.id} ${language}`);
+      assert.equal(fields.tags.length, entry.tags.length, `${entry.id} ${language} tags`);
+      if (language === 'de') assert.ok(!fields.summary.includes('ß'), entry.id);
+    }
+  }
+});

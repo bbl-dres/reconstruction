@@ -39,11 +39,12 @@ export function viewportFrame() {
 }
 
 // Dropdowns stay inside the 3D stage, clear of the sidebar and the bottom controls.
+// Pages without a stage (the gallery) use the whole viewport.
 function panelInsets() {
-  const stage = document.getElementById('stage').getBoundingClientRect();
+  const stageLeft = document.getElementById('stage')?.getBoundingClientRect().left ?? 0;
   const topbar = getComputedStyle(document.querySelector('.topbar'));
   const edge = parseFloat(topbar.right) || 16;
-  return { left: Math.max(edge, stage.left + edge), right: edge, top: parseFloat(topbar.top) || 16, bottom: edge };
+  return { left: Math.max(edge, stageLeft + edge), right: edge, top: parseFloat(topbar.top) || 16, bottom: edge };
 }
 
 // Toolbar dropdowns: [panel id, trigger id, preferred width token].
@@ -118,6 +119,8 @@ function wireDropdown(panelId, triggerId, widthToken) {
   }
   const reposition = () => { if (trigger.getAttribute('aria-expanded') === 'true') position(); };
   window.addEventListener('resize', reposition);
+  // The viewer never scrolls; on the gallery, an open dropdown follows its button.
+  window.addEventListener('scroll', reposition, { passive: true });
   document.addEventListener('fullscreenchange', reposition);
   window.visualViewport?.addEventListener('resize', reposition);
   window.visualViewport?.addEventListener('scroll', reposition);

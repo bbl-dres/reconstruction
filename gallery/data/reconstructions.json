@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "coordinates": "WGS84 (EPSG:4326), decimal degrees",
+  "translations": "English in title, place, summary and tags; translations.de, .fr and .it override any of them, and a missing one falls back to English",
   "reconstructions": [
     {
       "id": "bundeshaus",
@@ -10,6 +11,24 @@
       "href": "reconstructions/bundeshaus/",
       "preview": { "src": "gallery/assets/bundeshaus.jpg", "alt": "" },
       "tags": ["3D viewer", "Building inventory", "IFC download"],
+      "translations": {
+        "de": {
+          "summary": "Das Parlamentsgebäude in Bern, von einem KI-Sprachmodell (LLM) aus öffentlichen Quellen modelliert. Von aussen, als Puppenhaus, im Grundriss oder zu Fuss erkunden.",
+          "tags": ["3D-Viewer", "Gebäudeinventar", "IFC-Download"]
+        },
+        "fr": {
+          "title": "Palais fédéral",
+          "place": "Berne",
+          "summary": "Le Palais du Parlement à Berne, modélisé par une IA (LLM) à partir de sources publiques. À explorer de l’extérieur, en maquette, en plan ou à pied.",
+          "tags": ["Visionneuse 3D", "Inventaire du bâtiment", "Téléchargement IFC"]
+        },
+        "it": {
+          "title": "Palazzo federale",
+          "place": "Berna",
+          "summary": "Il Palazzo del Parlamento a Berna, modellato da un’IA (LLM) a partire da fonti pubbliche. Da esplorare dall’esterno, in spaccato, in pianta o a piedi.",
+          "tags": ["Visualizzatore 3D", "Inventario dell’edificio", "Download IFC"]
+        }
+      },
       "location": {
         "lat": 46.946774,
         "lon": 7.444192,
@@ -26,6 +45,22 @@
       "preview": { "src": "gallery/assets/von-wattenwyl-haus.jpg", "fallback": "gallery/assets/von-wattenwyl-haus.svg", "alt": "",
         "note": "Rendered from the splat viewer, which is derived from the commissioned Matterport tour; the drawing is shown where the render is absent." },
       "tags": ["Experiment", "Gaussian splat", "Tour archive"],
+      "translations": {
+        "de": {
+          "summary": "Archiv des öffentlichen 360°-Rundgangs und ein Versuch, seine Panoramen in einen Gaussian Splat umzuwandeln.",
+          "tags": ["Experiment", "Gaussian Splat", "Rundgang-Archiv"]
+        },
+        "fr": {
+          "place": "Berne",
+          "summary": "Archive de la visite publique à 360° et essai de transformation de ses panoramas en splat gaussien.",
+          "tags": ["Expérience", "Splat gaussien", "Archive de visite"]
+        },
+        "it": {
+          "place": "Berna",
+          "summary": "Archivio del tour pubblico a 360° e prova di trasformazione delle sue panoramiche in uno splat gaussiano.",
+          "tags": ["Esperimento", "Splat gaussiano", "Archivio del tour"]
+        }
+      },
       "location": {
         "lat": 46.947468,
         "lon": 7.452771,
@@ -41,6 +76,20 @@
       "href": "reconstructions/landgut-lohn/",
       "preview": { "src": "gallery/assets/landgut-lohn.jpg", "alt": "", "note": "Render of the reconstructed model v007." },
       "tags": ["3D viewer", "Building inventory", "IFC download"],
+      "translations": {
+        "de": {
+          "summary": "Der Landsitz des Bundesrats von 1782/83, rekonstruiert aus Grundrissen, swisstopo-LiDAR und einem 360°-Rundgang. Von aussen, als Puppenhaus, im Grundriss oder zu Fuss erkunden.",
+          "tags": ["3D-Viewer", "Gebäudeinventar", "IFC-Download"]
+        },
+        "fr": {
+          "summary": "La résidence de campagne du Conseil fédéral, de 1782/83, reconstruite à partir de plans d’étage, du LiDAR de swisstopo et d’une visite à 360°. À explorer de l’extérieur, en maquette, en plan ou à pied.",
+          "tags": ["Visionneuse 3D", "Inventaire du bâtiment", "Téléchargement IFC"]
+        },
+        "it": {
+          "summary": "La residenza di campagna del Consiglio federale del 1782/83, ricostruita da piante, dati LiDAR di swisstopo e un tour a 360°. Da esplorare dall’esterno, in spaccato, in pianta o a piedi.",
+          "tags": ["Visualizzatore 3D", "Inventario dell’edificio", "Download IFC"]
+        }
+      },
       "location": {
         "lat": 46.908749,
         "lon": 7.474555,

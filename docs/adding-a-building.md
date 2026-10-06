@@ -43,5 +43,5 @@ reconstructions/<id>/
    ```
 
    This writes `public/models/catalog.json` and the versioned assets; `--keep-latest` moves older published versions to `work/archive/models/`. For IFC: `python tools/model-pipeline/export_ifc.py <glb> <bim.json> <output.ifc> --scope registered --name "<ifcName>"`.
-7. Add a preview image to `gallery/assets/` and an entry to `gallery/data/reconstructions.json` (location from the swisstopo SearchServer, as for the existing entries).
+7. Add a preview image to `gallery/assets/` and an entry to `gallery/data/reconstructions.json` (location from the swisstopo SearchServer, as for the existing entries). Give it `translations` for `de`, `fr` and `it`: at least `summary` and `tags`, plus `title` and `place` where the language has its own name (Palais fédéral, Berne); `tests/i18n.test.mjs` checks them.
 8. Check: `python tools/serve.py --building <id>` and inspect all four modes and every floor; run the test suite (see the [viewer guide](viewer-guide.md#verify-changes)); `tests/building-config.test.mjs` validates every page's `building.json`. Run `git status` and confirm that nothing from `work/` appears.
