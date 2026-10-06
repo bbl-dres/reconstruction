@@ -13,6 +13,9 @@ Experimental 3D reconstructions of Swiss federal buildings, made from publicly a
 
 The [gallery](https://bbl-dres.github.io/reconstruction/) links to each reconstruction and shows them as cards or on a map (`#map`). Every reconstruction lives in its own folder under `reconstructions/`. Blender-authored buildings share one viewer and one model pipeline; each building only adds data.
 
+## Preview
+- Live App: https://bbl-dres.github.io/reconstruction/ 
+
 | Reconstruction | What it is |
 |---|---|
 | [Bundeshaus](reconstructions/bundeshaus/) | The Swiss Parliament Building in Bern. No-build Three.js viewer with exterior, dollhouse, floor-plan and walk modes, building inventory and IFC download. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/bundeshaus/). |
