@@ -1,13 +1,12 @@
 {
   "id": "villa-maraini-surroundings",
-  "title": "Villa Maraini surroundings",
+  "title": "Villa Maraini terrain and schematic neighbourhood",
   "includeCollectionPrefixes": [
     "Context"
   ],
-  "collectionRoles": {
-    "Context": "context"
-  },
   "notes": [
-    "Italian site: establish survey and terrain sources, CRS, datum and reuse rights before building context. Swiss geodata defaults do not apply."
+    "Lazio 2002 5 m DTM, CC BY4.0; OSM contributors, ODbL.",
+    "Horizontal footprint fit RMS1.02 m; vertical display offset provisional, not a measured floor datum.",
+    "99 GBA satellite-predicted heights (CC BY-NC 4.0); five OSM levels times 3 m; one unmatched footprint retains a 10 m placeholder. Inferred context only; commercial redistribution not cleared."
   ]
 }

@@ -1,67 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-building="public/building.json">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111113">
-  <meta name="description" content="Villa Maraini, Swiss Institute in Rome: an evidence-based reconstruction project in its research phase.">
-  <title>Villa Maraini · Reconstruction research</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Explore Villa Maraini in 3D, as a dollhouse, in plan, or on foot.">
+  <title>Villa Maraini · Building explorer</title>
   <link rel="stylesheet" href="../../viewer/css/token.css?v=20261006-i18n">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--color-canvas, #111113); color: var(--color-text, #eee); font: 1rem/1.65 system-ui, sans-serif; }
-    main { max-width: 1040px; margin: auto; padding: 32px 28px 64px; }
-    a { color: inherit; text-underline-offset: 4px; }
-    a:hover { color: #f0b35a; }
-    :focus-visible { outline: 2px solid #f0b35a; outline-offset: 5px; }
-    nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 64px; font-size: .9rem; }
-    .eyebrow { color: #f0b35a; font-size: .78rem; text-transform: uppercase; letter-spacing: .16em; }
-    h1 { font-size: clamp(2.8rem, 7vw, 5rem); line-height: 1.05; letter-spacing: -.04em; margin: 16px 0; }
-    .subtitle { color: var(--color-text-muted, #aaa); font-size: 1.3rem; margin: 0 0 24px; }
-    .intro { max-width: 720px; font-size: 1.1rem; }
-    .facts { display: flex; flex-wrap: wrap; gap: 12px 28px; border-top: 1px solid #38383c; border-bottom: 1px solid #38383c; padding: 20px 0; margin: 32px 0 44px; font-size: .88rem; color: var(--color-text-muted, #aaa); }
-    .grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; }
-    h2 { font-size: 1.35rem; margin-top: 0; }
-    ol { padding-left: 22px; }
-    li { margin-bottom: 16px; }
-    .note { padding: 24px; border: 1px solid #38383c; border-radius: 14px; background: var(--color-surface, #1b1b1e); }
-    .note p:last-child { margin-bottom: 0; }
-    footer { margin-top: 48px; color: var(--color-text-muted, #aaa); font-size: .85rem; }
-    @media (max-width: 650px) { .grid { grid-template-columns: 1fr; gap: 24px; } nav { margin-bottom: 40px; } main { padding: 24px 20px 40px; } }
-  </style>
+  <link rel="stylesheet" href="../../viewer/css/app-tools.css?v=20261006-review">
+  <link rel="stylesheet" href="../../viewer/css/main.css?v=20261006-plan">
+  <script type="importmap">
+    {"imports":{"three":"../../viewer/vendor/three/build/three.module.js","three/addons/":"../../viewer/vendor/three/examples/jsm/","building-policy":"../../viewer/js/policy-default.js"}}
+  </script>
 </head>
 <body>
-<main>
-  <nav aria-label="Project navigation"><a href="../../">← Reconstructions</a><a href="https://www.istitutosvizzero.it/istituto-svizzero/">Istituto Svizzero ↗</a></nav>
-  <header>
-    <div class="eyebrow">Research in progress · Rome, Italy</div>
-    <h1>Villa Maraini</h1>
-    <p class="subtitle">Swiss Institute in Rome</p>
-    <p class="intro">A new reconstruction begins with the evidence. We are gathering drawings, photographs and survey records for the villa, its tower and its garden.</p>
-  </header>
-  <div class="facts">
-    <span>Started 8 October 2026</span>
-    <span>Via Ludovisi 48, Roma</span>
-    <a href="https://www.google.com/maps/search/?api=1&amp;query=41.906773%2C12.487714">41.906773, 12.487714 · Map ↗</a>
-  </div>
-  <div class="grid">
-    <section aria-labelledby="evidence">
-      <h2 id="evidence">First evidence</h2>
-      <ol>
-        <li><strong>A measured survey exists.</strong> <a href="https://gebaeudeaufnahme.ch/referenzen/5/villa-maraini.html">HMQ documents its 2012 survey for BBL</a>. A reference sheet shows a plan, section, elevation and façade photograph.</li>
-        <li><strong>A refurbishment competition followed.</strong> <a href="https://www.bbl.admin.ch/fr/concours">BBL lists the 2013 jury publication</a>. Proposed changes still need to be checked against what was built.</li>
-        <li><strong>The building continued to change.</strong> <a href="https://www.edilerica.it/progetti/villa-maraini/">Entrance and Sala Elvetica works in 2022–2023</a> make recent drawings and dated photographs especially useful.</li>
-      </ol>
-    </section>
-    <aside class="note" aria-labelledby="next">
-      <div class="eyebrow">Evidence before geometry</div>
-      <h2 id="next">What comes next</h2>
-      <p>Find the full measured survey, reconcile later alterations, and establish scale, floor levels and geographic control.</p>
-      <p>Architectural/BIM modelling is the initial direction. A Gaussian splat remains an option if suitable overlapping imagery becomes available.</p>
-      <p><strong>No 3D model is available yet.</strong> The first release will follow the evidence review.</p>
-    </aside>
-  </div>
-  <footer>Location from <a href="https://www.turismoroma.it/en/node/2150">Turismo Roma</a>; visitor pin, not survey control. <a href="public/docs/model-status.md">Detailed research status</a>.</footer>
-</main>
+  <!-- Thin entry page: the shared viewer (../../viewer) builds the interface from public/building.json. -->
+  <p id="boot-status" class="boot-status" hidden></p>
+  <script>
+    // Opened from disk, browsers refuse module scripts, so this note cannot come from the viewer.
+    if (location.protocol === 'file:') {
+      const note = document.getElementById('boot-status');
+      note.innerHTML = '<strong>Open with a local server</strong><br>Run “python tools/serve.py” from the repository root and open the address it prints. No build is needed.';
+      note.hidden = false;
+    }
+  </script>
+  <noscript>This viewer needs JavaScript enabled.</noscript>
+  <script type="module" src="../../viewer/js/boot.js?v=20261006-plan-2"></script>
 </body>
 </html>

@@ -1,12 +1,12 @@
 {
-  "id": "villa-maraini",
-  "title": "Villa Maraini",
+  "id": "villa-maraini-building",
+  "title": "Villa Maraini archive study",
   "includeCollectionPrefixes": [
-    "Site",
     "Building"
   ],
   "notes": [
-    "Prepared for a future model; no geometry released.",
-    "Exported objects require stable viewer_id, viewer_role, viewer_cutaway_role and viewer_floor_ids properties."
+    "Archive architectural study; not verified current condition or survey.",
+    "Local metric coordinates, no validated geographic placement.",
+    "Partial major-wall layouts; openings/stairs/roof details carry inferred basis."
   ]
 }

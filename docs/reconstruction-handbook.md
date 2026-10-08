@@ -4,6 +4,8 @@
 
 How a building goes from evidence to a published model, for agents and people. It distils the Bundeshaus (v001–v027) and Landgut Lohn (v001–v008) projects. Rules on folders, names and records are in [conventions](conventions.md); known traps in [pitfalls](pitfalls.md).
 
+For a new project, start with [How to create a new reconstruction](adding-a-building.md): choose research, Blender/BIM or splat scope, set up the private library, establish country-appropriate control, then build and review. International terrain leads are in [Elevation sources](elevation-sources.md).
+
 ## Principles
 
 1. **Evidence before geometry.** Every dimension, opening, material and furnishing piece traces to a registered source or is marked *inferred* with its basis. Unknown stays unknown: model a marked placeholder and log it; never invent geometry to close a gap.
@@ -42,6 +44,8 @@ edit research/ or build/scripts/  →  rebuild build/model/  →  checks into bu
 
 ## Shared tools
 
+For hard-to-find archival plans, see the [Bundesarchiv research route](bundesarchiv-research.md), including catalogue searches, email delivery and provenance recording.
+
 | Tool | Use |
 |---|---|
 | `tools/reference-catalog/references.py` | Intake, validate, query and resolve evidence (`--workspace reconstructions/<id>/work`) |
@@ -73,7 +77,7 @@ Freeze only when every item is done or explained in the report.
 - [ ] `releases/vNNN/` created: one `.blend` and `viewer.json` in `model/`, georeference in `research/` and `viewer/provenance/`, exports, BIM registry and IFC validated, `validation/`, `README.md`, `REPORT.md`, `SHA256SUMS`
 - [ ] Imported with `import_versions.py --only vNNN --keep-latest`; catalog lists one version
 - [ ] Previews rendered from the release; gallery image and entry updated if the look changed
-- [ ] `STATUS.md`, `HISTORY.md`, `project.json` updated; work repository committed and tagged `vNNN`
+- [ ] `STATUS.md`, `HISTORY.md`, `project.json` updated; work repository committed/tagged only if authorized, otherwise uncommitted release state recorded
 - [ ] Public repository: `git status` shows nothing from `work/`; no commit or push unless the user asked
 
 ## Working with people

@@ -9,24 +9,43 @@
       "place": "Bern",
       "summary": "The Swiss Parliament Building in Bern, modelled by an AI LLM from public sources. Explore it from outside, as a dollhouse, in plan or on foot.",
       "href": "reconstructions/bundeshaus/",
-      "preview": { "src": "gallery/assets/bundeshaus.jpg", "alt": "" },
-      "tags": ["3D viewer", "Building inventory", "IFC download"],
+      "preview": {
+        "src": "gallery/assets/bundeshaus.jpg",
+        "alt": ""
+      },
+      "tags": [
+        "3D viewer",
+        "Building inventory",
+        "IFC download"
+      ],
       "translations": {
         "de": {
           "summary": "Das Parlamentsgebäude in Bern, von einem KI-Sprachmodell (LLM) aus öffentlichen Quellen modelliert. Von aussen, als Puppenhaus, im Grundriss oder zu Fuss erkunden.",
-          "tags": ["3D-Viewer", "Gebäudeinventar", "IFC-Download"]
+          "tags": [
+            "3D-Viewer",
+            "Gebäudeinventar",
+            "IFC-Download"
+          ]
         },
         "fr": {
           "title": "Palais fédéral",
           "place": "Berne",
           "summary": "Le Palais du Parlement à Berne, modélisé par une IA (LLM) à partir de sources publiques. À explorer de l’extérieur, en maquette, en plan ou à pied.",
-          "tags": ["Visionneuse 3D", "Inventaire du bâtiment", "Téléchargement IFC"]
+          "tags": [
+            "Visionneuse 3D",
+            "Inventaire du bâtiment",
+            "Téléchargement IFC"
+          ]
         },
         "it": {
           "title": "Palazzo federale",
           "place": "Berna",
           "summary": "Il Palazzo del Parlamento a Berna, modellato da un’IA (LLM) a partire da fonti pubbliche. Da esplorare dall’esterno, in spaccato, in pianta o a piedi.",
-          "tags": ["Visualizzatore 3D", "Inventario dell’edificio", "Download IFC"]
+          "tags": [
+            "Visualizzatore 3D",
+            "Inventario dell’edificio",
+            "Download IFC"
+          ]
         }
       },
       "location": {
@@ -42,23 +61,43 @@
       "place": "Bern",
       "summary": "Archive of the public 360° tour and a test of turning its panoramas into a Gaussian splat.",
       "href": "reconstructions/von-wattenwyl-haus/",
-      "preview": { "src": "gallery/assets/von-wattenwyl-haus.jpg", "fallback": "gallery/assets/von-wattenwyl-haus.svg", "alt": "",
-        "note": "Rendered from the splat viewer, which is derived from the commissioned Matterport tour; the drawing is shown where the render is absent." },
-      "tags": ["Experiment", "Gaussian splat", "Tour archive"],
+      "preview": {
+        "src": "gallery/assets/von-wattenwyl-haus.jpg",
+        "fallback": "gallery/assets/von-wattenwyl-haus.svg",
+        "alt": "",
+        "note": "Rendered from the splat viewer, which is derived from the commissioned Matterport tour; the drawing is shown where the render is absent."
+      },
+      "tags": [
+        "Experiment",
+        "Gaussian splat",
+        "Tour archive"
+      ],
       "translations": {
         "de": {
           "summary": "Archiv des öffentlichen 360°-Rundgangs und ein Versuch, seine Panoramen in einen Gaussian Splat umzuwandeln.",
-          "tags": ["Experiment", "Gaussian Splat", "Rundgang-Archiv"]
+          "tags": [
+            "Experiment",
+            "Gaussian Splat",
+            "Rundgang-Archiv"
+          ]
         },
         "fr": {
           "place": "Berne",
           "summary": "Archive de la visite publique à 360° et essai de transformation de ses panoramas en splat gaussien.",
-          "tags": ["Expérience", "Splat gaussien", "Archive de visite"]
+          "tags": [
+            "Expérience",
+            "Splat gaussien",
+            "Archive de visite"
+          ]
         },
         "it": {
           "place": "Berna",
           "summary": "Archivio del tour pubblico a 360° e prova di trasformazione delle sue panoramiche in uno splat gaussiano.",
-          "tags": ["Esperimento", "Splat gaussiano", "Archivio del tour"]
+          "tags": [
+            "Esperimento",
+            "Splat gaussiano",
+            "Archivio del tour"
+          ]
         }
       },
       "location": {
@@ -74,20 +113,40 @@
       "place": "Kehrsatz",
       "summary": "The Federal Council's country residence of 1782/83, reconstructed from floor plans, swisstopo LiDAR and a 360° tour. Explore it from outside, as a dollhouse, in plan or on foot.",
       "href": "reconstructions/landgut-lohn/",
-      "preview": { "src": "gallery/assets/landgut-lohn.jpg", "alt": "", "note": "Capture of the viewer, model v008, with its surroundings." },
-      "tags": ["3D viewer", "Building inventory", "IFC download"],
+      "preview": {
+        "src": "gallery/assets/landgut-lohn.jpg",
+        "alt": "",
+        "note": "Capture of the viewer, model v008, with its surroundings."
+      },
+      "tags": [
+        "3D viewer",
+        "Building inventory",
+        "IFC download"
+      ],
       "translations": {
         "de": {
           "summary": "Der Landsitz des Bundesrats von 1782/83, rekonstruiert aus Grundrissen, swisstopo-LiDAR und einem 360°-Rundgang. Von aussen, als Puppenhaus, im Grundriss oder zu Fuss erkunden.",
-          "tags": ["3D-Viewer", "Gebäudeinventar", "IFC-Download"]
+          "tags": [
+            "3D-Viewer",
+            "Gebäudeinventar",
+            "IFC-Download"
+          ]
         },
         "fr": {
           "summary": "La résidence de campagne du Conseil fédéral, de 1782/83, reconstruite à partir de plans d’étage, du LiDAR de swisstopo et d’une visite à 360°. À explorer de l’extérieur, en maquette, en plan ou à pied.",
-          "tags": ["Visionneuse 3D", "Inventaire du bâtiment", "Téléchargement IFC"]
+          "tags": [
+            "Visionneuse 3D",
+            "Inventaire du bâtiment",
+            "Téléchargement IFC"
+          ]
         },
         "it": {
           "summary": "La residenza di campagna del Consiglio federale del 1782/83, ricostruita da piante, dati LiDAR di swisstopo e un tour a 360°. Da esplorare dall’esterno, in spaccato, in pianta o a piedi.",
-          "tags": ["Visualizzatore 3D", "Inventario dell’edificio", "Download IFC"]
+          "tags": [
+            "Visualizzatore 3D",
+            "Inventario dell’edificio",
+            "Download IFC"
+          ]
         }
       },
       "location": {
@@ -101,40 +160,43 @@
       "id": "villa-maraini",
       "title": "Villa Maraini",
       "place": "Rome",
-      "summary": "The Swiss Institute in Rome. Research has begun on its drawings, photographs and survey records for a future architectural reconstruction.",
+      "summary": "Archive architectural study of the Swiss Institute in Rome, with 5 m terrain, mapped streets and approximate neighbouring buildings.",
       "href": "reconstructions/villa-maraini/",
       "preview": {
-        "src": "gallery/assets/villa-maraini.svg",
-        "alt": "Villa Maraini — research in progress",
-        "note": "Original typographic research placeholder; no building geometry or third-party imagery depicted."
+        "src": "gallery/assets/villa-maraini.jpg",
+        "alt": "Villa Maraini study on Lazio terrain with schematic neighbouring buildings and inferred height estimates."
       },
       "tags": [
-        "Research phase",
-        "Architectural reconstruction"
+        "Architectural study",
+        "3D viewer",
+        "Archive research"
       ],
       "translations": {
         "de": {
           "place": "Rom",
-          "summary": "Das Schweizer Institut in Rom. Die Recherche zu Plänen, Fotografien und Vermessungsunterlagen für eine künftige architektonische Rekonstruktion hat begonnen.",
+          "summary": "Architekturstudie des Schweizer Instituts in Rom mit 5-m-Gelände, kartierten Strassen und schematischen Nachbargebäuden.",
           "tags": [
-            "Recherchephase",
-            "Architektonische Rekonstruktion"
+            "Architekturstudie",
+            "3D-Viewer",
+            "Archivrecherche"
           ]
         },
         "fr": {
           "place": "Rome",
-          "summary": "L’Institut suisse de Rome. La recherche de plans, de photographies et de relevés a commencé en vue d’une reconstruction architecturale.",
+          "summary": "Étude architecturale de l’Institut suisse à Rome avec un terrain à 5 m, les rues cartographiées et des bâtiments voisins schématiques.",
           "tags": [
-            "Phase de recherche",
-            "Reconstruction architecturale"
+            "Étude architecturale",
+            "Visionneuse 3D",
+            "Recherche en archives"
           ]
         },
         "it": {
           "place": "Roma",
-          "summary": "L’Istituto Svizzero di Roma. È iniziata la ricerca di piante, fotografie e rilievi per una futura ricostruzione architettonica.",
+          "summary": "Studio architettonico dell’Istituto Svizzero a Roma con terreno a 5 m, strade cartografate ed edifici circostanti schematici.",
           "tags": [
-            "Fase di ricerca",
-            "Ricostruzione architettonica"
+            "Studio architettonico",
+            "Visualizzatore 3D",
+            "Ricerca d’archivio"
           ]
         }
       },
@@ -156,22 +218,34 @@
         "alt": "Am Römerholz — research in progress",
         "note": "Original typographic research placeholder; no building geometry or third-party imagery depicted."
       },
-      "tags": ["Research phase", "Architectural reconstruction"],
+      "tags": [
+        "Research phase",
+        "Architectural reconstruction"
+      ],
       "translations": {
         "de": {
           "summary": "Recherche zur Villa und den Galerien anhand veröffentlichter Pläne und Fotografien sowie der Änderungen vor der Wiedereröffnung 2026.",
-          "tags": ["Recherchephase", "Architektonische Rekonstruktion"]
+          "tags": [
+            "Recherchephase",
+            "Architektonische Rekonstruktion"
+          ]
         },
         "fr": {
           "title": "Collection Oskar Reinhart «Am Römerholz»",
           "place": "Winterthour",
           "summary": "Recherche sur la villa et les galeries à partir de plans et de photographies publiés, avec vérification des transformations précédant la réouverture de 2026.",
-          "tags": ["Phase de recherche", "Reconstruction architecturale"]
+          "tags": [
+            "Phase de recherche",
+            "Reconstruction architecturale"
+          ]
         },
         "it": {
           "title": "Collezione Oskar Reinhart «Am Römerholz»",
           "summary": "Ricerca sulla villa e sulle gallerie a partire da piante e fotografie pubblicate, verificando le modifiche precedenti alla riapertura del 2026.",
-          "tags": ["Fase di ricerca", "Ricostruzione architettonica"]
+          "tags": [
+            "Fase di ricerca",
+            "Ricostruzione architettonica"
+          ]
         }
       },
       "location": {

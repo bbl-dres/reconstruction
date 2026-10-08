@@ -15,6 +15,10 @@ Mistakes that cost a release in the Bundeshaus and Landgut Lohn reconstructions,
 | Dashed lines ignored | Walls over hall openings drawn dashed were missing; portières and sconces hung in front of nothing | Model heads over openings (`hallOpeningHeads`); run the Dollhouse audit |
 | Camera height assumed | Panorama measurements at 7 nodes use the 1.55 m default | Mark those pieces *inferred*; solve the height from a known floor feature where possible |
 | Provisional room names presented as final | Tour names differ from plan names | Map nodes to rooms from geometry, with confidence |
+| Swiss assumptions carried into a foreign site | An international project can inherit LV95/LN02, floor naming or an unrelated printed height | Verify the site's CRS/datum and source floor labels; use a declared local frame when unresolved. Visitor pins and schematic north arrows are not survey control |
+| Recent filename mistaken for a measured as-built survey | A 2024 close-out set can retain visually prepared room drawings, older initial dates and a later PDF export date | Read title/revision tables and measurement qualifications separately; cross-check executed conditions and dimensions |
+| Archive discovery mistaken for automated access | Publicly requestable BAR dossiers can still need eIAM/AGOV login and human delivery | Prepare dossier-specific leads; let a human retrieve them, then preserve filenames, hashes and dossier provenance |
+| TIFF first frame mistaken for the entire file | One archive TIFF can contain several sheets or a very long continuous strip | Inventory every frame and image dimensions; render all frames and tile long strips with recorded crop bounds |
 
 ## Geometry
 

@@ -8,14 +8,14 @@ from pathlib import Path
 import json,hashlib,sys
 from PIL import Image,ImageOps
 P=(Path(sys.argv[1]) if len(sys.argv)>1 else Path.cwd()).resolve();R=P/'references';T=R/'catalog';T.mkdir(parents=True,exist_ok=True)
-m=json.loads((R/'manifest.json').read_text(encoding='utf-8'));rows=m['assets'];incoming=R/'incoming';ip=incoming/'manifest.json';pending=json.loads(ip.read_text()).get('entries',[])if ip.exists()else[];pending=[r for r in pending if r['status']=='pending-review'];known={r['path']for r in pending}
+m=json.loads((R/'manifest.json').read_text(encoding='utf-8'));rows=m['assets'];incoming=R/'incoming';ip=incoming/'manifest.json';pending=json.loads(ip.read_text(encoding='utf-8')).get('entries',[])if ip.exists()else[];pending=[r for r in pending if r['status']=='pending-review'];known={r['path']for r in pending}
 for f in incoming.rglob('*')if incoming.exists()else[]:
  if f.is_file()and f.name not in ['README.md','manifest.json']and f.relative_to(R).as_posix()not in known:
   pending.append({'id':'incoming-'+hashlib.sha256(f.read_bytes()).hexdigest()[:16],'path':f.relative_to(R).as_posix(),'originalFileName':f.name,'source':None,'note':'Manually added; no intake metadata yet.','status':'pending-review'})
 thumbs=T/'thumbnails';thumbs.mkdir(exist_ok=True)
 for r in rows:
  f=(R/r['path']).resolve();assert f.is_relative_to(R)
- if f.suffix.lower()in['.jpg','.jpeg','.png']:
+ if f.suffix.lower()in['.jpg','.jpeg','.png','.webp']:
   dst=thumbs/(r['id']+'.jpg')
   if not dst.exists():
    with Image.open(f)as image:

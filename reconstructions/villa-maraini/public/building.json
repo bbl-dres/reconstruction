@@ -15,7 +15,21 @@
       "href": "https://www.google.com/maps/search/?api=1&query=41.906773%2C12.487714"
     }
   ],
-  "walkStarts": {},
+  "walkStarts": {
+    "rialzato": {
+      "label": "Piano rialzato · study interior",
+      "position": [
+        0,
+        1.65,
+        4
+      ],
+      "target": [
+        0,
+        1.65,
+        0
+      ]
+    }
+  },
   "pipeline": {
     "title": "Villa Maraini",
     "timeZone": "Europe/Rome",
@@ -24,6 +38,56 @@
       "building": "profiles/building.json",
       "surroundings": "profiles/surroundings.json"
     },
-    "levels": []
+    "levels": [
+      {
+        "id": "p1",
+        "label": "Piano 1 · Interrato",
+        "elevation": -7.85,
+        "min": -8.5,
+        "max": -4.26
+      },
+      {
+        "id": "p2",
+        "label": "Piano 2 · Seminterrato",
+        "elevation": -4.0,
+        "min": -4.65,
+        "max": -0.31
+      },
+      {
+        "id": "p3",
+        "label": "Piano 3 · Rialzato",
+        "elevation": 0,
+        "min": -0.65,
+        "max": 5.31
+      },
+      {
+        "id": "p4",
+        "label": "Piano 4 · Primo",
+        "elevation": 5.72,
+        "min": 5.07,
+        "max": 10.51
+      },
+      {
+        "id": "p5",
+        "label": "Piano 5 · Secondo",
+        "elevation": 11.12,
+        "min": 10.47,
+        "max": 15.06
+      },
+      {
+        "id": "p6",
+        "label": "Piano 6 · Torretta inferiore",
+        "elevation": 15.32,
+        "min": 14.67,
+        "max": 17.87
+      },
+      {
+        "id": "p7",
+        "label": "Piano 7 · Torretta superiore",
+        "elevation": 18.16,
+        "min": 17.51,
+        "max": 23.15
+      }
+    ]
   }
 }

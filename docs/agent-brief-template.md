@@ -27,7 +27,7 @@ The repository, viewer and pipeline are set up. Your job is research and modelli
 | Published output (validated exports only) | `reconstructions/<id>/public/` |
 | Supplied material (unverified) | `reconstructions/<id>/work/references/incoming/` |
 | Public sources to start from | <tour URL, archive, inventory, …> |
-| Map location | <approximate WGS84>; resolve the authoritative point with the swisstopo SearchServer |
+| Map location | <approximate WGS84 visitor pin, kept separate from survey control>; use the relevant national/local authority; swisstopo SearchServer for Swiss sites |
 
 ## Ground rules
 
@@ -47,6 +47,10 @@ The repository, viewer and pipeline are set up. Your job is research and modelli
 ## Research checklist
 
 swisstopo (SearchServer, swissBUILDINGS3D, swissSURFACE3D, swissALTI3D, SWISSIMAGE, historical maps and aerial images), cadastral survey and GWR, cantonal inventories and monument records, archives and literature, official pages and media galleries, Wikimedia Commons, ETH e-pics. Street View and similar as visual reference only, within their terms. Build a coverage matrix and an open-questions list before detailing.
+
+For a site outside Switzerland, replace the Swiss dataset checklist with the applicable national/municipal cadastral, terrain, heritage and survey sources. Verify horizontal CRS, vertical datum, units, axis order and building identity. Use an explicitly local calibrated study frame while geographic control is unresolved; do not copy Swiss defaults, a previous building's transform, or an unexplained altitude from a title block.
+
+Archive portals can require authentication and human retrieval even for free dossiers. Use the [Bundesarchiv research route](docs/bundesarchiv-research.md) where relevant; prepare specific dossier leads for the owner and process their delivered files with provenance. A search result is not a file permalink, a filename year is not a sheet revision, and project close-out drawings are not automatically measured as-built surveys. Check multi-frame TIFFs and deduplicate by full content hash, not filenames or similar appearance. Keep source floor labels distinct until a crosswalk is verified.
 
 ## Phases and exit checks
 

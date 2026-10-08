@@ -1,4 +1,72 @@
 {
   "schemaVersion": 1,
-  "models": []
+  "models": [
+    {
+      "id": "villa-maraini-v003",
+      "label": "v003",
+      "version": 3,
+      "building": "./villa-maraini-v003/building-meshopt-0bf2b9296fbf2752.glb",
+      "surroundings": "./villa-maraini-v003/surroundings-meshopt-5a123b100d5e885f.glb",
+      "metadata": "./villa-maraini-v003/viewer.json",
+      "sourceSha256": "3a0888176b3b837295a2f656e9f13797a61413b5aa82cb8917e0d563c4e41a64",
+      "levels": [
+        "all",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7"
+      ],
+      "meshCount": 1221,
+      "location": null,
+      "levelDefinitions": {
+        "p1": {
+          "label": "Piano 1 · Interrato",
+          "elevation": -7.85,
+          "min": -8.5,
+          "max": -4.26
+        },
+        "p2": {
+          "label": "Piano 2 · Seminterrato",
+          "elevation": -4.0,
+          "min": -4.65,
+          "max": -0.31
+        },
+        "p3": {
+          "label": "Piano 3 · Rialzato",
+          "elevation": 0,
+          "min": -0.65,
+          "max": 5.31
+        },
+        "p4": {
+          "label": "Piano 4 · Primo",
+          "elevation": 5.72,
+          "min": 5.07,
+          "max": 10.51
+        },
+        "p5": {
+          "label": "Piano 5 · Secondo",
+          "elevation": 11.12,
+          "min": 10.47,
+          "max": 15.06
+        },
+        "p6": {
+          "label": "Piano 6 · Torretta inferiore",
+          "elevation": 15.32,
+          "min": 14.67,
+          "max": 17.87
+        },
+        "p7": {
+          "label": "Piano 7 · Torretta superiore",
+          "elevation": 18.16,
+          "min": 17.51,
+          "max": 23.15
+        }
+      },
+      "bim": "./villa-maraini-v003/bim-4cd441d11b61ec09.json",
+      "ifc": "./villa-maraini-v003/reference-6db1ed6ab51c02d1.ifczip"
+    }
+  ]
 }

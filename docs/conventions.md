@@ -49,6 +49,7 @@ Rules:
 - **One living build.** There are no parallel stage copies. A change is made in `build/`, checked, then frozen into `releases/vNNN/`. The history of a change lives in git (commits and tags of the work repository) and in `HISTORY.md`, not in copied folders.
 - **Frozen means frozen.** A release folder is never edited. Corrections go into the next release. Exceptions need the user's explicit decision and are recorded in `HISTORY.md` (example: renders of older releases moved to `archive/renders/` on 2026-10-06).
 - **references/ holds evidence only.** Each file is a registered asset in `manifest.json`; `tools/reference-catalog/references.py --validate` fails on anything else. Model screenshots, comparison sheets and traces go to `build/review/` or `research/`.
+- **Evidence is filed by content.** Follow the template's `references/README.md`: `photos/`, `floor-plans/`, `sections/`, `elevations/`, `site/`, `documents/`, and `derived/<collection>/<source>/`. Email/archive delivery is provenance, not a new top-level folder. Preserve IDs, bytes, filenames and legacy paths during migrations; log the mapping in `research/reference-library/`.
 - **Only the latest release is public.** Older public copies move to `work/archive/models/` (`import_versions.py --keep-latest`).
 - **Review images are rebuilt, not kept.** `build/review/` is overwritten by each run; the release copies what it needs into `releases/vNNN/validation/`. Only the current release keeps its renders and review images; when the next release is frozen, those of the previous one move to `archive/renders/vNNN/` (same relative paths).
 
@@ -96,8 +97,9 @@ Scripts find the work folder from their own location (`Path(__file__).resolve().
 ## Frames and units
 
 - Metres, 1 Blender unit = 1 m, Z up.
-- A local origin at a rounded LV95 point (EPSG:2056) recorded in `project.json`; vertices never carry large coordinates.
-- Heights: state the datum (LN02 or LHN95) and the origin height: model z = H − origin.
+- Record the site's actual coordinate reference system and a suitable local origin in `project.json`; vertices never carry large map coordinates. For Swiss survey data this is commonly a rounded LV95 point (EPSG:2056). **Do not apply LV95 to a building outside Switzerland.**
+- Heights: state the source's vertical datum and origin height: model z = H − origin. LN02/LHN95 are Swiss examples, not defaults for other countries. Never infer a datum solely from a printed altitude.
+- If geographic control is unresolved, an explicitly labelled **local architectural study** can proceed from calibrated plans and supported relative levels. Record its local origin and axis directions, leave unknown projected CRS/absolute elevation/true-north rotation unset, and report that geographic placement is unvalidated. A visitor map pin is not survey control. Do not fabricate an IFC map conversion or daylight rotation to satisfy an exporter; document/omit unsupported geographic features.
 - The rotation from east/north to the model axes (`enuToModelDeg`) and the WGS84 origin go into `research/derived/model_georeference.json`, which every release copies into `research/` and `viewer/provenance/`.
 - Plan frames (per sheet) are calibrated from dimension strings and scale bars, never from the printed scale; the plan → model transform is recorded once (`research/derived/georeference.json`).
 
@@ -141,7 +143,7 @@ releases/vNNN/
 | public (`reconstruction`) | viewer, tools, docs, tests, gallery, each building's `public/` | everything committed is published; `work/` is ignored; check `git status` before every commit |
 | private work repository, one per building | that building's `work/` | text, data, scripts and records are tracked; binaries (`.blend`, GLB, images, PDF, LiDAR, video) are not, until Git LFS is set up (see `.gitignore`) |
 
-- In a work repository, commit at least once per release (`Release vNNN: …`) and tag it (`vNNN`). The tag `pre-restructure` marks the old layout.
+- When the owner has authorized commits, commit each work release (`Release vNNN: …`) and tag it (`vNNN`). Without that authorization, leave the validated files local and record the uncommitted state; do not invent a commit/tag. The tag `pre-restructure` marks the old layout.
 - Releases list their binaries in `SHA256SUMS`, so a release stays verifiable without the binaries in git.
 - Never commit plans, tour imagery, photographs of unknown rights or traces to the public repository.
 

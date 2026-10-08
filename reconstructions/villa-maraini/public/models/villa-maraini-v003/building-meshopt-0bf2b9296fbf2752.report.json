@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini-building",
+  "title": "Villa Maraini archive study",
+  "asset": "building-meshopt-0bf2b9296fbf2752.glb",
+  "source": {
+    "file": "villa-maraini.blend",
+    "bytes": 2454625,
+    "sha256": "3a0888176b3b837295a2f656e9f13797a61413b5aa82cb8917e0d563c4e41a64"
+  },
+  "conversion": {
+    "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
+    "profileSha256": "1e650c5ef91080179cf2ffcd6c02977867b88bc4d598cf24d1844e4509885d45"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 1332,
+    "meshes": 1328,
+    "textObjects": 0
+  },
+  "evaluatedText": [],
+  "selection": {
+    "meshes": 1221,
+    "collections": {
+      "Building_P1": 182,
+      "Building_P2": 254,
+      "Building_P3": 270,
+      "Building_P4": 215,
+      "Building_P5": 185,
+      "Building_P6": 35,
+      "Building_P7": 80
+    },
+    "boundsBlender": {
+      "min": [
+        -19.035999298095703,
+        -13.98799991607666,
+        -8.100000381469727
+      ],
+      "max": [
+        14.623000144958496,
+        13.585000038146973,
+        23.40999984741211
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 3981336,
+    "sha256": "affa67fbaee3c36ad84e048dcf673ddc6404174f40d88bc95ecde7184f068e15",
+    "nodes": 1221,
+    "meshNodes": 1221,
+    "uniqueMeshes": 772,
+    "renderedPrimitives": 1221,
+    "trianglesAcrossInstances": 50544,
+    "materials": 8,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 1221,
+    "dollhouseHiddenMeshNodes": 828,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Archive architectural study; not verified current condition or survey.",
+    "Local metric coordinates, no validated geographic placement.",
+    "Partial major-wall layouts; openings/stairs/roof details carry inferred basis."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/building.glb",
+    "packageReportSha256": "1603971694be436665c8d9b4d63dc09df2729905b0edffd96d2e48136fc63507"
+  },
+  "optimization": {
+    "originalAsset": "building-3a0888176b3b-050ef3b0e828.glb",
+    "originalSha256": "050ef3b0e828a5222f44a4e905f4b6fb52c646f2a308220514c4b12cf863c4a2",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 123,
+    "verifiedViews": 2069,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 4021204,
+    "bytes": 3981336,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 530866,
+    "gzipSha256": "709a6c31782780e6e84cb86d36d488d7bc0f8401d5bf82edd5d4bb285b2ad605"
+  }
+}

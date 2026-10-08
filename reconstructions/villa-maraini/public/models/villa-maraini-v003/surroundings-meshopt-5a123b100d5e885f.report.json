@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini-surroundings",
+  "title": "Villa Maraini terrain and schematic neighbourhood",
+  "asset": "surroundings-meshopt-5a123b100d5e885f.glb",
+  "source": {
+    "file": "villa-maraini.blend",
+    "bytes": 2454625,
+    "sha256": "3a0888176b3b837295a2f656e9f13797a61413b5aa82cb8917e0d563c4e41a64"
+  },
+  "conversion": {
+    "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
+    "profileSha256": "ad3913abd358dc52aa87ebb3e73a9b0cb868946ad3e2df0ec97184f02c767ac3"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 1332,
+    "meshes": 1328,
+    "textObjects": 0
+  },
+  "evaluatedText": [],
+  "selection": {
+    "meshes": 107,
+    "collections": {
+      "Context_OSM": 105,
+      "Context_Roads": 1,
+      "Context_Terrain": 1
+    },
+    "boundsBlender": {
+      "min": [
+        -303.856689453125,
+        -299.9734802246094,
+        -45.49393844604492
+      ],
+      "max": [
+        303.072509765625,
+        306.95574951171875,
+        11.907970428466797
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 2816556,
+    "sha256": "1e75cc37716ee3f35219065dd22447632e143a2cc9023cd0f203ff0dbddcb177",
+    "nodes": 107,
+    "meshNodes": 107,
+    "uniqueMeshes": 107,
+    "renderedPrimitives": 107,
+    "trianglesAcrossInstances": 45298,
+    "materials": 4,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 107,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Lazio 2002 5 m DTM, CC BY4.0; OSM contributors, ODbL.",
+    "Horizontal footprint fit RMS1.02 m; vertical display offset provisional, not a measured floor datum.",
+    "99 GBA satellite-predicted heights (CC BY-NC 4.0); five OSM levels times 3 m; one unmatched footprint retains a 10 m placeholder. Inferred context only; commercial redistribution not cleared."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/surroundings.glb",
+    "packageReportSha256": "f1fae1c0d3af55cc0978a61d74621221b2bf8d5a021ac01aa0fbc5c64e655922"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-3a0888176b3b-50758447b1f0.glb",
+    "originalSha256": "50758447b1f098ff50b3dcd32596c82769b10f6d03efa78371a698c2afcb8e1f",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 6,
+    "verifiedViews": 315,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 3262280,
+    "bytes": 2816556,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 922804,
+    "gzipSha256": "964b31559ad076aa13dde5f1419c67155cdebb97c1f91578e3ebff23198bf212"
+  }
+}
