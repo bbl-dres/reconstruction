@@ -30,6 +30,8 @@ Live app: https://bbl-dres.github.io/reconstruction/
 | [Bundeshaus](reconstructions/bundeshaus/) | The Swiss Parliament Building in Bern. No-build Three.js viewer with exterior, dollhouse, floor-plan and walk modes, building inventory and IFC download. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/bundeshaus/). |
 | [Beatrice von Wattenwyl-Haus](reconstructions/von-wattenwyl-haus/) | Archive of the public Matterport tour and an experiment turning its panoramas into a Gaussian splat. The downloaded tour stays local; the splat viewer is published. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/von-wattenwyl-haus/). |
 | [Landgut Lohn](reconstructions/landgut-lohn/) | The Federal Council's country residence of 1782/83 in Kehrsatz, reconstructed from floor plans, swisstopo LiDAR and a 360° tour, in the shared viewer with building inventory and IFC download. [Live viewer](https://bbl-dres.github.io/reconstruction/reconstructions/landgut-lohn/). |
+| [Villa Maraini](reconstructions/villa-maraini/) | Swiss Institute in Rome. Research phase: measured-survey leads, drawings and dated photographs for an architectural reconstruction. No model release yet. |
+| [Sammlung Oskar Reinhart «Am Römerholz»](reconstructions/roemerholz/) | Museum in Winterthur. Research phase: published 2010 plans and photographs, with newer evidence for the 2026 reopening. No model release yet. |
 
 ## Repository layout
 
@@ -57,7 +59,7 @@ python tools/serve.py
 
 Open [localhost:8000](http://localhost:8000/) for the gallery or `/reconstructions/<id>/` for a viewer (`--building <id>` prints the link). The pages load data with `fetch`, so they need a web server. The map uses CARTO's Dark Matter vector basemap, loaded from CARTO at runtime. Check that [CARTO's basemap terms](https://carto.com/basemaps) fit the intended use before relying on it for a public site.
 
-To add a reconstruction, follow [Adding a building](docs/adding-a-building.md): copy the template, add a preview image to `gallery/assets/` and an entry to `gallery/data/reconstructions.json`. Locations come from the [swisstopo search API](https://api3.geo.admin.ch/services/sdiservices.html#search) (`SearchServer`, `type=locations`, `sr=4326`) for the building's address.
+To add a reconstruction, follow [Adding a building](docs/adding-a-building.md): copy the template, add a preview image to `gallery/assets/` and an entry to `gallery/data/reconstructions.json`. Swiss locations come from the [swisstopo API](https://docs.geo.admin.ch/), using address search or an exact GWR EGID match. Foreign sites use an identified local or official source, recorded in each gallery entry; Villa Maraini uses Turismo Roma.
 
 Viewer links shared before this layout (`…/reconstruction/?version=…&view=…`) are forwarded to the Bundeshaus viewer. For that reason the map view uses `#map`, not a `view` parameter.
 

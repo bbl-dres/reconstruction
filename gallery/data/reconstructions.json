@@ -96,6 +96,90 @@
         "address": "Lohnweg 2, 3122 Kehrsatz",
         "source": "swisstopo SearchServer (api3.geo.admin.ch), address point 1412548_0, retrieved 2026-10-05"
       }
+    },
+    {
+      "id": "villa-maraini",
+      "title": "Villa Maraini",
+      "place": "Rome",
+      "summary": "The Swiss Institute in Rome. Research has begun on its drawings, photographs and survey records for a future architectural reconstruction.",
+      "href": "reconstructions/villa-maraini/",
+      "preview": {
+        "src": "gallery/assets/villa-maraini.svg",
+        "alt": "Villa Maraini — research in progress",
+        "note": "Original typographic research placeholder; no building geometry or third-party imagery depicted."
+      },
+      "tags": [
+        "Research phase",
+        "Architectural reconstruction"
+      ],
+      "translations": {
+        "de": {
+          "place": "Rom",
+          "summary": "Das Schweizer Institut in Rom. Die Recherche zu Plänen, Fotografien und Vermessungsunterlagen für eine künftige architektonische Rekonstruktion hat begonnen.",
+          "tags": [
+            "Recherchephase",
+            "Architektonische Rekonstruktion"
+          ]
+        },
+        "fr": {
+          "place": "Rome",
+          "summary": "L’Institut suisse de Rome. La recherche de plans, de photographies et de relevés a commencé en vue d’une reconstruction architecturale.",
+          "tags": [
+            "Phase de recherche",
+            "Reconstruction architecturale"
+          ]
+        },
+        "it": {
+          "place": "Roma",
+          "summary": "L’Istituto Svizzero di Roma. È iniziata la ricerca di piante, fotografie e rilievi per una futura ricostruzione architettonica.",
+          "tags": [
+            "Fase di ricerca",
+            "Ricostruzione architettonica"
+          ]
+        }
+      },
+      "location": {
+        "lat": 41.906773,
+        "lon": 12.487714,
+        "address": "Via Ludovisi 48, 00187 Roma, Italy",
+        "source": "Roma Capitale / Turismo Roma, https://www.turismoroma.it/en/node/2150, retrieved 2026-10-08; approximate visitor point, not survey control"
+      }
+    },
+    {
+      "id": "roemerholz",
+      "title": "Sammlung Oskar Reinhart «Am Römerholz»",
+      "place": "Winterthur",
+      "summary": "Research for the villa and galleries, starting with published plans and photographs and checking the changes made before the 2026 reopening.",
+      "href": "reconstructions/roemerholz/",
+      "preview": {
+        "src": "gallery/assets/roemerholz.svg",
+        "alt": "Am Römerholz — research in progress",
+        "note": "Original typographic research placeholder; no building geometry or third-party imagery depicted."
+      },
+      "tags": ["Research phase", "Architectural reconstruction"],
+      "translations": {
+        "de": {
+          "summary": "Recherche zur Villa und den Galerien anhand veröffentlichter Pläne und Fotografien sowie der Änderungen vor der Wiedereröffnung 2026.",
+          "tags": ["Recherchephase", "Architektonische Rekonstruktion"]
+        },
+        "fr": {
+          "title": "Collection Oskar Reinhart «Am Römerholz»",
+          "place": "Winterthour",
+          "summary": "Recherche sur la villa et les galeries à partir de plans et de photographies publiés, avec vérification des transformations précédant la réouverture de 2026.",
+          "tags": ["Phase de recherche", "Reconstruction architecturale"]
+        },
+        "it": {
+          "title": "Collezione Oskar Reinhart «Am Römerholz»",
+          "summary": "Ricerca sulla villa e sulle gallerie a partire da piante e fotografie pubblicate, verificando le modifiche precedenti alla riapertura del 2026.",
+          "tags": ["Fase di ricerca", "Ricostruzione architettonica"]
+        }
+      },
+      "location": {
+        "lat": 47.511305,
+        "lon": 8.731823,
+        "address": "Haldenstrasse 95, 8400 Winterthur, Switzerland",
+        "source": "swisstopo geo.admin.ch MapServer/find, GWR layer ch.bfs.gebaeude_wohnungs_register, exact EGID 1150994, feature 1150994_0, retrieved 2026-10-08; map pin, not survey control"
+      }
     }
   ]
 }

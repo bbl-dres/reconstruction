@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini",
+  "name": "Villa Maraini",
+  "place": "Rome, Italy",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    {
+      "label": "Istituto Svizzero",
+      "href": "https://www.istitutosvizzero.it/istituto-svizzero/"
+    },
+    {
+      "label": "Google Maps",
+      "href": "https://www.google.com/maps/search/?api=1&query=41.906773%2C12.487714"
+    }
+  ],
+  "walkStarts": {},
+  "pipeline": {
+    "title": "Villa Maraini",
+    "timeZone": "Europe/Rome",
+    "ifcName": "Villa Maraini — Istituto Svizzero",
+    "profiles": {
+      "building": "profiles/building.json",
+      "surroundings": "profiles/surroundings.json"
+    },
+    "levels": []
+  }
+}

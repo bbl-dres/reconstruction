@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-building="public/building.json">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Explore Villa Maraini in 3D, as a dollhouse, in plan, or on foot.">
+  <title>Villa Maraini · Building explorer</title>
+  <link rel="stylesheet" href="../../viewer/css/token.css?v=20261006-i18n">
+  <link rel="stylesheet" href="../../viewer/css/app-tools.css?v=20261006-review">
+  <link rel="stylesheet" href="../../viewer/css/main.css?v=20261006-plan">
+  <script type="importmap">
+    {"imports":{"three":"../../viewer/vendor/three/build/three.module.js","three/addons/":"../../viewer/vendor/three/examples/jsm/","building-policy":"../../viewer/js/policy-default.js"}}
+  </script>
+</head>
+<body>
+  <!-- Thin entry page: the shared viewer (../../viewer) builds the interface from public/building.json. -->
+  <p id="boot-status" class="boot-status" hidden></p>
+  <script>
+    // Opened from disk, browsers refuse module scripts, so this note cannot come from the viewer.
+    if (location.protocol === 'file:') {
+      const note = document.getElementById('boot-status');
+      note.innerHTML = '<strong>Open with a local server</strong><br>Run “python tools/serve.py” from the repository root and open the address it prints. No build is needed.';
+      note.hidden = false;
+    }
+  </script>
+  <noscript>This viewer needs JavaScript enabled.</noscript>
+  <script type="module" src="../../viewer/js/boot.js?v=20261006-plan-2"></script>
+</body>
+</html>

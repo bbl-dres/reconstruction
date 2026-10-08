@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+<title id="title">Villa Maraini — research in progress</title><desc id="desc">Typographic project cover. No building geometry is depicted.</desc>
+<defs><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#c1b393" stroke-opacity=".18"/></pattern></defs>
+<rect width="960" height="600" fill="#e9e0cd"/><rect width="960" height="600" fill="url(#grid)"/>
+<path d="M64 68H896M64 532H896" stroke="#77664b"/>
+<text x="64" y="115" font-family="Arial,sans-serif" font-size="20" letter-spacing="4" fill="#78603e">ROMA · ISTITUTO SVIZZERO</text>
+<text x="59" y="285" font-family="Georgia,serif" font-size="100" fill="#29261e">Villa Maraini</text>
+<text x="64" y="338" font-family="Arial,sans-serif" font-size="24" fill="#65563d">Via Ludovisi 48</text>
+<rect x="64" y="425" width="308" height="45" rx="22" fill="#302c23"/>
+<text x="88" y="454" font-family="Arial,sans-serif" font-size="18" letter-spacing="1" fill="#f4eede">RESEARCH IN PROGRESS</text>
+<text x="64" y="568" font-family="Arial,sans-serif" font-size="16" fill="#65563d">41.906773° N / 12.487714° E</text>
+</svg>

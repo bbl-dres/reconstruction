@@ -22,7 +22,7 @@
     "map.zoomOut": "Zoom out",
     "map.home": "Show all reconstructions",
     "map.open": "Open",
-    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Source on GitHub</a> · MIT license for project code; bundled dependencies and reference material keep their own terms. Map: <a href=\"https://maplibre.org/\">MapLibre</a>, basemap © <a href=\"https://carto.com/attributions\">CARTO</a>, data © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors; locations from swisstopo.",
+    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Source on GitHub</a> · MIT license for project code; bundled dependencies and reference material keep their own terms. Map: <a href=\"https://maplibre.org/\">MapLibre</a>, basemap © <a href=\"https://carto.com/attributions\">CARTO</a>, data © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors; locations from swisstopo and Turismo Roma.",
     "map.close": "Close"
   },
   "de": {
@@ -48,7 +48,7 @@
     "map.zoomOut": "Verkleinern",
     "map.home": "Alle Rekonstruktionen zeigen",
     "map.open": "Öffnen",
-    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Quellcode auf GitHub</a> · MIT-Lizenz für den Projektcode; mitgelieferte Abhängigkeiten und Referenzmaterial behalten ihre eigenen Bedingungen. Karte: <a href=\"https://maplibre.org/\">MapLibre</a>, Basiskarte © <a href=\"https://carto.com/attributions\">CARTO</a>, Daten © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>-Mitwirkende; Standorte von swisstopo.",
+    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Quellcode auf GitHub</a> · MIT-Lizenz für den Projektcode; mitgelieferte Abhängigkeiten und Referenzmaterial behalten ihre eigenen Bedingungen. Karte: <a href=\"https://maplibre.org/\">MapLibre</a>, Basiskarte © <a href=\"https://carto.com/attributions\">CARTO</a>, Daten © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>-Mitwirkende; Standorte von swisstopo und Turismo Roma.",
     "map.close": "Schliessen"
   },
   "fr": {
@@ -74,7 +74,7 @@
     "map.zoomOut": "Zoom arrière",
     "map.home": "Afficher toutes les reconstructions",
     "map.open": "Ouvrir",
-    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Code source sur GitHub</a> · Licence MIT pour le code du projet ; les dépendances incluses et le matériel de référence conservent leurs propres conditions. Carte : <a href=\"https://maplibre.org/\">MapLibre</a>, fond de carte © <a href=\"https://carto.com/attributions\">CARTO</a>, données © contributeurs <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> ; emplacements de swisstopo.",
+    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Code source sur GitHub</a> · Licence MIT pour le code du projet ; les dépendances incluses et le matériel de référence conservent leurs propres conditions. Carte : <a href=\"https://maplibre.org/\">MapLibre</a>, fond de carte © <a href=\"https://carto.com/attributions\">CARTO</a>, données © contributeurs <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> ; emplacements de swisstopo et Turismo Roma.",
     "map.close": "Fermer"
   },
   "it": {
@@ -100,7 +100,7 @@
     "map.zoomOut": "Riduci",
     "map.home": "Mostra tutte le ricostruzioni",
     "map.open": "Apri",
-    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Codice sorgente su GitHub</a> · Licenza MIT per il codice del progetto; le dipendenze incluse e il materiale di riferimento mantengono le proprie condizioni. Mappa: <a href=\"https://maplibre.org/\">MapLibre</a>, mappa di base © <a href=\"https://carto.com/attributions\">CARTO</a>, dati © contributori di <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>; posizioni da swisstopo.",
+    "footer.credits": "<a href=\"https://github.com/bbl-dres/reconstruction\">Codice sorgente su GitHub</a> · Licenza MIT per il codice del progetto; le dipendenze incluse e il materiale di riferimento mantengono le proprie condizioni. Mappa: <a href=\"https://maplibre.org/\">MapLibre</a>, mappa di base © <a href=\"https://carto.com/attributions\">CARTO</a>, dati © contributori di <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>; posizioni da swisstopo e Turismo Roma.",
     "map.close": "Chiudi"
   }
 }

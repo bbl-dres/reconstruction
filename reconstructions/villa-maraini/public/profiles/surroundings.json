@@ -1,0 +1,13 @@
+{
+  "id": "villa-maraini-surroundings",
+  "title": "Villa Maraini surroundings",
+  "includeCollectionPrefixes": [
+    "Context"
+  ],
+  "collectionRoles": {
+    "Context": "context"
+  },
+  "notes": [
+    "Italian site: establish survey and terrain sources, CRS, datum and reuse rights before building context. Swiss geodata defaults do not apply."
+  ]
+}
