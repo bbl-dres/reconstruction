@@ -6,7 +6,7 @@ Browse the **[HTML catalog](catalog/index.html)**. Start with **[manifest.json](
 
 Only evidence of the **real building**: photographs (including screenshots of photographic panoramas), original drawings, floor plans, sections, elevations, site plans and contextual publications. Faithful page renders, crops and extracted drawing text are allowed in `derived/` with a parent-source link. They are never substitutes for the original sheet.
 
-Do not store reconstruction renders, viewer screenshots, model comparisons, invented geometry or generated textures here. Put model review artifacts in `../build/review/`. Secondary illustrations are in `../research/secondary-illustrations/`; web-page captures in `../research/source-pages/`; GIS/terrain files in `../research/geodata/`; photogrammetric map views in `../research/geospatial-imagery/`.
+Do not store reconstruction renders, viewer screenshots, model comparisons, invented geometry or generated textures here. Put model review artifacts in `../build/review/`. Secondary illustrations are in `../research/secondary-illustrations/`; web discovery captures (search results, indexes, viewer shells and API responses) in `../research/source-pages/`; GIS/terrain files in `../research/geodata/`; photogrammetric map views in `../research/geospatial-imagery/`. A registered primary publisher article containing building history or project facts may remain a contextual document under `documents/`, including HTML. Its linked images are not implicitly acquired or registered.
 
 ## Structure
 
@@ -16,16 +16,18 @@ references/
   manifest.schema.json      # JSON Schema 2020-12
   INDEX.md                  # generated human-readable index
   incoming/                 # unverified intake; separate manifest, excluded from evidence
-  photos/<space-or-source>/ # real photographs; tour faces grouped by panorama ID
+  photos/<topic>/          # all photographs, including garden/site views and PDF photo extracts
   floor-plans/<collection>/ # original floor and seating plans
   sections/<collection>/    # original sections
   elevations/<collection>/  # original facade drawings
-  site/<photos-or-plans>/   # real site images and plans
+  site/<collection>/      # non-photographic site plans/evidence; no parallel site/photos/
   documents/<collection>/  # publications and historic context
   derived/<collection>/<source>/ # faithful drawing extracts/contact sheets
 ```
 
 Do not create parallel `user/` and `public/` libraries: who supplied a file belongs in provenance, not in its architectural location. Keep the received filename whenever possible. The manifest distinguishes the **original filename** recovered from a URL/attachment from the **ingested filename** assigned during earlier work. Unknown originals remain an empty list; they are not fabricated.
+
+File photographs by their subject under `photos/`, including photographs extracted from a PDF; retain extraction parents and parameters in the manifest. Reserve `derived/` for faithful source-page previews, drawing crops/tiles and text extracts. Traces, annotated analysis, comparisons and model output go in `research/` or `build/review/`.
 
 ## Agent workflow
 

@@ -42,6 +42,8 @@ Preserve the editable master and optimize a separate viewer export. Use project-
 
 Do not supply `EXT_mesh_gpu_instancing` batches or unsupported texture extensions as a silent optimization. The viewer performs its own compatible opaque batching; exporter/library support alone does not mean an extension is integrated here.
 
+Check reuse again after facade and material review rounds. Copying each object's mesh to change glass materials can silently destroy linked geometry. Assign shared materials at type level, place rigid instances of complete products, and retain explicit component membership for frames, panes, leaves, bases and capitals. Report actual mesh/type/instance counts from the exported GLB and check IFC representation-map reuse; repeated family labels alone do not establish instancing. Distinct evidenced sizes and profiles remain separate types. Keep structural wall cores and decorative projections separate, and validate pane/frame and wall/slab contacts without using visual anti-z-fighting gaps as permanent enclosure openings.
+
 ### BIM categories and object properties
 
 Classify the object by its meaning, separately from appearance or cutaway policy. Suggested categories cover:
@@ -488,3 +490,6 @@ Published `vNNN` directories should be immutable snapshots. Use a new version fo
 7. **Measure changes.** Record geometry/material/image counts, estimated image storage, transfer bytes and representative browser timings with viewport/DPR/lighting. Compare important interiors and exterior silhouettes at fixed cameras. Explain budget exceptions and remaining defects.
 8. **Publish compatible delivery assets.** Let the importer apply verified lossless compression and publish the catalog after building/context success. Keep raw masters/intermediates outside the web repo and all shipped files below 100 MiB. Future IFC/collision/LOD deliverables must declare their integration status rather than implying current runtime support.
 
+For complete products, all components sharing one element ID must agree on the whole-product family, type and category. Component classifications may differ: a staircase assembly can contain treads, cheeks and rails. Give geometrically different bespoke assemblies distinct types; identical type IDs require identical local component geometry and placement. Check this in the exported GLB as well as Blender.
+
+Enclosure checks need more than opening-centre rays. Inspect beside each opening, at storey joints and from high oblique cameras. A facade can pass a frame/glass coverage test while a projecting bay still lacks its top cap. Add explicit roof-profile coverage and downward rays for projections; preserve intentional loggias and documented voids.

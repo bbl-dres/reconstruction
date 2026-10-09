@@ -64,7 +64,7 @@ references/
   floor-plans/<collection>/
   sections/<collection>/
   elevations/<collection>/
-  site/<photos-or-plans>/
+  site/<collection>/         # non-photographic site evidence; all photos go under photos/
   documents/<collection>/         mixed publications and context
   derived/<collection>/<source>/  faithful crops/page renders/text extracts
   manifest.json  manifest.schema.json  INDEX.md
@@ -96,6 +96,8 @@ Calibrate sheets from dimension strings/graphic scale bars; record page/pixel po
 Use the country's appropriate authorities. Swiss projects can use swisstopo/GWR and LV95/LN02 where confirmed. Abroad, investigate local/regional/national sources and global terrain fallbacks; see [Elevation sources](elevation-sources.md) and [Italian geodata discovery](italian-geodata.md). Record horizontal **and vertical** datums, resolution, date, coverage and licence. Test actual data at the site: a catalogue's bounding rectangle may enclose large gaps. DEM/DSM and terrain/building heights differ; a 30 m grid cannot establish villa steps or roof detail.
 
 An explicitly local architectural study can proceed from calibrated plans and supported relative heights while geographic control remains unresolved. Document local origin/axes, omit unsupported map conversion and geographic sunlight, and keep the gallery pin separate. See [Frames and units](conventions.md#frames-and-units). For site context, follow [Terrain and surroundings in Blender](terrain-and-surroundings.md), including add-on choices, footprint registration and the separate vertical tie.
+
+For terraced gardens, model lawn, paving, retaining walls, stairs and ramps as separate elements. Even a detailed DTM cannot replace their construction geometry. Identify a site's section cut before using its levels; distinguish horizontal distance labels from spot elevations. If an unscaled section is proportionally calibrated against another dated drawing, record the two sources, independent checks and uncertainty, and call the result inferred relative control. Do not extend one section's wall heights or ramp grades across the whole property. Replace only a documented local terrain patch, checking the original surface outside it and every stair-to-ground junction. Conflicting basin, stair or wall positions stay unresolved until independent evidence distinguishes them.
 
 ## 5. Build and validate a coherent first version
 

@@ -49,7 +49,8 @@ Rules:
 - **One living build.** There are no parallel stage copies. A change is made in `build/`, checked, then frozen into `releases/vNNN/`. The history of a change lives in git (commits and tags of the work repository) and in `HISTORY.md`, not in copied folders.
 - **Frozen means frozen.** A release folder is never edited. Corrections go into the next release. Exceptions need the user's explicit decision and are recorded in `HISTORY.md` (example: renders of older releases moved to `archive/renders/` on 2026-10-06).
 - **references/ holds evidence only.** Each file is a registered asset in `manifest.json`; `tools/reference-catalog/references.py --validate` fails on anything else. Model screenshots, comparison sheets and traces go to `build/review/` or `research/`.
-- **Evidence is filed by content.** Follow the template's `references/README.md`: `photos/`, `floor-plans/`, `sections/`, `elevations/`, `site/`, `documents/`, and `derived/<collection>/<source>/`. Email/archive delivery is provenance, not a new top-level folder. Preserve IDs, bytes, filenames and legacy paths during migrations; log the mapping in `research/reference-library/`.
+- **Evidence is filed by content.** Follow the template's `references/README.md`: `photos/`, `floor-plans/`, `sections/`, `elevations/`, `site/`, `documents/`, and `derived/<collection>/<source>/`. All original photographs belong under `photos/`, including garden and site views; do not create `site/photos/`. Email/archive delivery is provenance, not a new top-level folder. Preserve IDs, bytes, filenames and legacy paths during migrations; log the mapping in `research/reference-library/`.
+- **Raster access copies belong in `references/derived/`.** Start visual inspection with a colour PNG at about 2048 pixels on its long edge. Reuse registered previews; retain larger detail views only when they add readable information or are cited by existing controls. For tiny dimensions, render a bounded crop or overlapping tiles around 1200–1800 pixels instead of a giant full sheet. Record source ID/hash, page/frame, crop, resolution and renderer; keep the PDF/TIFF unchanged. Provide collection/source README links so agents can discover previews without opening heavy vectors. Contact sheets with review labels, tracings and model comparisons belong in `build/review/` or `research/`.
 - **Only the latest release is public.** Older public copies move to `work/archive/models/` (`import_versions.py --keep-latest`).
 - **Review images are rebuilt, not kept.** `build/review/` is overwritten by each run; the release copies what it needs into `releases/vNNN/validation/`. Only the current release keeps its renders and review images; when the next release is frozen, those of the previous one move to `archive/renders/vNNN/` (same relative paths).
 
@@ -152,7 +153,7 @@ releases/vNNN/
 | Term | Meaning |
 |---|---|
 | Evidence | A registered source file in `references/` |
-| Derived | A machine-made result from evidence (`research/derived/`), reproducible by a script |
+| Derived | Faithful source previews/crops/text in `references/derived/`; interpreted calibration or model control in `research/derived/`. Extracted photographs go under `references/photos/` and retain parent links |
 | Build | The living authoring state in `build/` |
 | Release | A frozen, validated package in `releases/vNNN/` |
 | Published version | The one release imported into `public/models/` |

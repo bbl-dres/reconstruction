@@ -87,6 +87,27 @@
         "elevation": 18.16,
         "min": 17.51,
         "max": 23.15
+      },
+      {
+        "id": "pt0",
+        "label": "Portineria · Piano terra",
+        "elevation": -9.679288635253906,
+        "min": -10.229288635253907,
+        "max": -5.809288635253905
+      },
+      {
+        "id": "pt1",
+        "label": "Portineria · Primo piano",
+        "elevation": -5.789288635253906,
+        "min": -6.339288635253906,
+        "max": -2.5192886352539063
+      },
+      {
+        "id": "pt2",
+        "label": "Portineria · Altana e terrazza",
+        "elevation": -2.4992886352539068,
+        "min": -3.049288635253907,
+        "max": 5.9157110214233395
       }
     ]
   }

@@ -38,6 +38,13 @@ export function buildModelTree({ meshes, bim = null, levels = [], definitions = 
     name: definitions[level]?.label || (level === 'all' ? 'Building' : humanize(level)), elevation: definitions[level]?.elevation ?? 0 }));
   for (const root of roots) nodes.set(root.id, root);
   const storeys = new Map(roots.map(root => [root.level, root]));
+  // Separate buildings can have overlapping height bands. Authored membership
+  // limits the candidates; height chooses within them for spanning components.
+  const levelForMesh = (mesh, bounds = mesh?.userData.bounds) => {
+    const authored = mesh?.userData.viewer_floor_ids;
+    const candidates = Array.isArray(authored) ? authored.filter(id => storeys.has(id)) : [];
+    return levelForBounds(bounds, candidates.length ? candidates : order, definitions);
+  };
   const child = (parent, id, kind, name) => {
     let node = nodes.get(id);
     if (!node) {
@@ -47,7 +54,7 @@ export function buildModelTree({ meshes, bim = null, levels = [], definitions = 
     return node;
   };
   const place = ({ id, name, slug, type, typeName, level, members, product = null }) => {
-    const storey = storeys.get(level) || storeys.get(levelForBounds(members[0]?.userData.bounds, order, definitions)) || roots[0];
+    const storey = storeys.get(level) || storeys.get(levelForMesh(members[0])) || roots[0];
     const group = child(storey, `c:${storey.level}:${slug}`, 'category', humanize(slug));
     const kind = child(group, `t:${storey.level}:${slug}:${type || ''}`, 'type', type ? cleanName(typeName) || 'Unnamed type' : 'Other components');
     kind.anonymous = !type;
@@ -66,20 +73,19 @@ export function buildModelTree({ meshes, bim = null, levels = [], definitions = 
         continue;
       }
       place({ id: `e:m:${mesh.userData.viewer_id || mesh.uuid}`, name: mesh.name, slug: unresolved.get(mesh.userData.viewer_id) || category(mesh),
-        level: levelForBounds(mesh.userData.bounds, order, definitions), members: [mesh] });
+        level: levelForMesh(mesh), members: [mesh] });
     }
     for (const { product, members } of products.values()) {
       const type = bim.types.get(product.typeId);
       place({ id: `e:p:${product.id}`, name: product.name, slug: product.category, type: product.typeId, typeName: type?.name,
-        level: storeys.has(product.primaryStorey) ? product.primaryStorey : levelForBounds(bim.bounds(members[0]), order, definitions), members, product });
+        level: storeys.has(product.primaryStorey) ? product.primaryStorey : levelForMesh(members[0], bim.bounds(members[0])), members, product });
     }
   } else {
     for (const mesh of sourceMeshes) {
       const data = mesh.userData;
-      const floors = (data.viewer_floor_ids || []).filter(id => storeys.has(id));
       place({ id: `e:m:${data.viewer_id || mesh.uuid}`, name: mesh.name, slug: data.viewer_category || category(mesh),
         type: data.viewer_type_id, typeName: data.viewer_type_name || data.viewer_type_id,
-        level: data.bounds ? levelForBounds(data.bounds, order, definitions) : floors[0], members: [mesh] });
+        level: levelForMesh(mesh), members: [mesh] });
     }
   }
   roots.sort((a, b) => b.elevation - a.elevation);

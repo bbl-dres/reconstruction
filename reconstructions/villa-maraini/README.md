@@ -4,7 +4,7 @@ Archive architectural study of **Villa Maraini / Istituto Svizzero**, Via Ludovi
 
 [Project page](index.html) · [Public status](public/docs/model-status.md) · [Official institute](https://www.istitutosvizzero.it/istituto-svizzero/)
 
-The model covers the main villa's major walls, five principal storeys and two tower levels. v003 retains Lazio 5 m terrain and mapped roads, and updates 99 OSM neighbours with matched GlobalBuildingAtlas height estimates; five use storey counts and one remains a 10 m placeholder. Context heights are inferred and GBA's noncommercial terms apply. Archive architecture and relative heights are unchanged; current conditions, detailed interiors and the floor-to-ground tie remain unverified. A splat needs a suitable image dataset.
+The model covers five principal villa storeys, two tower levels and three separate Portineria levels. Reference reviews refine wall cores, reusable window/door/column products, the roof, ceremonial stair and lower vestibule. The site includes the winding frontage stair, gate approach, historical carriageway and separate retaining construction. Lazio 5 m terrain and mapped streets provide wider context, with courtyards and stepped building parts. Neighbor heights combine OpenStreetMap information and GlobalBuildingAtlas estimates; GBA's noncommercial terms apply. The Portineria upper garden connection, full upper drive return, hidden circulation, exact decoration and absolute floor datum remain unresolved. The public status records the latest iteration and its limits.
 
 - `public/`: model exports, configuration, profiles and coverage notes.
 - `work/`: private local Git repository, ignored by the parent repository. Start with `work/STATUS.md` and `work/research/README.md`.

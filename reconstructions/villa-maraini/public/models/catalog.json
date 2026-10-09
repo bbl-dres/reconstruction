@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "models": [
     {
-      "id": "villa-maraini-v003",
-      "label": "v003",
-      "version": 3,
-      "building": "./villa-maraini-v003/building-meshopt-0bf2b9296fbf2752.glb",
-      "surroundings": "./villa-maraini-v003/surroundings-meshopt-5a123b100d5e885f.glb",
-      "metadata": "./villa-maraini-v003/viewer.json",
-      "sourceSha256": "3a0888176b3b837295a2f656e9f13797a61413b5aa82cb8917e0d563c4e41a64",
+      "id": "villa-maraini-v011",
+      "label": "v011",
+      "version": 11,
+      "building": "./villa-maraini-v011/building-meshopt-a34a29bce47615dd.glb",
+      "surroundings": "./villa-maraini-v011/surroundings-meshopt-ef0b24e8a14e0beb.glb",
+      "metadata": "./villa-maraini-v011/viewer.json",
+      "sourceSha256": "59700f959acf6f581406e94c66124538a6cb9b73ce4f2d58b49cc963a692f916",
       "levels": [
         "all",
         "p1",
@@ -17,9 +17,12 @@
         "p4",
         "p5",
         "p6",
-        "p7"
+        "p7",
+        "pt0",
+        "pt1",
+        "pt2"
       ],
-      "meshCount": 1221,
+      "meshCount": 3532,
       "location": null,
       "levelDefinitions": {
         "p1": {
@@ -63,10 +66,28 @@
           "elevation": 18.16,
           "min": 17.51,
           "max": 23.15
+        },
+        "pt0": {
+          "label": "Portineria · Piano terra",
+          "elevation": -9.679288635253906,
+          "min": -10.229288635253907,
+          "max": -5.809288635253905
+        },
+        "pt1": {
+          "label": "Portineria · Primo piano",
+          "elevation": -5.789288635253906,
+          "min": -6.339288635253906,
+          "max": -2.5192886352539063
+        },
+        "pt2": {
+          "label": "Portineria · Altana e terrazza",
+          "elevation": -2.4992886352539068,
+          "min": -3.049288635253907,
+          "max": 5.9157110214233395
         }
       },
-      "bim": "./villa-maraini-v003/bim-4cd441d11b61ec09.json",
-      "ifc": "./villa-maraini-v003/reference-6db1ed6ab51c02d1.ifczip"
+      "bim": "./villa-maraini-v011/bim-03be0b955ceac7b4.json",
+      "ifc": "./villa-maraini-v011/reference-6d423d2f59346f1c.ifczip"
     }
   ]
 }

@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "id": "villa-maraini-surroundings",
   "title": "Villa Maraini terrain and schematic neighbourhood",
-  "asset": "surroundings-meshopt-5a123b100d5e885f.glb",
+  "asset": "surroundings-meshopt-ef0b24e8a14e0beb.glb",
   "source": {
     "file": "villa-maraini.blend",
-    "bytes": 2454625,
-    "sha256": "3a0888176b3b837295a2f656e9f13797a61413b5aa82cb8917e0d563c4e41a64"
+    "bytes": 6623470,
+    "sha256": "59700f959acf6f581406e94c66124538a6cb9b73ce4f2d58b49cc963a692f916"
   },
   "conversion": {
     "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
@@ -21,15 +21,15 @@
     "recentered": false
   },
   "sourceScene": {
-    "objects": 1332,
-    "meshes": 1328,
+    "objects": 3668,
+    "meshes": 3664,
     "textObjects": 0
   },
   "evaluatedText": [],
   "selection": {
-    "meshes": 107,
+    "meshes": 132,
     "collections": {
-      "Context_OSM": 105,
+      "Context_OSM": 130,
       "Context_Roads": 1,
       "Context_Terrain": 1
     },
@@ -47,16 +47,16 @@
     }
   },
   "glb": {
-    "bytes": 2816556,
-    "sha256": "1e75cc37716ee3f35219065dd22447632e143a2cc9023cd0f203ff0dbddcb177",
-    "nodes": 107,
-    "meshNodes": 107,
-    "uniqueMeshes": 107,
-    "renderedPrimitives": 107,
-    "trianglesAcrossInstances": 45298,
-    "materials": 4,
+    "bytes": 2929176,
+    "sha256": "4a07d94811dc34e6e8e2595a001ec5004cb1b2e5d2eff654f7d7a3e45e62cd02",
+    "nodes": 132,
+    "meshNodes": 132,
+    "uniqueMeshes": 132,
+    "renderedPrimitives": 132,
+    "trianglesAcrossInstances": 46885,
+    "materials": 7,
     "embeddedImages": 0,
-    "taggedMeshNodes": 107,
+    "taggedMeshNodes": 132,
     "dollhouseHiddenMeshNodes": 0,
     "extensionsUsed": [
       "EXT_meshopt_compression"
@@ -73,11 +73,11 @@
   "import": {
     "method": "verified-authored-glb",
     "packageAsset": "viewer/surroundings.glb",
-    "packageReportSha256": "f1fae1c0d3af55cc0978a61d74621221b2bf8d5a021ac01aa0fbc5c64e655922"
+    "packageReportSha256": "f1fa7454ad0915035cd0cacdbd773608e52b7dd98606b717f5c4961180074672"
   },
   "optimization": {
-    "originalAsset": "surroundings-3a0888176b3b-50758447b1f0.glb",
-    "originalSha256": "50758447b1f098ff50b3dcd32596c82769b10f6d03efa78371a698c2afcb8e1f",
+    "originalAsset": "surroundings-59700f959acf-d9d7d91e6a26.glb",
+    "originalSha256": "d9d7d91e6a266f40ca8ab4c7f00cea6cc159d7d7f211e5927c101c1aa10136b6",
     "recipe": {
       "codec": "meshoptimizer-1.2.0",
       "extension": "EXT_meshopt_compression",
@@ -85,14 +85,14 @@
       "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
       "gzipLevel": 6
     },
-    "compressedViews": 6,
-    "verifiedViews": 315,
+    "compressedViews": 9,
+    "verifiedViews": 391,
     "lossless": true,
     "storageStrategy": "transfer-size",
-    "originalBytes": 3262280,
-    "bytes": 2816556,
+    "originalBytes": 3369960,
+    "bytes": 2929176,
     "deliveryEncoding": "identity",
-    "gzipBytes": 922804,
-    "gzipSha256": "964b31559ad076aa13dde5f1419c67155cdebb97c1f91578e3ebff23198bf212"
+    "gzipBytes": 932436,
+    "gzipSha256": "97447aab2761189b6b7ee942599b5f248326dcb7190e59f45bcdbea8d2717356"
   }
 }

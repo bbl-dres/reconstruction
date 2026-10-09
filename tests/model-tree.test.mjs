@@ -98,3 +98,46 @@ test('without a registry, meshes use their own category and type metadata', () =
   assert.equal(levelForBounds(null, ['ground'], definitions), 'ground');
   assert.equal(cleanName('Window · VWIN-3fa2 design — fitted variant'), 'Window · variant');
 });
+
+test('overlapping villa and annex floor bands retain authored annex membership without a registry', () => {
+  const definitions = {
+    villaLower: { min: -8.5, max: -4.2, elevation: -7.8 },
+    villaUpper: { min: -4.6, max: 0, elevation: -4 },
+    annexGround: { min: -10.2, max: -5.8, elevation: -9.7 },
+    annexFirst: { min: -6.3, max: -2.5, elevation: -5.8 },
+    annexTop: { min: -3.0, max: 5.9, elevation: -2.5 },
+  };
+  const meshes = [
+    mesh('stair', 'Annex ground stair', -8, { viewer_floor_ids: ['annexGround'] }),
+    mesh('slab', 'Annex first slab', -6, { viewer_floor_ids: ['annexFirst'] }),
+    mesh('span', 'Annex spanning wall', -4, { viewer_floor_ids: ['annexGround', 'annexFirst'] }),
+    mesh('top', 'Annex upper floor', -2.8, { viewer_floor_ids: ['obsolete', 'annexTop'] }),
+    mesh('legacy', 'Untagged villa object', -7),
+    mesh('unknown', 'Unknown tags use height', -7, { viewer_floor_ids: ['obsolete'] }),
+    mesh('no-bounds', 'Authored object without bounds', 0, { viewer_floor_ids: ['annexFirst'], bounds: null }),
+  ];
+  const tree = buildModelTree({ meshes, levels: Object.keys(definitions), definitions });
+  assert.deepEqual(meshes.map(m => tree.elementOf.get(m).level), [
+    'annexGround', 'annexFirst', 'annexFirst', 'annexTop', 'villaLower', 'villaLower', 'annexFirst',
+  ], 'height only chooses between valid authored floors; unrelated overlapping bands cannot steal components');
+});
+
+test('partial BIM registry uses authored floor candidates for unresolved components and preserves explicit product storeys', () => {
+  const definitions = {
+    villa: { min: -8, max: -2, elevation: -7 },
+    annexGround: { min: -10, max: -6, elevation: -9 },
+    annexFirst: { min: -6.5, max: -2, elevation: -6 },
+  };
+  const meshes = [
+    mesh('unresolved', 'Annex partition', -5, { viewer_floor_ids: ['annexGround', 'annexFirst'], unresolved: 'interior-wall' }),
+    mesh('explicit', 'Reviewed product', -5, { viewer_floor_ids: ['annexFirst'] }),
+    mesh('unknown-primary', 'Product with stale storey', -5, { viewer_floor_ids: ['annexFirst'] }),
+  ];
+  const products = [
+    { id: 'explicit-product', name: 'Reviewed product', category: 'door', typeId: 'type-door', primaryStorey: 'villa', components: ['explicit'] },
+    { id: 'stale-product', name: 'Product with stale storey', category: 'door', typeId: 'type-door', primaryStorey: 'obsolete', components: ['unknown-primary'] },
+  ];
+  const tree = buildModelTree({ meshes, bim: registry(meshes, products), levels: Object.keys(definitions), definitions });
+  assert.deepEqual(meshes.map(m => tree.elementOf.get(m).level), ['annexFirst', 'villa', 'annexFirst']);
+  assert.equal(tree.elementOf.get(meshes[0]).parent.name, 'Interior wall');
+});

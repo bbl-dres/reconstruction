@@ -1,0 +1,6 @@
+# python -m pip install -r requirements.txt
+pyautogui>=0.9.54
+mss>=9.0
+pillow>=10.0
+pytesseract>=0.3.10                 # also needs the Tesseract binary, see README
+winocr ; sys_platform == "win32"    # Windows built-in OCR, used when Tesseract is absent

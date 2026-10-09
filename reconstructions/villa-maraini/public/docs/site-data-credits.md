@@ -11,3 +11,15 @@ Acquired 8 October 2026. Approximate historical context; no current survey is cl
 **Comparison only:** Tarquini S., I. Isola, M. Favalli, A. Battistini, G. Dotta (2023), TINITALY, a digital elevation model of Italy with a 10 meters cell size, Version 1.1. INGV. [DOI:10.13127/tinitaly/1.1](https://doi.org/10.13127/tinitaly/1.1), CC BY 4.0. Not used for the rendered ground. Lazio's technical map corroborated the local hill after a substantial disagreement between the two grids.
 
 Detailed data snapshots, hashes, transformations and checks are retained in the private building work folder. Geometry is an interpretation; the source providers do not endorse the reconstruction.
+
+## v004 observed garden path
+
+The garden-path boundary is traced from AGEA2020 orthophotography, supplied by Regione Lazio through Roma Capitale GeoServer, CC BY4.0. Source: https://geoportale.regione.lazio.it/catalogue/csw_to_extra_format/r_lazio%3A92b0f7e3-3b75-4feb-ac5e-2382/ortofoto-agea-v-2020.html . Modifications:22 boundary picks transformed with the existing local registration; polygon draped on the unchanged2002 DTM; overlapping OSM paving removed. Requested image spacing0.30m is not a survey accuracy claim. No photograph/orthophoto pixels are included in the model.
+
+## v008 local garden construction
+
+The villa's local garden and entrance use an inferred relative calibration of the HMQ site section against archival villa controls. Source drawings and photographs remain private evidence and are not embedded as textures. The bounded garden patch replaces the older DTM drape; regional terrain and roads outside the patch remain unchanged, as do all neighbouring masses. The AGEA path retains its observed outline while its Z values follow the local garden control. Slabs, stairs, retaining construction and guards are authored separately. Transverse grades, guard/pier rhythm, thicknesses and the transition to the regional DTM are study assumptions. No absolute vertical datum or complete ramp/stair route is established.
+
+## v010 site and context correction
+
+OpenStreetMap contributors (ODbL) supply ways, multipolygon relations and building parts from the saved8October2026 extract.26 relations add32 courtyards.22 new heights are matched GlobalBuildingAtlas predictions (CC BY-NC4.0); one OSM height and three storey conventions take precedence.17 Palazzo parts use OSM levels times3m. The new GBA acquisition verifies exact byte ranges and hashes, not a complete586MB height-table checksum. Regional Lazio2002 terrain and AGEA2020 orthophoto attribution above remain applicable. Source images remain private research; route grades, retaining profiles and local ground transitions are inferred. No geographic datum or code compliance is established.
