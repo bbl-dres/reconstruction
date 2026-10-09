@@ -174,7 +174,7 @@ Record source/collision hashes, controller radius, body/eye heights, slope/step 
 
 ### Evidence and geometric accuracy
 
-Keep geometric completeness, visual detail and factual confidence separate. A finely modeled inferred cornice is not more accurately surveyed than a simple inferred wall. Do not assign an industry LOD/LOI designation without defining the intended use and acceptance criteria for this reconstruction.
+Keep geometric completeness, visual detail and factual confidence separate. A finely modeled inferred cornice is not more accurately surveyed than a simple inferred wall. Do not assign an industry LOD/LOI designation without defining the intended use and acceptance criteria for this reconstruction. The [BIM modelling guide](bim-modelling-guide/README.md#2-level-of-geometry-lod-200-and-lod-300) defines them for this project: LOD 200–300 per element with tolerances, and a basic, always complete LOI.
 
 For each important space/product, record its source reference (photo/tour URL plus a stable view or image identifier), observation date where available, what was visible, what was inferred and what remains unmodeled. Distinguish measured-from-model dimensions, photo-derived estimates and externally documented dimensions. Mark deliberately closed/open surfaces, missing interiors and representative furniture explicitly; no data must remain unknown rather than becoming a numeric zero or a false boolean. Classification confidence alone does not validate dimensions or material composition.
 

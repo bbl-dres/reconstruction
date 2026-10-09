@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimum information requirements (LOI) for the BUILDING model of a reconstruction (one of three federated models:
+  building.ids, site.ids, surroundings.ids). Human-readable version: docs/bim-modelling-guide/README.md.
+  Check:  python -m pip install ifctester==0.8.5  (or the version pinned in tools/model-pipeline/requirements-bim.txt)
+          python -m ifctester docs/bim-modelling-guide/ids/building.ids <building.ifc> -r Console
+  Specifications marked [target] describe the agreed target; the current exporter does not yet write them
+  (see the gap analysis in docs/bim-modelling-guide/research/ifc-sample-analysis.md).
+-->
+<ids xmlns="http://standards.buildingsmart.org/IDS" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd">
+  <info>
+    <title>Reconstruction LOI: building model</title>
+    <copyright>MIT, bbl-dres/reconstruction</copyright>
+    <version>1.0</version>
+    <description>Spatial structure, containment, names, evidence and a small set of standard properties for LOD 200-300 reference reconstructions.</description>
+    <date>2026-10-09</date>
+    <purpose>Light architectural / CAFM as-built survey model (IFC 4, ISO 16739-1) for a CDE and a three.js viewer; no building services, no structural analysis, no simulation, no layered constructions.</purpose>
+    <milestone>Every release</milestone>
+  </info>
+  <specifications>
+    <specification name="Storeys have a name and an elevation and belong to the building" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-01" instructions="One IfcBuildingStorey per floor of the building's floor list (building.json pipeline.levels). Elevation in metres, finished floor level.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCBUILDINGSTOREY</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <attribute><name><simpleValue>Elevation</simpleValue></name></attribute>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCBUILDING</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="The building belongs to a site" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-02">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCBUILDING</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCSITE</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="Building elements are named and contained in a storey" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-03" instructions="Every top-level element sits in exactly one storey (its primary storey). Parts of an assembly (stair flights, curtain-wall members) are contained through their parent and are not listed here.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL"/>
+              <xs:enumeration value="IFCSLAB"/>
+              <xs:enumeration value="IFCROOF"/>
+              <xs:enumeration value="IFCCOLUMN"/>
+              <xs:enumeration value="IFCBEAM"/>
+              <xs:enumeration value="IFCSTAIR"/>
+              <xs:enumeration value="IFCRAMP"/>
+              <xs:enumeration value="IFCDOOR"/>
+              <xs:enumeration value="IFCWINDOW"/>
+              <xs:enumeration value="IFCCOVERING"/>
+              <xs:enumeration value="IFCFURNITURE"/>
+              <xs:enumeration value="IFCCHIMNEY"/>
+              <xs:enumeration value="IFCSHADINGDEVICE"/>
+              <xs:enumeration value="IFCLIGHTFIXTURE"/>
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <partOf relation="IFCRELCONTAINEDINSPATIALSTRUCTURE"><entity><name><simpleValue>IFCBUILDINGSTOREY</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="Every product carries its reconstruction evidence" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-04" instructions="Written by tools/model-pipeline/export_ifc.py from bim.json. ClassificationBasis says whether the IFC class/category was authored (set deliberately by the modeller) or inferred (guessed from names); Confidence low, medium or high; Source names the evidence (reference id, plan sheet, panorama node). The evidence class of the geometry is RB-13.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL"/>
+              <xs:enumeration value="IFCSLAB"/>
+              <xs:enumeration value="IFCROOF"/>
+              <xs:enumeration value="IFCCOLUMN"/>
+              <xs:enumeration value="IFCBEAM"/>
+              <xs:enumeration value="IFCSTAIR"/>
+              <xs:enumeration value="IFCRAMP"/>
+              <xs:enumeration value="IFCRAILING"/>
+              <xs:enumeration value="IFCDOOR"/>
+              <xs:enumeration value="IFCWINDOW"/>
+              <xs:enumeration value="IFCCOVERING"/>
+              <xs:enumeration value="IFCFURNITURE"/>
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <property dataType="IFCIDENTIFIER">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>ProductId</simpleValue></baseName>
+        </property>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>Category</simpleValue></baseName>
+        </property>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>ClassificationBasis</simpleValue></baseName>
+          <value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="authored"/>
+              <xs:enumeration value="inferred"/>
+            </xs:restriction>
+          </value>
+        </property>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>Confidence</simpleValue></baseName>
+          <value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="low"/>
+              <xs:enumeration value="medium"/>
+              <xs:enumeration value="high"/>
+            </xs:restriction>
+          </value>
+        </property>
+        <property dataType="IFCTEXT">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>Source</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="Doors and windows fill an opening in a host and state their size" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-05" instructions="Opening first, then the door or window type placed in it. OverallWidth and OverallHeight are the structural opening size in metres.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCDOOR"/>
+              <xs:enumeration value="IFCWINDOW"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>OverallWidth</simpleValue></name></attribute>
+        <attribute><name><simpleValue>OverallHeight</simpleValue></name></attribute>
+        <partOf relation="IFCRELVOIDSELEMENT IFCRELFILLSELEMENT">
+          <entity>
+            <name>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="IFCWALL"/>
+                <xs:enumeration value="IFCSLAB"/>
+                <xs:enumeration value="IFCROOF"/>
+                <xs:enumeration value="IFCCURTAINWALL"/>
+              </xs:restriction>
+            </name>
+          </entity>
+        </partOf>
+      </requirements>
+    </specification>
+    <specification name="Stair flights belong to a stair" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-06" instructions="A stair is one IfcStair aggregating its flights, landings (IfcSlab LANDING) and railings; never one IfcStair per tread.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCSTAIRFLIGHT</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCSTAIR</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="[target] Walls state whether they are external" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-07" instructions="IsExternal is known from the plan (envelope or not). Do not write LoadBearing, FireRating or ThermalTransmittance unless a source states them.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCWALL</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <property dataType="IFCBOOLEAN">
+          <propertySet><simpleValue>Pset_WallCommon</simpleValue></propertySet>
+          <baseName><simpleValue>IsExternal</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="[target] Doors state whether they are external" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-08">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCDOOR</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <property dataType="IFCBOOLEAN">
+          <propertySet><simpleValue>Pset_DoorCommon</simpleValue></propertySet>
+          <baseName><simpleValue>IsExternal</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="[target] Windows state whether they are external" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-09">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCWINDOW</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <property dataType="IFCBOOLEAN">
+          <propertySet><simpleValue>Pset_WindowCommon</simpleValue></propertySet>
+          <baseName><simpleValue>IsExternal</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="[target] Structural and envelope elements have a material" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-10" instructions="One material name per element or type (for example 'Sandstone', 'Brick, plastered', 'Timber'). No layer sets: this is a survey model, not a construction or simulation model. Unknown material: 'Unknown'.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL"/>
+              <xs:enumeration value="IFCSLAB"/>
+              <xs:enumeration value="IFCROOF"/>
+              <xs:enumeration value="IFCCOLUMN"/>
+              <xs:enumeration value="IFCBEAM"/>
+              <xs:enumeration value="IFCSTAIR"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <material/>
+      </requirements>
+    </specification>
+    <specification name="[target] Slabs say what they are" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-11" instructions="IfcSlab FLOOR, ROOF, LANDING or BASESLAB, on the occurrence or inherited from its type.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCSLAB</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <entity>
+          <name><simpleValue>IFCSLAB</simpleValue></name>
+          <predefinedType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="FLOOR"/>
+              <xs:enumeration value="ROOF"/>
+              <xs:enumeration value="LANDING"/>
+              <xs:enumeration value="BASESLAB"/>
+            </xs:restriction>
+          </predefinedType>
+        </entity>
+      </requirements>
+    </specification>
+    <specification name="[target] Coverings say what they are" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-14" instructions="Finishes are IfcCovering, never IfcBuildingElementProxy: FLOORING, CEILING, CLADDING, SKIRTINGBOARD, MOLDING or ROOFING, on the occurrence or inherited from its type.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCCOVERING</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <entity>
+          <name><simpleValue>IFCCOVERING</simpleValue></name>
+          <predefinedType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="FLOORING"/>
+              <xs:enumeration value="CEILING"/>
+              <xs:enumeration value="CLADDING"/>
+              <xs:enumeration value="SKIRTINGBOARD"/>
+              <xs:enumeration value="MOLDING"/>
+              <xs:enumeration value="ROOFING"/>
+            </xs:restriction>
+          </predefinedType>
+        </entity>
+      </requirements>
+    </specification>
+    <specification name="[target] Every room is a space with a number, a name and a net floor area" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-12" instructions="CAFM core. One IfcSpace per room of the floor plan, bounded by the inner wall faces, from finished floor to ceiling. Name = room number or id (for example 'EG.07'), LongName = room name from the plan (for example 'Salon'). NetFloorArea in m2 from the space footprint (SIA 416 NGF / DIN 277 NRF), measured from the model, not copied from a plan label.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCSPACE</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <attribute><name><simpleValue>LongName</simpleValue></name></attribute>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCBUILDINGSTOREY</simpleValue></name></entity></partOf>
+        <property dataType="IFCAREAMEASURE">
+          <propertySet><simpleValue>Qto_SpaceBaseQuantities</simpleValue></propertySet>
+          <baseName><simpleValue>NetFloorArea</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="[target] Every product states the evidence class of its geometry" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RB-13" instructions="One vocabulary for every building (docs/conventions.md#evidence-classes): measured (plan dimension, LiDAR, calibrated photo), inferred (proportion, symmetry, typical construction; basis recorded in Source) or unknown (marked placeholder). Replaces building-specific properties such as lohn_basis.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL"/>
+              <xs:enumeration value="IFCSLAB"/>
+              <xs:enumeration value="IFCROOF"/>
+              <xs:enumeration value="IFCCOLUMN"/>
+              <xs:enumeration value="IFCBEAM"/>
+              <xs:enumeration value="IFCSTAIR"/>
+              <xs:enumeration value="IFCRAMP"/>
+              <xs:enumeration value="IFCRAILING"/>
+              <xs:enumeration value="IFCDOOR"/>
+              <xs:enumeration value="IFCWINDOW"/>
+              <xs:enumeration value="IFCCOVERING"/>
+              <xs:enumeration value="IFCFURNITURE"/>
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>EvidenceBasis</simpleValue></baseName>
+          <value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="measured"/>
+              <xs:enumeration value="inferred"/>
+              <xs:enumeration value="unknown"/>
+            </xs:restriction>
+          </value>
+        </property>
+      </requirements>
+    </specification>
+  </specifications>
+</ids>

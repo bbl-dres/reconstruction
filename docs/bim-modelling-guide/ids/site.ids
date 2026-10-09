@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimum information requirements (LOI) for the SITE model of a reconstruction: the parcel only, from the parcel
+  boundary to the building's outer faces (one of three federated models: building.ids, site.ids, surroundings.ids).
+  Human-readable version: docs/bim-modelling-guide/README.md.
+  Check:  python -m ifctester docs/bim-modelling-guide/ids/site.ids <site.ifc> -r Console
+-->
+<ids xmlns="http://standards.buildingsmart.org/IDS" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd">
+  <info>
+    <title>Reconstruction LOI: site model</title>
+    <copyright>MIT, bbl-dres/reconstruction</copyright>
+    <version>1.0</version>
+    <description>Site (parcel) model: terrain, paving, garden walls, fences, gates, site stairs, planting and site furniture inside the parcel boundary.</description>
+    <date>2026-10-09</date>
+    <purpose>Light architectural / CAFM as-built survey model (IFC 4, ISO 16739-1) for a CDE and a three.js viewer.</purpose>
+    <milestone>Every release</milestone>
+  </info>
+  <specifications>
+    <specification name="The site is named and carries the parcel" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RS-01" instructions="Use the same IfcSite (same GlobalId, name and placement) as the building model, so a CDE federates both under one site.">
+      <applicability minOccurs="1" maxOccurs="1">
+        <entity><name><simpleValue>IFCSITE</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCPROJECT</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="The parcel has terrain" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RS-02" instructions="One or a few terrain elements (IfcGeographicElement TERRAIN) inside the parcel, open under the building footprint.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity>
+          <name><simpleValue>IFCGEOGRAPHICELEMENT</simpleValue></name>
+          <predefinedType><simpleValue>TERRAIN</simpleValue></predefinedType>
+        </entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+      </requirements>
+    </specification>
+    <specification name="Site elements are named, contained in the site and carry evidence" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RS-03" instructions="Site elements are contained in the IfcSite (not in a building storey). ReconstructionEvidence as in the building model.">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCGEOGRAPHICELEMENT"/>
+              <xs:enumeration value="IFCWALL"/>
+              <xs:enumeration value="IFCSLAB"/>
+              <xs:enumeration value="IFCRAILING"/>
+              <xs:enumeration value="IFCSTAIR"/>
+              <xs:enumeration value="IFCRAMP"/>
+              <xs:enumeration value="IFCDOOR"/>
+              <xs:enumeration value="IFCFURNITURE"/>
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <partOf relation="IFCRELCONTAINEDINSPATIALSTRUCTURE"><entity><name><simpleValue>IFCSITE</simpleValue></name></entity></partOf>
+        <property dataType="IFCIDENTIFIER">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>ProductId</simpleValue></baseName>
+        </property>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>EvidenceBasis</simpleValue></baseName>
+          <value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="measured"/>
+              <xs:enumeration value="inferred"/>
+              <xs:enumeration value="unknown"/>
+            </xs:restriction>
+          </value>
+        </property>
+        <property dataType="IFCTEXT">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>Source</simpleValue></baseName>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="The site model contains no building storeys" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RS-04" instructions="Storeys, rooms and building elements belong to the building model only.">
+      <applicability minOccurs="0" maxOccurs="0">
+        <entity><name><simpleValue>IFCBUILDINGSTOREY</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+      </requirements>
+    </specification>
+  </specifications>
+</ids>

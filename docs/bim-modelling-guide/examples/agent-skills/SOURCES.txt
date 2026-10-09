@@ -1,0 +1,15 @@
+Example agent-instruction files copied unchanged from public repositories, for reference only.
+Each folder keeps the upstream licence file. Retrieved 2026-10-09, shallow clones.
+Folders were flattened so that no copied skill sits in a .claude/skills or .agents/skills path,
+where an agent could load it as one of this repository's own skills.
+
+text-to-cad      https://github.com/earthtojake/text-to-cad  (523ae21 2026-10-09)  MIT
+                 cad/ <- skills/cad/ (SKILL.md, references/cad-brief.md, references/repair-loop.md)
+sphr             https://github.com/lukehollis/sphr  (70eaf15 2026-10-08)  MIT
+                 sphr-intake/, sphr-matterport/ <- .agents/skills/sphr-intake/, .agents/skills/sphr-matterport/
+open-architecture-standards-2d-floor-plans  https://github.com/autodesk-platform-services/open-architecture-standards-2d-floor-plans  (e54861c 2026-05-19)  Apache-2.0
+                 oas-core/, oas-geometry/ <- .claude/skills/oas-core/, .claude/skills/oas-geometry/
+compas_ifc       https://github.com/compas-dev/compas_ifc  (0daa705 2026-07-13)  MIT (ETH Zurich)
+                 skill/ <- src/compas_ifc/skill/
+bonsai-mcp       https://github.com/Show2Instruct/bonsai-mcp  (12cf135 2026-08-20)  MIT
+                 SERVER_INSTRUCTIONS.md <- verbatim excerpt of _SERVER_INSTRUCTIONS, src/bonsai_mcp/server.py lines 472-586

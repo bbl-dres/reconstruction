@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimum information requirements (LOI) for the SURROUNDINGS model of a reconstruction: everything outside the
+  parcel, at low detail (one of three federated models: building.ids, site.ids, surroundings.ids).
+  Human-readable version: docs/bim-modelling-guide/README.md.
+  Check:  python -m ifctester docs/bim-modelling-guide/ids/surroundings.ids <surroundings.ifc> -r Console
+-->
+<ids xmlns="http://standards.buildingsmart.org/IDS" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd">
+  <info>
+    <title>Reconstruction LOI: surroundings model</title>
+    <copyright>MIT, bbl-dres/reconstruction</copyright>
+    <version>1.0</version>
+    <description>Surroundings model: context terrain outside the parcel and neighbouring buildings as massing (LOD 100-200), with their data source.</description>
+    <date>2026-10-09</date>
+    <purpose>Context for a CDE and a three.js viewer; not a survey of neighbouring property.</purpose>
+    <milestone>Every release</milestone>
+  </info>
+  <specifications>
+    <specification name="Neighbouring buildings are named context buildings" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RU-01" instructions="One IfcBuilding per neighbouring building, named by address or source feature id (for example the swissBUILDINGS3D UUID).">
+      <applicability minOccurs="0" maxOccurs="unbounded">
+        <entity><name><simpleValue>IFCBUILDING</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <partOf relation="IFCRELAGGREGATES"><entity><name><simpleValue>IFCSITE</simpleValue></name></entity></partOf>
+      </requirements>
+    </specification>
+    <specification name="Context elements state their source" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RU-02" instructions="Massing proxies are contained in their context IfcBuilding; terrain, roads and trees in the surroundings IfcSite. Source names dataset, edition and feature id.">
+      <applicability minOccurs="1" maxOccurs="unbounded">
+        <entity>
+          <name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCGEOGRAPHICELEMENT"/>
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY"/>
+              <xs:enumeration value="IFCCIVILELEMENT"/>
+            </xs:restriction>
+          </name>
+        </entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+        <property dataType="IFCTEXT">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>Source</simpleValue></baseName>
+        </property>
+        <property dataType="IFCLABEL">
+          <propertySet><simpleValue>ReconstructionEvidence</simpleValue></propertySet>
+          <baseName><simpleValue>EvidenceBasis</simpleValue></baseName>
+          <value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="measured"/>
+              <xs:enumeration value="inferred"/>
+              <xs:enumeration value="unknown"/>
+            </xs:restriction>
+          </value>
+        </property>
+      </requirements>
+    </specification>
+    <specification name="The surroundings model contains no building storeys" ifcVersion="IFC4 IFC4X3_ADD2" identifier="RU-03" instructions="Neighbouring buildings are massing, not storeys and rooms.">
+      <applicability minOccurs="0" maxOccurs="0">
+        <entity><name><simpleValue>IFCBUILDINGSTOREY</simpleValue></name></entity>
+      </applicability>
+      <requirements>
+        <attribute><name><simpleValue>Name</simpleValue></name></attribute>
+      </requirements>
+    </specification>
+  </specifications>
+</ids>

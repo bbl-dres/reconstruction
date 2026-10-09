@@ -15,7 +15,7 @@ The repository, viewer and pipeline are set up. Your job is research and modelli
 
 ## Read first
 
-- `docs/reconstruction-handbook.md`, `docs/conventions.md`, `docs/pitfalls.md`
+- `docs/reconstruction-handbook.md`, `docs/bim-modelling-guide/README.md` (and its element rules), `docs/conventions.md`, `docs/pitfalls.md`
 - `docs/adding-a-building.md`, `docs/model-handoff.md`, `docs/viewer-guide.md`, `docs/building.schema.json`
 - A finished building as an example of good practice (read-only): `reconstructions/landgut-lohn/work/` – `README.md`, `HISTORY.md`, `build/README.md`. Do not copy its geometry, ids, coordinates, dimensions or source rights.
 

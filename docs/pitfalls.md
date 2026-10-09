@@ -1,6 +1,6 @@
 # Pitfalls
 
-[← Repository](../README.md) · [Handbook](reconstruction-handbook.md) · [Conventions](conventions.md)
+[← Repository](../README.md) · [Handbook](reconstruction-handbook.md) · [BIM modelling guide](bim-modelling-guide/README.md) · [Conventions](conventions.md)
 
 Mistakes that cost a release in the Bundeshaus and Landgut Lohn reconstructions, with the check that now catches each one. Read this before modelling; add to it when a review finds something new.
 
@@ -37,6 +37,8 @@ Mistakes that cost a release in the Bundeshaus and Landgut Lohn reconstructions,
 | Annex floors disappear in the viewer | Villa Maraini's Portineria overlaps the villa's height bands; a fallback tree ignored its authored floor IDs and assigned its meshes to villa storeys | Keep the BIM registry in candidate previews. Without a valid primary storey, choose a height band only among valid authored floor IDs; test each building's floors in the actual viewer |
 | Windows inferred across open courts or roofs | Bundeshaus string courses and windows crossed an open courtyard | Only model openings seen in evidence |
 | Stairs not reaching landings | Bundeshaus flights stopped short | Count risers from plans and panoramas; check riser heights (`s10_stair_risers.py`) |
+| One stair per tread, one railing per baluster | Villa Maraini v011 registered 184 treads as `IfcStair` and 806 balusters as `IfcRailing` | One stair assembly of flights, landings and railings ([element rules](bim-modelling-guide/element-rules.md#stairs-and-ramps)); `ifc_audit.py` stair and class counts |
+| A model passes every check and is still wrong | The golden example passed validation, audit and IDS with mirrored stair flights, a stair 20 cm from its wall and a path through a wall | List element bounds and render every storey and the federated view before freezing |
 | Landing inherits the next flight's height | A sequential builder assigned a return landing the arrival-floor height | Store landing elevations explicitly; check every flight-to-landing junction on the built mesh, then inspect the route in section and perspective |
 | A stair trim leaves full-height wall blades beside the treads | Restricting a correction to the exact walking footprint retained unsupported tall wall strips next to the guard | Compare the complete stair opening from the reference camera. Where photographs justify it, cap only identified remnants to a documented support/guard profile and preserve the lower fabric; passing route clearance alone does not establish architectural fidelity |
 | Doors without openings | Leaves placed in solid walls | Openings first, then leaves; hinge side from the evidence (`doorHands`) |
@@ -44,6 +46,8 @@ Mistakes that cost a release in the Bundeshaus and Landgut Lohn reconstructions,
 | Opaque glass hides new joinery | A window's proxy pane overlapped its curved transom and obscured it from outdoors | Split proxy panes around the joinery silhouette and inspect from both sides; a readable interior view alone is insufficient |
 | Duplicated trim | Overlapping cornice and cupola-base boxes | Coplanar check; one product per physical piece |
 | Too many unique meshes | Every chair a separate mesh | One parameter set = one type; snap sizes (5 cm) so equal pieces share a type |
+| Types keyed on geometry | Landgut Lohn v008: 91 wall types for 93 walls; 1.3 placements per type | Wall and slab types = thickness + material; product types = design + size ([guide](bim-modelling-guide/README.md#7-types-families-and-instances)) |
+| Helper geometry in the IFC | Landgut Lohn v008 exported its walk-collision ground and garden walls as building proxies | Collision, cameras and reference planes never go into the IFC |
 | `.001` object names | Re-created objects collided with the ones they replaced | Remove the old object and mesh before creating the new one; the hygiene check flags duplicate `viewer_id`s |
 | Collision GLB too large | Full-resolution terrain copied into the building export (18 MB) | Decimate collision meshes; watch the building GLB size in the release report |
 

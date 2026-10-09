@@ -21,6 +21,7 @@ Everything committed here is published on GitHub Pages. Private material – pla
 | Read | When |
 |---|---|
 | [Reconstruction handbook](docs/reconstruction-handbook.md) | Before modelling: phases, build loop, release checklist, roles |
+| [BIM modelling guide](docs/bim-modelling-guide/README.md) | Before modelling: what to model and how (LOD 200–300, LOI, elements, federated models, checks) |
 | [Conventions](docs/conventions.md) | Folder layout, names, frames, records, git |
 | [Pitfalls](docs/pitfalls.md) | Before modelling and before each release |
 | [Adding a building](docs/adding-a-building.md) | Setting up a new building |

@@ -1,8 +1,8 @@
 # Reconstruction handbook
 
-[← Repository](../README.md) · [Conventions](conventions.md) · [Pitfalls](pitfalls.md) · [Agent brief template](agent-brief-template.md) · [Adding a building](adding-a-building.md) · [Model handoff](model-handoff.md) · [Viewer guide](viewer-guide.md)
+[← Repository](../README.md) · [BIM modelling guide](bim-modelling-guide/README.md) · [Conventions](conventions.md) · [Pitfalls](pitfalls.md) · [Agent brief template](agent-brief-template.md) · [Adding a building](adding-a-building.md) · [Model handoff](model-handoff.md) · [Viewer guide](viewer-guide.md)
 
-How a building goes from evidence to a published model, for agents and people. It distils the Bundeshaus (v001–v027) and Landgut Lohn (v001–v008) projects. Rules on folders, names and records are in [conventions](conventions.md); known traps in [pitfalls](pitfalls.md).
+How a building goes from evidence to a published model, for agents and people. What the model must contain and how each element is built (LOD, LOI, element rules, building/site/surroundings models) is in the [BIM modelling guide](bim-modelling-guide/README.md). It distils the Bundeshaus (v001–v027) and Landgut Lohn (v001–v008) projects. Rules on folders, names and records are in [conventions](conventions.md); known traps in [pitfalls](pitfalls.md).
 
 For a new project, start with [How to create a new reconstruction](adding-a-building.md): choose research, Blender/BIM or splat scope, set up the private library, establish country-appropriate control, then build and review. International terrain leads are in [Elevation sources](elevation-sources.md).
 
@@ -50,7 +50,7 @@ For hard-to-find archival plans, see the [Bundesarchiv research route](bundesarc
 |---|---|
 | `tools/reference-catalog/references.py` | Intake, validate, query and resolve evidence (`--workspace reconstructions/<id>/work`) |
 | `tools/reference-catalog/build.py` | Offline HTML catalog in `work/references/catalog/` |
-| `tools/model-checks/` | Blender checks: `hygiene.py`, `coplanar.py`, `furniture_check.py`, `dollhouse_audit.py` ([README](../tools/model-checks/README.md)) |
+| `tools/model-checks/` | Blender checks: `hygiene.py`, `coplanar.py`, `furniture_check.py`, `dollhouse_audit.py`; IFC check `ifc_audit.py` ([README](../tools/model-checks/README.md)) |
 | `tools/model-pipeline/export_model.py` | `.blend` → prepared GLB for a profile |
 | `tools/model-pipeline/export_ifc.py` | GLB + `bim.json` → IFC4 / IFCZIP |
 | `tools/model-pipeline/import_versions.py` | Release → `public/models/` and catalog; `--keep-latest` retires older published versions to `work/archive/models/` |
@@ -73,6 +73,7 @@ Freeze only when every item is done or explained in the report.
 - [ ] Change and evidence described; decisions added to `research/decisions.json` (schema valid)
 - [ ] Build reproduced from scripts; working `.blend` saved in `build/model/`
 - [ ] Checks run and read: hygiene, coplanar, furniture, Dollhouse audit (every floor), plan overlay, rooms and bands, LiDAR deviation, camera-match of the affected poses (all poses for broad changes)
+- [ ] IFC checked against the [BIM modelling guide](bim-modelling-guide/mistakes-and-checks.md#release-checks): `ifc_audit.py` and the IDS file of each model type; open `[target]` findings listed in the report
 - [ ] Viewer inspected locally: Exterior, Dollhouse (every floor), Section, Walk (collision on the grounds)
 - [ ] `releases/vNNN/` created: one `.blend` and `viewer.json` in `model/`, georeference in `research/` and `viewer/provenance/`, exports, BIM registry and IFC validated, `validation/`, `README.md`, `REPORT.md`, `SHA256SUMS`
 - [ ] Imported with `import_versions.py --only vNNN --keep-latest`; catalog lists one version

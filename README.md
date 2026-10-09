@@ -44,7 +44,7 @@ Live app: https://bbl-dres.github.io/reconstruction/
 | `tools/model-checks/` | Blender checks for any building: hygiene, coplanar faces, furniture, Dollhouse audit |
 | `tools/reference-catalog/` | Evidence library intake, validation and offline catalog for a building's `work/` |
 | `tools/serve.py` | Local server for the gallery and all viewers |
-| `docs/` | [Reconstruction handbook](docs/reconstruction-handbook.md), [conventions](docs/conventions.md), [pitfalls](docs/pitfalls.md), [agent brief template](docs/agent-brief-template.md); shared contracts: [viewer guide](docs/viewer-guide.md), [model handoff](docs/model-handoff.md), [adding a building](docs/adding-a-building.md), JSON schemas |
+| `docs/` | [Reconstruction handbook](docs/reconstruction-handbook.md), [BIM modelling guide](docs/bim-modelling-guide/README.md), [conventions](docs/conventions.md), [pitfalls](docs/pitfalls.md), [agent brief template](docs/agent-brief-template.md); shared contracts: [viewer guide](docs/viewer-guide.md), [model handoff](docs/model-handoff.md), [adding a building](docs/adding-a-building.md), JSON schemas |
 | `templates/reconstruction/` | Starter for a new building |
 | `tests/` | Viewer, pipeline and configuration tests |
 | `reconstructions/<id>/` | One folder per building: thin `index.html`, `README.md`, committed `public/` and gitignored `work/` |

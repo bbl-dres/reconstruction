@@ -16,3 +16,13 @@ blender --background <model.blend> --python tools/model-checks/<check>.py -- --o
 `coplanar.py` and `furniture_check.py` need shapely in Blender's Python (or a bpy module in a Python that has it). `dollhouse_audit.py` mirrors `viewer/js/policy-default.js`; keep them in step. Options are shared through `checkargs.py`.
 
 A building wraps its arguments in one script, e.g. `reconstructions/landgut-lohn/work/build/scripts/checks.sh`.
+
+## IFC audit
+
+`ifc_audit.py` checks an exported IFC or IFCZIP against the [BIM modelling guide](../../docs/bim-modelling-guide/README.md). It runs in the BIM Python environment ([requirements-bim.txt](../model-pipeline/requirements-bim.txt)), not in Blender:
+
+```bash
+python tools/model-checks/ifc_audit.py <model.ifc|model.ifczip> --out <report.json> --model-type building|site|surroundings [--geometry]
+```
+
+It reports storeys and spatial containment, `IfcBuildingElementProxy` share, type assignment and reuse, representation kinds, wall → opening → door/window relations, stairs decomposed into flights, materials, standard property sets, names and duplicate GlobalIds; `--geometry` adds elements that cross a storey band (slow on very large files). Rules differ per model type (a site has no storeys; surroundings may be massing proxies). Exit code 1 only on errors (no spatial structure, uncontained elements, duplicate GlobalIds); warnings are findings to read. Use it with the [IDS files](../../docs/bim-modelling-guide/ids/README.md) and `ifctester`; `tests/ifc_audit_test.py` covers it.

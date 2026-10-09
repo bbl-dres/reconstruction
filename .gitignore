@@ -34,6 +34,8 @@ venv/
 *.las
 *.laz
 *.ifc
+# Small, CC BY 4.0 teaching samples of the BIM modelling guide (sources and licences beside them).
+!/docs/bim-modelling-guide/examples/**/*.ifc
 *.blend
 *.dam
 *.zip
