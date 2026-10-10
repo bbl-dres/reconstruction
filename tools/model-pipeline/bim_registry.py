@@ -77,7 +77,7 @@ def validate_registry(data, doc=None, model_id=None, source_hash=None):
         mat(e.get('rootMatrix'))
         b=e.get('bounds');require(isinstance(b,list) and len(b)==2 and all(isinstance(p,list) and len(p)==3 and all(finite(x) for x in p) for p in b) and all(b[0][k]<=b[1][k] for k in range(3)),'invalid bounds')
         require(e.get('membership')=='reviewed','unreviewed product may not be counted')
-        require(e.get('ifcClass') in ['IfcFurniture','IfcWindow','IfcDoor','IfcColumn','IfcWall','IfcStair','IfcSlab','IfcRamp','IfcRailing','IfcBuildingElementProxy'],'unsupported IFC class')
+        require(e.get('ifcClass') in ['IfcFurniture','IfcWindow','IfcDoor','IfcColumn','IfcWall','IfcStair','IfcStairFlight','IfcSlab','IfcRamp','IfcRailing','IfcRoof','IfcCovering','IfcChimney','IfcBuildingElementProxy'],'unsupported IFC class')
         evidence=e.get('evidence',{});require(evidence.get('basis') in ['authored','inferred'] and evidence.get('confidence') in ['low','medium','high'] and bool(evidence.get('source')),'missing evidence')
         require(isinstance(e.get('components'),list) and bool(e['components']),'empty product membership')
         slots=set()

@@ -82,6 +82,8 @@ Folders of the old layout and where they went (2026-10-06). Frozen release docum
 | Decisions | `<PREFIX>-D<NNN>` in `research/decisions.json` | `LL-D033` |
 | Collections | `Site`, `<Part>_<FLOOR>` (`Main_House_EG`), `Context`, `Types` (hidden type library), `Reference` (hidden underlays and cameras) | |
 
+Keep three model ownership scopes distinct: **Building**, **Building Site**, and **Surroundings**. Building Site includes the property's terrain, garden paths, site stairs and retaining construction; Surroundings includes regional terrain, public streets and neighboring buildings. A shared visibility control may hide the latter two together without merging their identities. In the shared viewer, `viewer_model_scope` can explicitly identify `building`, `site` or `surroundings`; retained `Building_Site` / `Building_Site_*` and `Context` / `Context_*` source collections also identify these scopes. Element category and storey alone do not determine ownership: an architectural stair and a garden stair can belong to different models. Delivery files may bundle components for loading, but must preserve their source ownership for selection, visibility and later separate model exports.
+
 ### Script prefixes in `build/scripts/`
 
 | Prefix | Step | Examples |

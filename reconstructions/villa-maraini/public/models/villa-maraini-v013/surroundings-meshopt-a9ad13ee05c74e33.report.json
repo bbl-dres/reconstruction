@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini-surroundings",
+  "title": "Villa Maraini terrain and schematic neighbourhood",
+  "asset": "surroundings-meshopt-a9ad13ee05c74e33.glb",
+  "source": {
+    "file": "villa-maraini.blend",
+    "bytes": 9244644,
+    "sha256": "a0b18ce4209ca19f444eaf83838a1183cd0057f874247a73ec9efaa53f03cd6a"
+  },
+  "conversion": {
+    "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
+    "profileSha256": "ad3913abd358dc52aa87ebb3e73a9b0cb868946ad3e2df0ec97184f02c767ac3"
+  },
+  "blenderVersion": "5.2.1 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 5678,
+    "meshes": 5674,
+    "textObjects": 0
+  },
+  "evaluatedText": [],
+  "selection": {
+    "meshes": 176,
+    "collections": {
+      "Context_Aurora_Site": 18,
+      "Context_OSM": 131,
+      "Context_Roads": 1,
+      "Context_Street_Trees": 18,
+      "Context_Terrain": 8
+    },
+    "boundsBlender": {
+      "min": [
+        -303.856689453125,
+        -299.9734802246094,
+        -45.49393844604492
+      ],
+      "max": [
+        303.072509765625,
+        306.95574951171875,
+        23.736038208007812
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 4067260,
+    "sha256": "56fca804932f5279133064bbae434ee8713b59ad1a291843a2de2dca58a30340",
+    "nodes": 176,
+    "meshNodes": 176,
+    "uniqueMeshes": 161,
+    "renderedPrimitives": 230,
+    "trianglesAcrossInstances": 69547,
+    "materials": 12,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 176,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Lazio 2002 5 m DTM, CC BY4.0; OSM contributors, ODbL.",
+    "Horizontal footprint fit RMS1.02 m; vertical display offset provisional, not a measured floor datum.",
+    "99 GBA satellite-predicted heights (CC BY-NC 4.0); five OSM levels times 3 m; one unmatched footprint retains a 10 m placeholder. Inferred context only; commercial redistribution not cleared."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/surroundings.glb",
+    "packageReportSha256": "f4f600adbd93f4278972e29a508ec184cf37e497df0efbb615110ed713207e93"
+  },
+  "optimization": {
+    "originalAsset": "surroundings-a0b18ce4209c-b6e89090dec7.glb",
+    "originalSha256": "b6e89090dec78aa1a28b0233e129062fe189c8e6a629406fef53b5e40e5bc36b",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 34,
+    "verifiedViews": 548,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 4567240,
+    "bytes": 4067260,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 1219390,
+    "gzipSha256": "8da7f7d117579176a61db2b3774b2c4d20722e6fdc085b93f7a7d771890f9d5f"
+  }
+}

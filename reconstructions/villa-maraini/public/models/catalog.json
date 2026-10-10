@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "models": [
     {
-      "id": "villa-maraini-v011",
-      "label": "v011",
-      "version": 11,
-      "building": "./villa-maraini-v011/building-meshopt-a34a29bce47615dd.glb",
-      "surroundings": "./villa-maraini-v011/surroundings-meshopt-ef0b24e8a14e0beb.glb",
-      "metadata": "./villa-maraini-v011/viewer.json",
-      "sourceSha256": "59700f959acf6f581406e94c66124538a6cb9b73ce4f2d58b49cc963a692f916",
+      "id": "villa-maraini-v013",
+      "label": "v013",
+      "version": 13,
+      "building": "./villa-maraini-v013/building-meshopt-2111c7216d3fd842.glb",
+      "surroundings": "./villa-maraini-v013/surroundings-meshopt-a9ad13ee05c74e33.glb",
+      "metadata": "./villa-maraini-v013/viewer.json",
+      "sourceSha256": "5124a7561928867e98efccaf9fdec39dd68237c2f0c76836ee1f3a0d271c75b8",
       "levels": [
         "all",
         "p1",
@@ -22,7 +22,7 @@
         "pt1",
         "pt2"
       ],
-      "meshCount": 3532,
+      "meshCount": 5535,
       "location": null,
       "levelDefinitions": {
         "p1": {
@@ -65,7 +65,7 @@
           "label": "Piano 7 · Torretta superiore",
           "elevation": 18.16,
           "min": 17.51,
-          "max": 23.15
+          "max": 26.4
         },
         "pt0": {
           "label": "Portineria · Piano terra",
@@ -86,8 +86,8 @@
           "max": 5.9157110214233395
         }
       },
-      "bim": "./villa-maraini-v011/bim-03be0b955ceac7b4.json",
-      "ifc": "./villa-maraini-v011/reference-6d423d2f59346f1c.ifczip"
+      "bim": "./villa-maraini-v013/bim-dc623b411e93fd72.json",
+      "ifc": "./villa-maraini-v013/reference-ea264ef056a64bf0.ifczip"
     }
   ]
 }

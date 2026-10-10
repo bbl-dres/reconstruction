@@ -248,7 +248,11 @@
               "IfcBuildingElementProxy",
               "IfcSlab",
               "IfcRamp",
-              "IfcRailing"
+              "IfcRailing",
+              "IfcStairFlight",
+              "IfcRoof",
+              "IfcCovering",
+              "IfcChimney"
             ]
           },
           "bounds": {

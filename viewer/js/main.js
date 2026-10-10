@@ -24,6 +24,7 @@ import { wireTouchWalk } from './touch-walk.js';
 import { createFrameLoop } from './frame-loop.js';
 import { fitDirectionalShadow, shadowCoverage } from './shadow-fit.js?v=fit-1';
 import { buildModelTree, filterTree, hiddenBy, hiddenMeshes, ancestors, elementsUnder, humanize, cleanName } from './model-tree.js?v=redesign-1';
+import { visibleModelScope } from './model-scope.js?v=site-1';
 
 const $ = id => document.getElementById(id);
 const canvas = $('scene');
@@ -451,7 +452,8 @@ function applyVisibility() {
   const clip = updateCutPlanes();
   const policyLevel = tree.loading ? state.level : 'all';
   for (const mesh of state.meshes) {
-    mesh.visible = visibleInMode(mesh, view, policyLevel, activeLevels) && inLevel(mesh) && !tree.hiddenMeshes.has(mesh);
+    mesh.visible = visibleModelScope(mesh, $('surroundings').checked, view)
+      && visibleInMode(mesh, view, policyLevel, activeLevels) && inLevel(mesh) && !tree.hiddenMeshes.has(mesh);
     const whole = clip && mesh.visible && wholeInPlan(mesh, cutPlanes[0].constant);
     if (whole && !cutMaterialOf.has(mesh)) {
       cutMaterialOf.set(mesh, mesh.material);
@@ -488,6 +490,9 @@ function refreshSurroundings() {
       invalidate();
     }
   }
+  // Building_Site can be packaged in the architectural GLB. Apply the same
+  // visibility switch to its separate authored scope and resync linked instances.
+  if (state.ready) applyVisibility();
   $('retry-surroundings').hidden = !surroundings.error;
   setText('surroundings-status', surroundings.error ? t('surroundings.unavailable')
     : enabled && state.mode === 'plan' ? t('surroundings.pausedInPlan')

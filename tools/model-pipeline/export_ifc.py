@@ -82,6 +82,7 @@ def export(glb,registry,output,scope='registered',name='Reconstruction'):
     relate('IfcRelAggregates','aggregate','site-building',RelatingObject=site,RelatedObjects=[building])
     storeys={}
     for s in d['storeys']:
+        if s['id']=='site':continue   # reserved site storey: its products are contained in IfcSite
         m=np.eye(4);m[2,3]=s['elevation']
         storeys[s['id']]=root('IfcBuildingStorey','storey',s['id'],s['name']+' (provisional)',ObjectPlacement=placement(m,building.ObjectPlacement),CompositionType='ELEMENT',Elevation=float(s['elevation']))
     relate('IfcRelAggregates','aggregate','building-storeys',RelatingObject=building,RelatedObjects=list(storeys.values()))
@@ -138,6 +139,9 @@ def export(glb,registry,output,scope='registered',name='Reconstruction'):
             if cls=='IfcDoorType':kwargs.update(OperationType='NOTDEFINED',ParameterTakesPrecedence=False)
             if cls=='IfcWindowType':kwargs.update(PartitioningType='NOTDEFINED',ParameterTakesPrecedence=False)
             if cls=='IfcColumnType':kwargs['PredefinedType']='PILASTER' if 'pilaster' in e['name'].lower() else 'COLUMN'
+            if cls=='IfcStairFlightType':kwargs['PredefinedType']='SPIRAL' if 'spiral' in e['id'] else 'STRAIGHT'
+            if cls=='IfcCoveringType':kwargs['PredefinedType']={'floor-finish':'FLOORING','ceiling':'CEILING'}.get(e['category'],'MOLDING')
+            if cls=='IfcSlabType' and e['category']=='landing':kwargs['PredefinedType']='LANDING'
             types[tid]=root(cls,'type',tid,record['name'],**kwargs)
             ps=root('IfcPropertySet','type-pset',tid,'ReconstructionType',HasProperties=[f.create_entity('IfcPropertySingleValue',Name=k,NominalValue=f.create_entity(typ,val)) for k,typ,val in [('ProductTypeId','IfcIdentifier',tid),('FamilyId','IfcIdentifier',record['familyId']),('Revision','IfcInteger',record['revision'])]])
             types[tid].HasPropertySets=[ps]
@@ -146,8 +150,10 @@ def export(glb,registry,output,scope='registered',name='Reconstruction'):
         shape=f.create_entity('IfcShapeRepresentation',ContextOfItems=body,RepresentationIdentifier='Body',RepresentationType='MappedRepresentation',Items=[item])
         product_shape=f.create_entity('IfcProductDefinitionShape',Representations=[shape])
         m=C@matrix(e['rootMatrix'])@C.T
-        storey=storeys[e['primaryStorey']];m[2,3]-=storey.Elevation
-        kw=dict(ObjectPlacement=placement(m,storey.ObjectPlacement),Representation=product_shape,Tag=e['id'])
+        if e['primaryStorey']=='site':container=site
+        else:
+            storey=storeys[e['primaryStorey']];m[2,3]-=storey.Elevation;container=storey
+        kw=dict(ObjectPlacement=placement(m,container.ObjectPlacement),Representation=product_shape,Tag=e['id'])
         if e['ifcClass'] in ['IfcDoor','IfcWindow']:
             kw.update(OverallHeight=e['properties'].get('overallHeight'),OverallWidth=e['properties'].get('overallWidth'))
         product=root(e['ifcClass'],'product',e['id'],e['name'],**kw);products[e['id']]=product
@@ -168,7 +174,7 @@ def export(glb,registry,output,scope='registered',name='Reconstruction'):
             relate('IfcRelDefinesByProperties','quantity-relation',e['id'],RelatedObjects=[product],RelatingPropertyDefinition=qset)
         for c in e['components']:source_map[c['id']]={'productId':e['id'],'ifcGlobalId':product.GlobalId,'typeId':tid,'localMatrix':c['localMatrix']}
     for tid,occurrences in bytype.items():relate('IfcRelDefinesByType','type-relation',tid,RelatedObjects=occurrences,RelatingType=types[tid])
-    for sid,occurrences in contains.items():relate('IfcRelContainedInSpatialStructure','containment',sid,RelatedElements=occurrences,RelatingStructure=storeys[sid])
+    for sid,occurrences in contains.items():relate('IfcRelContainedInSpatialStructure','containment',sid,RelatedElements=occurrences,RelatingStructure=storeys[sid] if sid in storeys else site)
     for sid,occurrences in refs.items():relate('IfcRelReferencedInSpatialStructure','spatial-reference',sid,RelatedElements=occurrences,RelatingStructure=storeys[sid])
     for o in d['openings']:
         if o['fillingId'] not in chosen:continue

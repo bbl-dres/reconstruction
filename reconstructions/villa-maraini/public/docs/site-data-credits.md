@@ -23,3 +23,21 @@ The villa's local garden and entrance use an inferred relative calibration of th
 ## v010 site and context correction
 
 OpenStreetMap contributors (ODbL) supply ways, multipolygon relations and building parts from the saved8October2026 extract.26 relations add32 courtyards.22 new heights are matched GlobalBuildingAtlas predictions (CC BY-NC4.0); one OSM height and three storey conventions take precedence.17 Palazzo parts use OSM levels times3m. The new GBA acquisition verifies exact byte ranges and hashes, not a complete586MB height-table checksum. Regional Lazio2002 terrain and AGEA2020 orthophoto attribution above remain applicable. Source images remain private research; route grades, retaining profiles and local ground transitions are inferred. No geographic datum or code compliance is established.
+
+## v012 street and context elevations
+
+Regione Lazio CTRN 1:5,000 vector tile 374062, 2002 aerial photography / 2005 restitution, CC BY 4.0, supplies classified ordinary-road edges and road-axis spot heights. [Official vector resource](https://geoportale.regione.lazio.it/cartografia/files/2002_2003_CTRN_5K_DXF/Roma/374062_plt.zip). Changes: transformed source observations, local interpolation and corridor blending; road normal repair; no absolute datum calibration. Retaining heads and roofs are not treated as ground. Retained OSM road plan outlines use assumed widths.
+
+Owner-transcribed whole-metre Google Earth observations corroborate street levels and constrain 15 matched roof masses; historical official eaves/division lines help distinguish roof parts. Photogrammetric surfaces, quantization and differing epochs limit accuracy. No Google imagery or tile meshes are embedded in exports. Other neighboring roofs retain their earlier OSM/GBA attribution and restrictions. Local garden grades, route details and wall profiles remain inferred construction.
+
+## v013 enclosure, trees and neighboring compound
+
+Owner-supplied Street View and Earth screenshots inform qualitative architectural interpretation only; no image textures or map meshes are exported. AGEA 2020 crown observations guide approximate street-tree stations. Casino dell’Aurora compound geometry uses the retained OpenStreetMap garden footprint and classified Lazio CTRN retaining-head/spot evidence; the sparse garden surface and massive wall depth are inferred. Earlier OSM, Lazio and GBA credits and reuse restrictions continue to apply.
+
+## v013 audit corrections (neighbouring outlines, registration evidence)
+
+Roma Capitale open geoportal WFS layer `REGLAZ:CostruzioniVolumiCTRN` (building volumes of the regional technical map, CC BY 4.0, https://geoportale.comune.roma.it/) and the Regione Lazio CTRN 1:5,000 DXF sheet 374062 (2002 photography / 2005 restitution, CC BY 4.0; the original drawing carries an older reproduction notice that is retained in the private source record) supplied the classified building outlines used to register the villa, the Portineria and the corner Dependance, and the rigid correction applied to the neighbouring OpenStreetMap masses (−0.006°, +0.93 m / +0.52 m in the local frame; the Dependance and the Casino dell'Aurora compound keep their own controls). No map geometry is copied into the public model; neighbouring masses remain schematic OSM/GlobalBuildingAtlas volumes with their earlier attribution and CC BY-NC restriction. Owner-supplied Street View captures (2015–2025) informed only qualitative checks of walls, gates and the Portineria street front.
+
+### Garden plan 778 (undated, hand-drawn) — positional use only (v013)
+
+The undated garden layout sheet of the Istituto Svizzero (ref-38b80072d29e6fde, local reference, not published) was used at the owner's instruction for three things only: the relation of the lodge to the Via Ludovisi perimeter wall, the positions of the garden staircases, and the carriage drive from the gate along Via Cadore and Via Liguria to the former stables. It is a hand drawing; its positions were read through a similarity fit to the villa footprint (0.32 m RMS at the villa, 1–3 m at the enclosure) and snapped to the modelled walls, court and drive. Levels of the added features come from the HMQ section (lower apron −4.50 ± 0.7 m) and the municipal retaining-head line, not from the plan. All added pieces are placeholders marked `inferred`.

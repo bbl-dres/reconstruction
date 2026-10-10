@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "modelId": "villa-maraini-v013",
+  "coordinates": "gltf-y-up-meters",
+  "views": [
+    {
+      "id": "exterior",
+      "title": "Archive architectural study",
+      "description": "Continuous decorated site enclosure, entrance gates, Portineria street openings, neighboring raised garden, street trees and bounded roof/balcony/canopy corrections; inferred dimensions remain explicit.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          45,
+          38,
+          58
+        ],
+        "target": [
+          -1,
+          7,
+          0
+        ]
+      }
+    },
+    {
+      "id": "dollhouse-p1",
+      "title": "Piano 1 · Interrato",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p1",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p2",
+      "title": "Piano 2 · Seminterrato",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p2",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p3",
+      "title": "Piano 3 · Rialzato",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p3",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p4",
+      "title": "Piano 4 · Primo",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p4",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p5",
+      "title": "Piano 5 · Secondo",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p5",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p6",
+      "title": "Piano 6 · Torretta inferiore",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p6",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p7",
+      "title": "Piano 7 · Torretta superiore",
+      "description": "Partial major-wall layout; some thin partitions and details remain unresolved.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p7",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "plan-p3",
+      "title": "Piano rialzato plan",
+      "description": "Calibrated major-wall layout from the archival booklet; thin partitions remain incomplete.",
+      "camera": {
+        "mode": "plan",
+        "level": "p3",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "site-context",
+      "title": "Villa and hill",
+      "description": "5 m ground data; 99 GBA inferred context heights, five levels-derived, one 10 m default. Ground-to-floor tie remains provisional.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          140,
+          125,
+          165
+        ],
+        "target": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "tower-review",
+      "title": "Tower and roof detail",
+      "description": "Plan eaves; proportionally inferred arches, roof guards and urn silhouettes.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          -27.08258,
+          30,
+          31.40538
+        ],
+        "target": [
+          -4.20791,
+          19,
+          5.14229
+        ]
+      }
+    },
+    {
+      "id": "ceremonial-stair",
+      "title": "Ceremonial stair study",
+      "description": "Three-flight p3-to-p4 topology; exact risers, headroom and historic details remain inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p3",
+        "position": [
+          10.981,
+          15,
+          -0.36195
+        ],
+        "target": [
+          2.2157,
+          3,
+          -7.65369
+        ]
+      }
+    },
+    {
+      "id": "winter-garden-detail",
+      "title": "Winter garden and terrace",
+      "description": "Photo-supported arches and terrace guard; detailed heights and profiles inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          21.05571,
+          8,
+          27.98413
+        ],
+        "target": [
+          10.57057,
+          2.6,
+          12.13131
+        ]
+      }
+    },
+    {
+      "id": "winter-garden-interior",
+      "title": "Inside the winter garden",
+      "description": "Three source-matched arched end windows, shaped joinery and shallow screen fronts; details inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          10.52993,
+          2.4,
+          7.27735
+        ],
+        "target": [
+          10.36155,
+          2.48,
+          13.92541
+        ]
+      }
+    },
+    {
+      "id": "stair-hall-interior",
+      "title": "Inside the stair hall",
+      "description": "Columns, openwork guards and reviewed rear glazing. Lower circulation and exact ornament remain incomplete.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          2.00227,
+          1.65,
+          -1.15719
+        ],
+        "target": [
+          2.16645,
+          3.5,
+          -6.1545
+        ]
+      }
+    },
+    {
+      "id": "entrance-facade",
+      "title": "Entrance facade and canopy",
+      "description": "HMQ-relative canopy preserved; low arched entrance sidelights and upper stair glazing corrected against photographs and SF9.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          28.5156,
+          15,
+          -46.81126
+        ],
+        "target": [
+          2.2157,
+          8,
+          -7.65369
+        ]
+      }
+    },
+    {
+      "id": "garden-loggia",
+      "title": "Garden loggia and columns",
+      "description": "Loggia and split garden stair with pierced-panel guards; inferred relative levels and detail dimensions.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          9.99597,
+          7,
+          29.62187
+        ],
+        "target": [
+          1.59184,
+          3,
+          11.33607
+        ]
+      }
+    },
+    {
+      "id": "garden-site",
+      "title": "Garden and split stair",
+      "description": "Separate graded lawn, observed path and constructed stairs; local HMQ-relative study, no absolute datum.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          40.02706,
+          25,
+          59.6241
+        ],
+        "target": [
+          1.46051,
+          0,
+          15.33391
+        ]
+      }
+    },
+    {
+      "id": "entrance-court",
+      "title": "Entrance court and retaining wall",
+      "description": "Separate court, short steps and high retaining edge. Unseen routes and distant levels remain unresolved.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -24.58716,
+          20,
+          -44.55364
+        ],
+        "target": [
+          2.51121,
+          0,
+          -16.64884
+        ]
+      }
+    },
+    {
+      "id": "winding-frontage-stair",
+      "title": "Winding frontage stair",
+      "description": "Five separate flights and five landings on the historical route; inferred risers and separate PT2 terrace connector.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -42,
+          20,
+          -53
+        ],
+        "target": [
+          -13,
+          -3.5,
+          -22
+        ]
+      }
+    },
+    {
+      "id": "vehicle-gate-drive",
+      "title": "Vehicle gate and carriageway",
+      "description": "Wall-aligned lower carriageway and corrected gate interfaces. Complete vehicle approach and parking study remain queued.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          62,
+          39,
+          -55
+        ],
+        "target": [
+          13,
+          -3,
+          -10
+        ]
+      }
+    },
+    {
+      "id": "perimeter-retaining-wall",
+      "title": "Perimeter retaining enclosure",
+      "description": "Qualified official street alignment and corrected corner Dependance tie; decorated wall depth and levels remain inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          91,
+          38,
+          73
+        ],
+        "target": [
+          7,
+          -3,
+          14
+        ]
+      }
+    },
+    {
+      "id": "main-stair-descent",
+      "title": "Main stair and lower vestibule",
+      "description": "Plan/HMQ-relative eleven-riser descent and glazed vestibule door. Unseen basement circulation remains unresolved.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          2.00884,
+          1.6,
+          -1.35709
+        ],
+        "target": [
+          2.25838,
+          -0.4,
+          -8.95299
+        ]
+      }
+    },
+    {
+      "id": "west-entrance-door",
+      "title": "Garden entrance door",
+      "description": "Source-supported door and adjacent windows behind the open garden loggia.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          2.41721,
+          7.0,
+          30.37343
+        ],
+        "target": [
+          1.92964,
+          3.2,
+          7.1449
+        ]
+      }
+    },
+    {
+      "id": "side-facade-bim",
+      "title": "Reviewed side facade",
+      "description": "Coherent per-storey wall depths with separate facade decoration and shared window families.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          41.2987,
+          6.44653,
+          2.5387
+        ],
+        "target": [
+          9.93064,
+          5.1367,
+          -2.08782
+        ]
+      }
+    },
+    {
+      "id": "dollhouse-pt0",
+      "title": "Portineria · Piano terra",
+      "description": "BVA/photo-supported Portineria with inferred stepped terrace connection. Architectural vertical registration remains provisional.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "pt0",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-pt1",
+      "title": "Portineria · Primo piano",
+      "description": "BVA/photo-supported Portineria with inferred stepped terrace connection. Architectural vertical registration remains provisional.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "pt1",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-pt2",
+      "title": "Portineria · Altana e terrazza",
+      "description": "BVA/photo-supported Portineria with inferred stepped terrace connection. Architectural vertical registration remains provisional.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "pt2",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "portineria",
+      "title": "Portineria and street entrance",
+      "description": "BVA/photo-supported architecture, approximate official CTRN horizontal registration and reconciled street/terrace connections. Absolute height datum remains provisional.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -49,
+          16,
+          -57
+        ],
+        "target": [
+          -24,
+          -2,
+          -22
+        ]
+      }
+    },
+    {
+      "id": "survey-context-v012",
+      "title": "Reviewed streets and neighboring roofs",
+      "description": "Official road-axis/edge levels and source-matched neighboring roof masses. Approximate current-condition study.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          158,
+          96,
+          -6
+        ],
+        "target": [
+          3,
+          -8,
+          7
+        ]
+      }
+    },
+    {
+      "id": "court-ground-v012",
+      "title": "Entrance court and lower garden routes",
+      "description": "Continuous court/ground interfaces with separate retaining walls; hidden route dimensions remain inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          61,
+          34,
+          -57
+        ],
+        "target": [
+          -18,
+          -5,
+          -3
+        ]
+      }
+    },
+    {
+      "id": "roof-details-v013",
+      "title": "Roof stair enclosure and chimney",
+      "description": "SF7-controlled footprints and photo-supported silhouettes; height, hidden construction and surface materials inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          39.91811,
+          43,
+          -28.42695
+        ],
+        "target": [
+          1.98586,
+          16,
+          -0.65746
+        ]
+      }
+    },
+    {
+      "id": "audit-stem-stair",
+      "title": "Stem service stair and p5 ceiling",
+      "description": "Audit placeholders: p5 ceiling slab (section chain) and the inferred stem flight to the roof-access level; dimensions inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p5",
+        "position": [
+          -4.0,
+          16.0,
+          8.0
+        ],
+        "target": [
+          -6.5,
+          13.0,
+          2.0
+        ]
+      }
+    },
+    {
+      "id": "roof-details-v013",
+      "title": "Roof stair enclosure and chimney",
+      "description": "SF7-controlled footprints and photo-supported silhouettes; height, hidden construction and surface materials inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          37,
+          43,
+          -30
+        ],
+        "target": [
+          0,
+          16,
+          -1
+        ]
+      }
+    }
+  ],
+  "pointsOfInterest": [],
+  "objects": []
+}
