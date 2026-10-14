@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "roemerholz-surroundings",
+  "title": "Sammlung Oskar Reinhart «Am Römerholz» v001 - surroundings (Revit)",
+  "asset": "surroundings-meshopt-982fadce0e54e84e.glb",
+  "source": {
+    "file": "roemerholz.rvt (open Revit 2027 session)",
+    "identity": "SHA-256 of the raw Revit export payload (building and surroundings geometry, placements, metadata)",
+    "sha256": "d24dc9b94eff30089f860d5c2678998fe3c317d9cdbab55aa606e07d935e513b"
+  },
+  "conversion": {
+    "method": "Revit CustomExporter / IExportContext (pyRevit, IronPython) -> numpy GLB writer",
+    "exporterSha256": "b53ba323db0a6a6ca39446bcf1948b55e1b7fb4836437232020cbe7359ce88bc",
+    "metadataSha256": "0326cf03c4370f710b2d8ca6d29ab5eed7509a929131c89b3bd59a7b8e47e0a1",
+    "builderSha256": "a33d6481c903a69314efb317e91a91f7739173db6a8e57cd27b96d62888391af",
+    "viewsSha256": "955f7a247886ebdda1d4ca9a93cc746d3cde5523a1900ccd4535b826fe255d0b",
+    "levelOfDetail": 6
+  },
+  "revitVersion": "2027",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Revit internal (X, Y, Z) feet -> glTF (X, Z, -Y) * 0.3048",
+    "recentered": false
+  },
+  "selection": {
+    "view": "RH Export - surroundings",
+    "elements": 573,
+    "categories": {
+      "Doors": 1,
+      "Floors": 21,
+      "Furniture": 60,
+      "Generic Models": 10,
+      "Mass": 28,
+      "Planting": 307,
+      "Railings": 3,
+      "Roofs": 3,
+      "Stairs": 10,
+      "Top Rails": 3,
+      "Toposolid": 28,
+      "Walls": 99
+    },
+    "vmBuilding": {
+      "CTX": 27,
+      "SITE": 546
+    },
+    "skippedByExporter": {
+      "unresolved": 12,
+      "exclude": 10,
+      "building": 29
+    },
+    "licences": {},
+    "boundsGltf": {
+      "min": [
+        -277.1020202636719,
+        -38.88199996948242,
+        -263.69500732421875
+      ],
+      "max": [
+        259.19598388671875,
+        39.396548849272534,
+        272.6029968261719
+      ]
+    }
+  },
+  "sharedGeometry": {
+    "symbolGeometries": 312,
+    "placements": 603,
+    "note": "Family instances with the same Revit SymbolGeometryId share one glTF mesh per material; element-specific geometry is world-baked."
+  },
+  "notes": [
+    "Reconstruction from the 2025 documentation drawings, older plans and public geodata; not a measured survey.",
+    "Local metric coordinates; registration in model_georeference.json, not survey control.",
+    "Terrain © swisstopo (swissALTI3D); surrounding buildings © swisstopo (swissBUILDINGS3D 2.0).",
+    "Parcel ST8332 site and garden, terrain (LOD 200) and neighbouring buildings as masses (RH_Building = SITE, CTX)."
+  ],
+  "validation": "GLB packaging, ID uniqueness, BIM registry recomposition and viewer loading checks: tools/revit/export/validate.mjs and the release report.",
+  "glb": {
+    "bytes": 17372384,
+    "sha256": "7143b6acfe29a582dab072239c4dd479ec123f02abaadcf35805c0dd6aecfa89",
+    "nodes": 888,
+    "meshNodes": 888,
+    "uniqueMeshes": 722,
+    "renderedPrimitives": 888,
+    "trianglesAcrossInstances": 978848,
+    "materials": 40,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 888,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "optimization": {
+    "originalAsset": "surroundings-d24dc9b94eff-96079635fcc3.glb",
+    "originalSha256": "96079635fcc36103284e821c39c41e3939f30070402a8e4be5eb763737ca3e7c",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 1305,
+    "verifiedViews": 2166,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 22869504,
+    "bytes": 17372384,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 9399096,
+    "gzipSha256": "d86b3fe95b24ea58b7bd4158a2676459c60401ff8601e96d0dc70eb1121a603b"
+  }
+}

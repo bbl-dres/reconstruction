@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Batching benchmark</title>
+  <!-- Measurement page, not part of the viewer: compares the viewer's current render batching with a
+       BatchedMesh-per-material prototype on a published model. See viewer/PERFORMANCE.md. -->
+  <script type="importmap">
+    {"imports":{"three":"../vendor/three/build/three.module.js","three/addons/":"../vendor/three/examples/jsm/","building-policy":"../js/policy-default.js"}}
+  </script>
+  <style>html, body { margin: 0; background: #000; color: #ccc; font: 12px system-ui; } canvas { display: block; width: 1600px; height: 900px; }</style>
+</head>
+<body>
+  <canvas id="scene"></canvas>
+  <pre id="out">Loading…</pre>
+  <script type="module" src="batching-benchmark.mjs"></script>
+</body>
+</html>

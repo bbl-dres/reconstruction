@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini-building",
+  "title": "Villa Maraini V14 - villa (Revit)",
+  "asset": "building-meshopt-42033823e7624b28.glb",
+  "source": {
+    "file": "Revit Remake.rvt (open Revit 2027 session, unsaved)",
+    "identity": "SHA-256 of the raw Revit export payload (building and surroundings geometry, placements, metadata)",
+    "sha256": "a28a3f49887a7ee1d10c39e60221d3e29c81abe7214a3e824d5bb3aaa8e12844"
+  },
+  "conversion": {
+    "method": "Revit CustomExporter / IExportContext (pyRevit, IronPython) -> numpy GLB writer",
+    "exporterSha256": "0e3c0851cc7a450061bf9d7c0594746e1a27f53e9cb684010329d391b113b12e",
+    "metadataSha256": "d58a92f72534f5423442aabbefdc00314598e30b5054d4786e57cd3d8934d0f7",
+    "builderSha256": "6109ad42cd66ad576cfd71345f2986a3f3c58a7a1fba506b6b020a4c7b961545",
+    "viewsSha256": "c8ffe5a8ee3ce08ae45dbc0f00a8b3b632e5723a56f0c2270aeec538f05c6adc",
+    "levelOfDetail": 6
+  },
+  "revitVersion": "2027 (27.0.4.412)",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Revit internal (X, Y, Z) feet -> glTF (X, Z, -Y) * 0.3048",
+    "recentered": false
+  },
+  "selection": {
+    "view": "VM Export - V14 building",
+    "elements": 2040,
+    "categories": {
+      "Columns": 14,
+      "Curtain Panels": 24,
+      "Curtain Wall Mullions": 80,
+      "Doors": 154,
+      "Floors": 34,
+      "Generic Models": 597,
+      "Landings": 8,
+      "Lighting Fixtures": 9,
+      "Railings": 90,
+      "Roofs": 8,
+      "Runs": 23,
+      "Stairs": 15,
+      "Structural Framing": 5,
+      "Top Rails": 96,
+      "Wall Sweeps": 227,
+      "Walls": 517,
+      "Windows": 139
+    },
+    "vmBuilding": {
+      "VIL": 2040
+    },
+    "skippedByExporter": {
+      "exclude": 95,
+      "unresolved": 16,
+      "surroundings": 2
+    },
+    "licences": {},
+    "boundsGltf": {
+      "min": [
+        -19.17500114440918,
+        -7.800000190734863,
+        -16.72399984741211
+      ],
+      "max": [
+        14.651100000470874,
+        27.610000610351562,
+        19.399499643321498
+      ]
+    }
+  },
+  "sharedGeometry": {
+    "symbolGeometries": 712,
+    "placements": 2105,
+    "note": "Family instances with the same Revit SymbolGeometryId share one glTF mesh per material; element-specific geometry is world-baked."
+  },
+  "notes": [
+    "Archive study exported from the native Revit model (LOD 200 overall, LOD 300 facade decoration); not a measured survey.",
+    "Local metric coordinates (Revit internal origin, P3 = 0.00); approximate registration in model_georeference.json, not survey control.",
+    "Villa only (VM_Building = VIL); presentation families (SIA 416 room stacks) excluded."
+  ],
+  "validation": "GLB packaging, ID uniqueness, BIM registry recomposition and viewer loading checks: see V14.md in the build folder.",
+  "glb": {
+    "bytes": 24723708,
+    "sha256": "af33e02af8740b6601297a1be54944fce3a1df10e8912e38e81a14d82a0fae76",
+    "nodes": 2683,
+    "meshNodes": 2683,
+    "uniqueMeshes": 1892,
+    "renderedPrimitives": 2683,
+    "trianglesAcrossInstances": 841184,
+    "materials": 50,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 2683,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "optimization": {
+    "originalAsset": "building-a28a3f49887a-646c9618da28.glb",
+    "originalSha256": "646c9618da28f6627b5d75f7027991d28631718f6012e95c7888109266e746bb",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 608,
+    "verifiedViews": 5676,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 29899628,
+    "bytes": 24723708,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 4218655,
+    "gzipSha256": "2486dc4ac96d27e2f03c8527d72b1629b351a9ab4aae213bb0c46d23b5adf086"
+  }
+}

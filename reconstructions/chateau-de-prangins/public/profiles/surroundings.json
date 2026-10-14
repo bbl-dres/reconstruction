@@ -1,0 +1,7 @@
+{
+  "id": "chateau-de-prangins-surroundings",
+  "title": "Château de Prangins surroundings",
+  "includeCollectionPrefixes": ["Context"],
+  "collectionRoles": { "Context": "context" },
+  "notes": ["Terrain and neighbouring buildings from public geodata (e.g. swissALTI3D, swissBUILDINGS3D)."]
+}

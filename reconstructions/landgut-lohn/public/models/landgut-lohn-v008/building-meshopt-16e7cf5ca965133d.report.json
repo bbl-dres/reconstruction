@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "id": "landgut-lohn-v008",
+  "title": "Landgut Lohn - v008 building",
+  "asset": "building-meshopt-16e7cf5ca965133d.glb",
+  "source": {
+    "file": "landgut-lohn.blend",
+    "bytes": 14900963,
+    "sha256": "6e7a20ed1a8eba0837c4451700a74ee3a489e719602747266e6136563773fb27"
+  },
+  "conversion": {
+    "exporterSha256": "a282a3297005f6c573e775df1085a0c05bbeb58f2232d96d360e1c4067f117d8",
+    "profileSha256": "612003b7f818a4a233a7c3aa8bf95013e6a7e07ebca8446599c6c3c491fe139e"
+  },
+  "blenderVersion": "5.2.2 LTS",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Blender (x,y,z) -> glTF (x,z,-y)",
+    "recentered": false
+  },
+  "sourceScene": {
+    "objects": 3861,
+    "meshes": 3839,
+    "textObjects": 0
+  },
+  "evaluatedText": [],
+  "selection": {
+    "meshes": 1414,
+    "collections": {
+      "Dependency_EG": 244,
+      "Dependency_OG1": 40,
+      "Dependency_Roof": 13,
+      "Main_House_DG": 50,
+      "Main_House_EG": 470,
+      "Main_House_OG1": 522,
+      "Main_House_Roof": 34,
+      "Passage": 32,
+      "Site": 9
+    },
+    "boundsBlender": {
+      "min": [
+        -167.33309936523438,
+        -77.24949645996094,
+        -21.871999740600586
+      ],
+      "max": [
+        132.22030639648438,
+        83.29769897460938,
+        17.780000686645508
+      ]
+    }
+  },
+  "glb": {
+    "bytes": 9726364,
+    "sha256": "ea99f861ca32fd2145e5e988a9e634c88a8812d508d92e8fd2a27ae710c3303e",
+    "nodes": 1414,
+    "meshNodes": 1414,
+    "uniqueMeshes": 989,
+    "renderedPrimitives": 1414,
+    "trianglesAcrossInstances": 171324,
+    "materials": 80,
+    "embeddedImages": 7,
+    "taggedMeshNodes": 1414,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "KHR_materials_transmission",
+      "EXT_meshopt_compression"
+    ]
+  },
+  "sourceImageTextures": [
+    {
+      "name": "paving.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "sandstone.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "plaster-facade.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "stone-floor.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "parquet-oak.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "stair-stone.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    },
+    {
+      "name": "roof-tile.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "packed": true
+    }
+  ],
+  "proceduralMaterialFallbacks": [],
+  "notes": [
+    "Every exported object carries authored viewer_id, viewer_role, viewer_cutaway_role and viewer_floor_ids (docs/model-handoff.md); the default viewer policy needs nothing else.",
+    "Types (shared prototypes) and Reference (panorama camera rigs) are deliberately excluded."
+  ],
+  "validation": "GLB packaging, embedded resource, mesh-count and metadata checks passed. Browser rendering and performance remain to be tested.",
+  "import": {
+    "method": "verified-authored-glb",
+    "packageAsset": "viewer/building.glb",
+    "packageReportSha256": "4aae264c29ed476aaf48e88218b803faac820acd32dbc43d2350609c83709a69"
+  },
+  "optimization": {
+    "originalAsset": "building-6e7a20ed1a8e-477ea8921800.glb",
+    "originalSha256": "477ea892180057d6416d7025652738e1e2fbaab9f4dd66d8e41dc4631ee7674c",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 308,
+    "verifiedViews": 2569,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 10226620,
+    "bytes": 9726364,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 3229129,
+    "gzipSha256": "d4d550f15cb2fe4b741abc4bb37f550a92ab5ead28b1a963e823cd915f44f136"
+  }
+}

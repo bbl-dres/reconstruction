@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "id": "REPLACE-BUILDING-ID",
+  "namespace": null,
+  "latestRelease": null,
+  "publicFolder": "../public",
+  "contracts": "../../../docs",
+  "units": "meters",
+  "coordinateSystem": null,
+  "paths": {
+    "build": "build",
+    "revitWorkspace": "build/revit_ws",
+    "workingModel": null,
+    "reviews": "reviews",
+    "releases": "releases",
+    "log": "LOG.md",
+    "referenceManifest": "references/manifest.json",
+    "register": "references/research/register.md",
+    "decisions": "references/research/decisions.json",
+    "requests": "references/research/requests.md",
+    "georeference": "references/research/derived/model_georeference.json"
+  },
+  "releases": []
+}

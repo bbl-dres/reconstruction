@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "roemerholz",
+  "name": "Sammlung Oskar Reinhart «Am Römerholz»",
+  "place": "Winterthur, Switzerland",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    {
+      "label": "Museum",
+      "href": "https://www.roemerholz.ch/de"
+    },
+    {
+      "label": "Google Maps",
+      "href": "https://www.google.com/maps/search/?api=1&query=47.511305%2C8.731823"
+    }
+  ],
+  "walkStarts": {},
+  "pipeline": {
+    "title": "Römerholz",
+    "timeZone": "Europe/Zurich",
+    "ifcName": "Sammlung Oskar Reinhart «Am Römerholz»",
+    "profiles": {
+      "building": "profiles/building.json",
+      "surroundings": "profiles/surroundings.json"
+    },
+    "levels": []
+  }
+}
+

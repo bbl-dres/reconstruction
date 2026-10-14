@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini",
+  "name": "Villa Maraini",
+  "place": "Rome, Italy",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    {
+      "label": "Istituto Svizzero",
+      "href": "https://www.istitutosvizzero.it/istituto-svizzero/"
+    },
+    {
+      "label": "Google Maps",
+      "href": "https://www.google.com/maps/search/?api=1&query=41.906773%2C12.487714"
+    }
+  ],
+  "walkStarts": {
+    "rialzato": {
+      "label": "Piano rialzato · study interior",
+      "position": [
+        0,
+        1.65,
+        4
+      ],
+      "target": [
+        0,
+        1.65,
+        0
+      ]
+    }
+  },
+  "pipeline": {
+    "title": "Villa Maraini",
+    "timeZone": "Europe/Rome",
+    "ifcName": "Villa Maraini — Istituto Svizzero",
+    "profiles": {
+      "building": "profiles/building.json",
+      "surroundings": "profiles/surroundings.json"
+    },
+    "levels": [
+      {
+        "id": "p1",
+        "label": "Piano 1 · Interrato",
+        "elevation": -7.85,
+        "min": -8.5,
+        "max": -4.26
+      },
+      {
+        "id": "p2",
+        "label": "Piano 2 · Seminterrato",
+        "elevation": -4.0,
+        "min": -4.65,
+        "max": -0.31
+      },
+      {
+        "id": "p3",
+        "label": "Piano 3 · Rialzato",
+        "elevation": 0,
+        "min": -0.65,
+        "max": 5.31
+      },
+      {
+        "id": "p4",
+        "label": "Piano 4 · Primo",
+        "elevation": 5.72,
+        "min": 5.07,
+        "max": 10.51
+      },
+      {
+        "id": "p5",
+        "label": "Piano 5 · Secondo",
+        "elevation": 11.12,
+        "min": 10.47,
+        "max": 15.06
+      },
+      {
+        "id": "p6",
+        "label": "Piano 6 · Torretta inferiore",
+        "elevation": 15.32,
+        "min": 14.67,
+        "max": 17.87
+      },
+      {
+        "id": "p7",
+        "label": "Piano 7 · Torretta superiore",
+        "elevation": 18.16,
+        "min": 17.51,
+        "max": 26.4
+      },
+      {
+        "id": "pt0",
+        "label": "Portineria · Piano terra",
+        "elevation": -9.679288635253906,
+        "min": -10.229288635253907,
+        "max": -5.809288635253905
+      },
+      {
+        "id": "pt1",
+        "label": "Portineria · Primo piano",
+        "elevation": -5.789288635253906,
+        "min": -6.339288635253906,
+        "max": -2.5192886352539063
+      },
+      {
+        "id": "pt2",
+        "label": "Portineria · Altana e terrazza",
+        "elevation": -2.4992886352539068,
+        "min": -3.049288635253907,
+        "max": 5.9157110214233395
+      }
+    ]
+  }
+}

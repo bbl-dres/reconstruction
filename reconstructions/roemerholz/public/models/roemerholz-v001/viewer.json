@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "modelId": "roemerholz-v001",
+  "coordinates": "gltf-y-up-meters",
+  "views": [
+    {
+      "id": "exterior",
+      "title": "Exterior",
+      "description": "The villa garden front with the gallery behind, seen from the south-east over the parterre.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          40,
+          40,
+          50
+        ],
+        "target": [
+          -15,
+          0,
+          -2
+        ]
+      },
+      "start": true
+    },
+    {
+      "id": "site",
+      "title": "Site",
+      "description": "Parcel, garden and surrounding buildings.",
+      "camera": {
+        "mode": "orbit",
+        "frame": "site"
+      }
+    },
+    {
+      "id": "dollhouse-ug",
+      "title": "UG · Untergeschoss",
+      "description": "Revit storey of the published model.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "ug",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-eg",
+      "title": "EG · Erdgeschoss",
+      "description": "Revit storey of the published model.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "eg",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-og1",
+      "title": "1.OG · Obergeschoss",
+      "description": "Revit storey of the published model.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "og1",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-og2",
+      "title": "2.OG · Obergeschoss",
+      "description": "Revit storey of the published model.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "og2",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-dg",
+      "title": "DG · Dachgeschoss",
+      "description": "Revit storey of the published model.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "dg",
+        "frame": "level"
+      }
+    }
+  ],
+  "pointsOfInterest": [],
+  "objects": []
+}

@@ -1,0 +1,12 @@
+{
+  "id": "villa-maraini-building",
+  "title": "Villa Maraini archive study",
+  "includeCollectionPrefixes": [
+    "Building"
+  ],
+  "notes": [
+    "Archive architectural study; not verified current condition or survey.",
+    "Local metric coordinates, no validated geographic placement.",
+    "Partial major-wall layouts; openings/stairs/roof details carry inferred basis."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "villa-maraini-surroundings",
+  "title": "Villa Maraini V14 - Portineria, gate, Dependance, site and context (Revit)",
+  "asset": "surroundings-meshopt-60c3f954e63e001e.glb",
+  "source": {
+    "file": "Revit Remake.rvt (open Revit 2027 session, unsaved)",
+    "identity": "SHA-256 of the raw Revit export payload (building and surroundings geometry, placements, metadata)",
+    "sha256": "a28a3f49887a7ee1d10c39e60221d3e29c81abe7214a3e824d5bb3aaa8e12844"
+  },
+  "conversion": {
+    "method": "Revit CustomExporter / IExportContext (pyRevit, IronPython) -> numpy GLB writer",
+    "exporterSha256": "0e3c0851cc7a450061bf9d7c0594746e1a27f53e9cb684010329d391b113b12e",
+    "metadataSha256": "d58a92f72534f5423442aabbefdc00314598e30b5054d4786e57cd3d8934d0f7",
+    "builderSha256": "6109ad42cd66ad576cfd71345f2986a3f3c58a7a1fba506b6b020a4c7b961545",
+    "viewsSha256": "c8ffe5a8ee3ce08ae45dbc0f00a8b3b632e5723a56f0c2270aeec538f05c6adc",
+    "levelOfDetail": 6
+  },
+  "revitVersion": "2027 (27.0.4.412)",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Revit internal (X, Y, Z) feet -> glTF (X, Z, -Y) * 0.3048",
+    "recentered": false
+  },
+  "selection": {
+    "view": "VM Export - V14 surroundings",
+    "elements": 995,
+    "categories": {
+      "Ceilings": 7,
+      "Columns": 6,
+      "Doors": 9,
+      "Floors": 51,
+      "Generic Models": 338,
+      "Mass": 133,
+      "Planting": 70,
+      "Railings": 46,
+      "Roofs": 2,
+      "Runs": 19,
+      "Stairs": 19,
+      "Sub-divisions": 37,
+      "Top Rails": 46,
+      "Toposolid": 2,
+      "Walls": 201,
+      "Windows": 9
+    },
+    "vmBuilding": {
+      "CTX": 210,
+      "DEP": 116,
+      "GATE": 15,
+      "POR": 233,
+      "SITE": 421
+    },
+    "skippedByExporter": {
+      "exclude": 95,
+      "building": 22
+    },
+    "licences": {
+      "OSM footprints ODbL 1.0": 24,
+      "GBA heights CC BY-NC 4.0 (commercial reuse not cleared); OSM footprints ODbL 1.0": 105,
+      "Regione Lazio DTM / CTRN 2002 (terms per research/geodata)": 28
+    },
+    "boundsGltf": {
+      "min": [
+        -215.1645050048828,
+        -38.8677978515625,
+        -226.543701171875
+      ],
+      "max": [
+        237.78289794921875,
+        21.450000762939453,
+        243.22039794921875
+      ]
+    }
+  },
+  "sharedGeometry": {
+    "symbolGeometries": 485,
+    "placements": 1158,
+    "note": "Family instances with the same Revit SymbolGeometryId share one glTF mesh per material; element-specific geometry is world-baked."
+  },
+  "notes": [
+    "Archive study exported from the native Revit model (LOD 200 overall, LOD 300 facade decoration); not a measured survey.",
+    "Local metric coordinates (Revit internal origin, P3 = 0.00); approximate registration in model_georeference.json, not survey control.",
+    "Portineria, street gate, Dependance, constructed site and garden, Lazio 5 m terrain and neighbouring masses.",
+    "Lazio 2002 5 m DTM and CTRN 2002 (Regione Lazio), CC BY 4.0; OSM contributors, ODbL.",
+    "Neighbouring heights: GlobalBuildingAtlas predictions (CC BY-NC 4.0), owner Google Earth readings (no imagery), OSM levels/height tags. Inferred context only; commercial redistribution not cleared."
+  ],
+  "validation": "GLB packaging, ID uniqueness, BIM registry recomposition and viewer loading checks: see V14.md in the build folder.",
+  "glb": {
+    "bytes": 20896028,
+    "sha256": "47758602381d4d044639b17a2f9e73278d1da46833a119c1874255eeabdfc407",
+    "nodes": 1187,
+    "meshNodes": 1187,
+    "uniqueMeshes": 866,
+    "renderedPrimitives": 1187,
+    "trianglesAcrossInstances": 810820,
+    "materials": 71,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 1187,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "optimization": {
+    "originalAsset": "surroundings-a28a3f49887a-8d6071a40e34.glb",
+    "originalSha256": "8d6071a40e34f32270b09753ba60c60e946608bddb2165cbdc3e68210423928d",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 462,
+    "verifiedViews": 2598,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 27638264,
+    "bytes": 20896028,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 4300416,
+    "gzipSha256": "5795a0460c5ea872ec18f7f3538a52508ef8fa4c7424eaeb257807fb75959f35"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "chateau-de-prangins",
+  "name": "Château de Prangins",
+  "place": "Prangins, Switzerland",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    { "label": "Museum", "href": "https://www.chateaudeprangins.ch/en" },
+    { "label": "Google Maps", "href": "https://www.google.com/maps/search/?api=1&query=46.394153%2C6.251977" }
+  ],
+  "walkStarts": {},
+  "pipeline": {
+    "title": "Château de Prangins",
+    "timeZone": "Europe/Zurich",
+    "ifcName": "Château de Prangins",
+    "profiles": { "building": "profiles/building.json", "surroundings": "profiles/surroundings.json" },
+    "levels": []
+  }
+}

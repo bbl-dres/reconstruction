@@ -1,0 +1,1 @@
+Photographs by location, one level of sub-folders: parts of the site and building, facades, important places (`exterior-south/`, `entrance/`, `stair-hall/`, `garden/`). Names `<location>-<year>-<nnn>.<ext>` or `<location>-<nnn>.<ext>`; never by author or by where the file was found. Metadata in `../manifest.json`.

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "id": "landgut-lohn",
+  "name": "Landgut Lohn",
+  "place": "Kehrsatz, Switzerland",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    {
+      "label": "View on GitHub",
+      "href": "https://github.com/bbl-dres/reconstruction"
+    },
+    {
+      "label": "Residenzen des Bundesrates (admin.ch)",
+      "href": "https://www.admin.ch/de/residenzen-des-bundesrates"
+    }
+  ],
+  "downloads": "https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/landgut-lohn/public",
+  "walkStarts": {
+    "entrance": {
+      "label": "West loggia (entrance)",
+      "position": [
+        -17.48,
+        3.05,
+        -3.99
+      ],
+      "target": [
+        -11.08,
+        2.95,
+        -3.99
+      ]
+    },
+    "halle": {
+      "label": "Halle (Vestibül)",
+      "position": [
+        -7.78,
+        3.05,
+        -3.98
+      ],
+      "target": [
+        -7.78,
+        2.95,
+        0.16
+      ]
+    },
+    "salon": {
+      "label": "Grosser Salon",
+      "position": [
+        -7.78,
+        3.05,
+        -0.04
+      ],
+      "target": [
+        -7.78,
+        2.85,
+        2.66
+      ]
+    },
+    "peristyl": {
+      "label": "Peristyl",
+      "position": [
+        4.92,
+        2.2,
+        -3.99
+      ],
+      "target": [
+        14.92,
+        2.1,
+        -3.99
+      ]
+    },
+    "speisesaal": {
+      "label": "Speisesaal",
+      "position": [
+        22.32,
+        2.2,
+        -4.24
+      ],
+      "target": [
+        25.92,
+        2.0,
+        -4.24
+      ]
+    },
+    "obere-halle": {
+      "label": "Obere Halle (1. OG)",
+      "position": [
+        -9.08,
+        7.14,
+        -3.94
+      ],
+      "target": [
+        -3.08,
+        7.04,
+        -4.04
+      ]
+    }
+  },
+  "pipeline": {
+    "title": "Landgut Lohn",
+    "timeZone": "Europe/Zurich",
+    "ifcName": "Landgut Lohn",
+    "profiles": {
+      "building": "profiles/building.json",
+      "surroundings": "profiles/surroundings.json"
+    },
+    "levels": [
+      {
+        "id": "eg",
+        "label": "EG",
+        "elevation": 1.45,
+        "min": -0.6,
+        "max": 5.35
+      },
+      {
+        "id": "og1",
+        "label": "1. OG",
+        "elevation": 5.54,
+        "min": 3.9,
+        "max": 8.8
+      },
+      {
+        "id": "dg",
+        "label": "Dachgeschoss",
+        "elevation": 8.84,
+        "min": 8.8,
+        "max": 18.0
+      }
+    ]
+  }
+}

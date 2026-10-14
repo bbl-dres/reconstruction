@@ -1,0 +1,63 @@
+{
+ "schemaVersion": 1,
+ "models": [
+  {
+   "id": "roemerholz-v001",
+   "label": "v001",
+   "version": 1,
+   "building": "./roemerholz-v001/building-meshopt-9c3c4a1f250bf533.glb",
+   "surroundings": "./roemerholz-v001/surroundings-meshopt-982fadce0e54e84e.glb",
+   "metadata": "./roemerholz-v001/viewer.json",
+   "sourceSha256": "d24dc9b94eff30089f860d5c2678998fe3c317d9cdbab55aa606e07d935e513b",
+   "levels": [
+    "all",
+    "ug",
+    "eg",
+    "og1",
+    "og2",
+    "dg"
+   ],
+   "meshCount": 1783,
+   "location": {
+    "latitude": 47.51124634,
+    "longitude": 8.73176271,
+    "timeZone": "Europe/Zurich",
+    "enuToModelDegrees": 27.3949,
+    "source": "roemerholz-v001/model_georeference.json; ENU rotated into the Revit internal XY"
+   },
+   "levelDefinitions": {
+    "ug": {
+     "label": "UG · Untergeschoss",
+     "elevation": -3.9,
+     "min": -5.2,
+     "max": -0.9
+    },
+    "eg": {
+     "label": "EG · Erdgeschoss",
+     "elevation": 0.0,
+     "min": -0.9,
+     "max": 3.7
+    },
+    "og1": {
+     "label": "1.OG · Obergeschoss",
+     "elevation": 4.0,
+     "min": 3.7,
+     "max": 7.3
+    },
+    "og2": {
+     "label": "2.OG · Obergeschoss",
+     "elevation": 7.44,
+     "min": 7.3,
+     "max": 9.7
+    },
+    "dg": {
+     "label": "DG · Dachgeschoss",
+     "elevation": 10.08,
+     "min": 9.7,
+     "max": 20.0
+    }
+   },
+   "bim": "./roemerholz-v001/bim-db6faca1e8ddfd1c.json"
+  }
+ ]
+}

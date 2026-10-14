@@ -1,0 +1,13 @@
+{
+  "id": "roemerholz",
+  "title": "Römerholz",
+  "includeCollectionPrefixes": [
+    "Site",
+    "Building"
+  ],
+  "notes": [
+    "Prepared for a future model; no geometry released.",
+    "Exported objects require stable viewer_id, viewer_role, viewer_cutaway_role and viewer_floor_ids properties."
+  ]
+}
+

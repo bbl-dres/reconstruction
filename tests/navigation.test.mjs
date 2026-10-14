@@ -1,0 +1,171 @@
+import { registerHooks } from 'node:module';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readViewURL, writeViewURL } from '../viewer/js/view-url.js';
+registerHooks({ resolve(specifier, context, next) {
+  if (specifier === 'three') return { url: new URL('../viewer/vendor/three/build/three.module.js', import.meta.url).href, shortCircuit: true };
+  if (specifier === 'building-policy') return { url: new URL('../reconstructions/bundeshaus/public/policy/model-policy.js', import.meta.url).href, shortCircuit: true };
+  if (specifier.startsWith('three/addons/')) return { url: new URL('../viewer/vendor/three/examples/jsm/' + specifier.slice(13), import.meta.url).href, shortCircuit: true };
+  return next(specifier, context);
+} });
+const THREE = await import('three');
+const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+const { Octree } = await import('three/addons/math/Octree.js');
+const { toPlan, fromPlan, copyPerspective, eyeLevelFov, viewHeight, navigateView } = await import('../viewer/js/view-navigation.js');
+const { Walker, combineWorlds } = await import('../viewer/js/walking.js');
+const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-6, `${a} != ${b}`);
+const sameVector = (a, b) => close(a.distanceTo(b), 0);
+
+test('plan round trip retains focus, orientation and visible scale across viewport shapes', () => {
+  for (const aspect of [320 / 480, 768 / 1024, 1440 / 1000, 3840 / 2160]) {
+    const camera = new THREE.PerspectiveCamera(45, aspect);
+    camera.position.set(23, 18, -30); camera.zoom = 1.4;
+    const control = new OrbitControls(camera); control.target.set(3, 7, 5); control.update();
+    const originalPosition = camera.position.clone(), originalRotation = camera.quaternion.clone();
+    const direction = camera.position.clone().sub(control.target).normalize();
+    const plan = new THREE.OrthographicCamera(); plan.up.set(0, 0, -1);
+    const planControl = new OrbitControls(plan);
+    toPlan(camera, control.target, plan, planControl, aspect);
+    close(viewHeight(plan, planControl.target), viewHeight(camera, control.target));
+    sameVector(planControl.target, control.target);
+    fromPlan(plan, planControl.target, direction, camera, control, aspect);
+    sameVector(camera.position, originalPosition); close(camera.quaternion.angleTo(originalRotation), 0);
+    navigateView(plan, planControl, { zoom: 0.5, horizontal: 1, pan: true });
+    fromPlan(plan, planControl.target, direction, camera, control, aspect);
+    sameVector(control.target, planControl.target);
+    sameVector(camera.position.clone().sub(control.target).normalize(), direction);
+    close(viewHeight(camera, control.target), viewHeight(plan, planControl.target));
+  }
+});
+
+test('POV handoff preserves the lens, position and upward or downward gaze', () => {
+  for (const y of [-10, 10]) {
+    const source = new THREE.PerspectiveCamera(45); source.zoom = 1.8;
+    source.position.set(12, 6, 8); source.lookAt(0, y, 0);
+    const walk = new THREE.PerspectiveCamera(60);
+    copyPerspective(source, walk);
+    sameVector(walk.position, source.position); close(walk.quaternion.angleTo(source.quaternion), 0);
+    close(walk.getEffectiveFOV(), source.getEffectiveFOV());
+  }
+});
+
+test('Walk and Fly see at eye level: about 90° across on landscape, within 60–80° vertically', () => {
+  const across = (fov, aspect) => THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(fov / 2)) * aspect));
+  close(across(eyeLevelFov(1.6), 1.6), 90);
+  close(across(eyeLevelFov(4 / 3), 4 / 3), 90);
+  close(eyeLevelFov(16 / 9), 60); close(eyeLevelFov(21 / 9), 60);
+  close(eyeLevelFov(390 / 844), 80);
+  // The handoff from the orbit lens keeps position and gaze but not the orbit's 45° lens.
+  const source = new THREE.PerspectiveCamera(45); source.position.set(3, 1.6, 2); source.lookAt(0, 1.6, 0);
+  const walk = new THREE.PerspectiveCamera(eyeLevelFov(1.6), 1.6); walk.zoom = 1.4;
+  copyPerspective(source, walk, { matchLens: false });
+  sameVector(walk.position, source.position); close(walk.quaternion.angleTo(source.quaternion), 0);
+  close(walk.zoom, 1); close(walk.getEffectiveFOV(), eyeLevelFov(1.6));
+});
+
+test('keyboard panning stays proportional to the visible view with a zoomed lens', () => {
+  for (const zoom of [0.5, 1, 2, 10]) {
+    const camera = new THREE.PerspectiveCamera(45, 1.5);
+    camera.zoom = zoom; camera.position.set(0, 0, 20); camera.updateProjectionMatrix();
+    const control = new OrbitControls(camera); control.update();
+    const height = viewHeight(camera, control.target);
+    const before = new THREE.Vector3(0, 0, 0).project(camera);
+    navigateView(camera, control, { horizontal: 1, pan: true });
+    const after = new THREE.Vector3(0, 0, 0).project(camera);
+    close(control.target.length(), height * 0.05);
+    close(Math.abs(after.x - before.x), 0.1 / camera.aspect);
+  }
+});
+
+test('a shared airborne POV stays in place and ground-level POV can walk without teleporting', () => {
+  const root = new THREE.Group(), floor = new THREE.Mesh(new THREE.BoxGeometry(20, 0.2, 20));
+  floor.position.y = -0.1; root.add(floor);
+  const world = new Octree().fromGraphNode(root);
+  for (const height of [1.65, 90]) {
+    const camera = new THREE.PerspectiveCamera(); camera.position.set(1, height, 2); camera.lookAt(3, 1.65, -5);
+    const position = camera.position.clone(), rotation = camera.quaternion.clone();
+    const walker = new Walker(camera, world); walker.adoptView();
+    sameVector(camera.position, position); close(camera.quaternion.angleTo(rotation), 0);
+    assert.equal(walker.flying, height === 90); assert.equal(walker.hasSafePosition, height !== 90);
+    assert.equal(walker.hasPosition, true);
+    if (walker.flying) { walker.update(1 / 60, new Set()); sameVector(camera.position, position); }
+  }
+});
+
+test('Walk drops straight down from the camera onto the building or the terrain, facing the same way with a level gaze', () => {
+  const building = new THREE.Group(), terrain = new THREE.Group();
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(10, 0.2, 10)); floor.position.y = 2.9; building.add(floor);
+  const ground = new THREE.Mesh(new THREE.BoxGeometry(60, 0.2, 60)); ground.position.y = -0.1; terrain.add(ground);
+  const world = combineWorlds([new Octree().fromGraphNode(building), new Octree().fromGraphNode(terrain)]);
+  // Above the building and beside it; looking ahead and down, and straight down as in a plan-like view.
+  for (const [x, below] of [[1, 3], [20, 0]]) {
+    for (const aim of [camera => camera.lookAt(x, 0, -28), camera => camera.rotation.set(-Math.PI / 2, 0, 0)]) {
+      const camera = new THREE.PerspectiveCamera(); camera.position.set(x, 30, 2); aim(camera); camera.updateMatrixWorld();
+      const walker = new Walker(camera, world); walker.adoptView();
+      assert.equal(walker.flying, true);
+      assert.equal(walker.dropBelow(), true);
+      sameVector(camera.position, new THREE.Vector3(x, below + walker.eyeHeight, 2));
+      sameVector(camera.getWorldDirection(new THREE.Vector3()), new THREE.Vector3(0, 0, -1));
+      assert.equal(walker.flying, false); assert.equal(walker.hasSafePosition, true);
+    }
+  }
+  const camera = new THREE.PerspectiveCamera(); camera.position.set(100, 30, 2);
+  const walker = new Walker(camera, world); walker.adoptView();
+  assert.equal(walker.dropBelow(), false, 'nothing below: the camera stays');
+  sameVector(camera.position, new THREE.Vector3(100, 30, 2));
+});
+
+test('the production collision world judges standing positions as the Octree does', async () => {
+  // The worker's collision world reuses its triangles between queries; a floor found before a wall
+  // query must still read as a floor afterwards. Three's Octree keeps its triangles, so it is the reference.
+  const { collisionInput, buildCollisionData, unpackCollision } = await import('../viewer/js/collision-data.js');
+  const meshes = [new THREE.Mesh(new THREE.PlaneGeometry(40, 40, 40, 40).rotateX(-Math.PI / 2))];
+  for (let i = 0; i < 30; i++) {
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 3, 4));
+    wall.position.set((i % 6) * 3 - 8, 1.5, Math.floor(i / 6) * 5 - 10);
+    meshes.push(wall);
+  }
+  const root = new THREE.Group(); root.add(...meshes); root.updateMatrixWorld(true);
+  const production = unpackCollision(buildCollisionData((await collisionInput(meshes)).data)).world;
+  const reference = new Octree().fromGraphNode(root);
+  const airborne = (world, x, z) => {
+    const camera = new THREE.PerspectiveCamera(); camera.position.set(x, 1.65, z);
+    const walker = new Walker(camera, world); walker.adoptView();
+    return walker.flying;
+  };
+  let positions = 0, differ = 0;
+  for (let x = -9; x <= 9; x += 0.37) for (let z = -12; z <= 12; z += 0.41) {
+    positions++;
+    if (airborne(production, x, z) !== airborne(reference, x, z)) differ++;
+  }
+  assert.ok(positions > 2000);
+  assert.equal(differ, 0, `${differ} of ${positions} standing positions judged differently`);
+});
+
+test('all view links round trip and preserve unrelated route parameters and hash', () => {
+  for (const mode of ['orbit', 'dollhouse', 'plan', 'walk']) {
+    const view = { version: 'bundeshaus-v007', mode, level: 'principal', position: [12.123456, 24, -40], target: [2, 7.55, 3],
+      zoom: 2, halfHeight: 34, orbit: [0.4, 0.5, -0.7], surroundings: true, muted: false };
+    const url = writeViewURL('https://example.test/viewer/?custom=keep#place', view);
+    const restored = readViewURL(url);
+    assert.equal(restored.mode, mode); assert.equal(restored.level, view.level);
+    assert.equal(restored.snapshot.zoom, 2); assert.equal(new URL(url).searchParams.has('cut'), false);
+    assert.equal(restored.surroundings, true); assert.equal(restored.muted, false);
+    assert.equal(restored.snapshot.position[0], 12.12346);
+    assert.equal(url.searchParams.get('version'), view.version); assert.equal(url.searchParams.get('custom'), 'keep');
+    assert.equal(url.hash, '#place');
+    if (mode === 'plan') { assert.equal(restored.snapshot.halfHeight, 34); assert.deepEqual(restored.orbit, view.orbit); }
+    else { assert.equal(url.searchParams.has('height'), false); assert.equal(url.searchParams.has('orbit'), false); }
+  }
+});
+
+test('malformed view URLs cannot create NaN, degenerate or unbounded cameras', () => {
+  assert.equal(readViewURL('https://example.test/?version=latest'), null);
+  for (const position of ['NaN,2,3', 'Infinity,0,0', '1000000,2,3', '1,,2', '1,2', '0,0,0']) {
+    assert.equal(readViewURL(`https://example.test/?view=3d&pos=${position}&target=0,0,0`).snapshot, null);
+  }
+  const bad = readViewURL('https://example.test/?view=floorplan&floor=missing&height=-1&zoom=NaN&cut=99&orbit=0,0,0');
+  assert.equal(bad.level, 'principal'); assert.equal(bad.snapshot, null); assert.equal(bad.orbit, null);
+  const valid = readViewURL('https://example.test/?view=walk&pos=1,2,3&target=0,0,0&zoom=Infinity');
+  assert.equal(valid.snapshot.zoom, 1);
+});

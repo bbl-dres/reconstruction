@@ -1,0 +1,20 @@
+{
+  "version": "0.185.1",
+  "source": "https://www.npmjs.com/package/three/v/0.185.1",
+  "integrity": "sha512-5aojFCXKwnjBRZvUnt3WFfEcvUJgkN5LlijRFN95hMy8WVkG4I0QNcJE+OuWvuJ0bOdStrbfXn0pkd6/QyiAlg==",
+  "localPatches": ["Octree.js and Capsule.js: relative three.core.js imports for module workers; algorithms unchanged"],
+  "files": [
+    "LICENSE",
+    "build/three.module.js",
+    "build/three.core.js",
+    "examples/jsm/loaders/GLTFLoader.js",
+    "examples/jsm/utils/BufferGeometryUtils.js",
+    "examples/jsm/utils/SkeletonUtils.js",
+    "examples/jsm/controls/OrbitControls.js",
+    "examples/jsm/controls/PointerLockControls.js",
+    "examples/jsm/math/Octree.js",
+    "examples/jsm/math/Capsule.js",
+    "examples/jsm/environments/RoomEnvironment.js",
+    "examples/jsm/objects/Sky.js"
+  ]
+}

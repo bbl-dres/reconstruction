@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Building viewer annotations v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "modelId",
+    "coordinates",
+    "views",
+    "pointsOfInterest",
+    "objects"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "modelId": {
+      "$ref": "#/$defs/id"
+    },
+    "coordinates": {
+      "const": "gltf-y-up-meters"
+    },
+    "views": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/bookmark"
+      }
+    },
+    "pointsOfInterest": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/bookmark"
+      }
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/element"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1500
+    },
+    "vector": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "number",
+        "minimum": -1000000,
+        "maximum": 1000000
+      }
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "orbit",
+            "dollhouse",
+            "plan"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Must be present in the selected model catalog level list."
+        },
+        "frame": {
+          "enum": [
+            "building",
+            "site",
+            "level"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "target": {
+          "$ref": "#/$defs/vector"
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "frame"
+          ],
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "position"
+                ]
+              },
+              {
+                "required": [
+                  "target"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "required": [
+            "position",
+            "target"
+          ],
+          "not": {
+            "required": [
+              "frame"
+            ]
+          }
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "plan"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "level"
+            ],
+            "properties": {
+              "level": {
+                "not": {
+                  "const": "all"
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "not": {
+                    "required": [
+                      "frame"
+                    ]
+                  }
+                },
+                "then": {
+                  "required": [
+                    "height"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "frame"
+            ],
+            "properties": {
+              "frame": {
+                "const": "site"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "mode": {
+                "const": "orbit"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "bookmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description",
+        "camera"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/title"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        },
+        "camera": {
+          "$ref": "#/$defs/camera"
+        }
+      }
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "value",
+        "basis",
+        "source"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/title"
+        },
+        "value": {
+          "$ref": "#/$defs/text"
+        },
+        "basis": {
+          "enum": [
+            "authored",
+            "measured",
+            "inferred"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "const": "inferred"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "confidence"
+            ]
+          }
+        }
+      ]
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "properties"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/title"
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/property"
+          }
+        }
+      }
+    }
+  }
+}

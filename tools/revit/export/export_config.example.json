@@ -1,0 +1,50 @@
+{
+  "_comment": "Copy to reconstructions/<id>/work/build/export/export_config.json. Paths raw/ and stage/ sit next to it. Values below are the Villa Maraini v014 ones as an example.",
+  "buildingId": "villa-maraini",
+  "modelId": "villa-maraini-v014",
+  "label": "v014",
+  "version": 14,
+  "namespace": "446cded0-4b52-50a6-9f8b-b95aa66d3a46",
+  "prefix": "VM",
+  "title": "Villa Maraini V14",
+  "scope": "Export of the native Revit model (LOD 200 overall, LOD 300 facades). Archive study, not a survey.",
+  "frame": "Revit internal coordinates in metres, glTF Y up; P3 finished floor = 0.00; see model_georeference.json.",
+  "sourceFile": "Revit Remake.rvt (open Revit 2027 session)",
+  "revitVersion": "2027",
+  "views": {"building": "VM Export - V14 building", "surroundings": "VM Export - V14 surroundings"},
+  "buildingCodes": {
+    "VIL": {"set": "building", "id": "villa-maraini", "name": "Villa"},
+    "POR": {"set": "surroundings", "id": "villa-maraini-portineria", "name": "Portineria"},
+    "DEP": {"set": "surroundings", "id": "villa-maraini-dependance", "name": "Dependance"},
+    "GATE": {"set": "surroundings", "id": "villa-maraini-gate", "name": "Street gate"},
+    "SITE": {"set": "surroundings", "id": "villa-maraini-site", "name": "Site and garden"},
+    "CTX": {"set": "surroundings", "id": "villa-maraini-context", "name": "Context"},
+    "PRES": {"set": "exclude", "id": "villa-maraini-presentation", "name": "Presentation"}
+  },
+  "defaultBuilding": "VIL",
+  "presentationTagPrefix": "agent:lod100:sia416",
+  "interiorTagPrefix": "agent:lod100:interior",
+  "storeys": {
+    "p1": {"label": "Piano 1 · Interrato", "elevation": -7.55, "min": -8.5, "max": -4.26},
+    "p2": {"label": "Piano 2 · Seminterrato", "elevation": -4.0, "min": -4.65, "max": -0.31},
+    "p3": {"label": "Piano 3 · Rialzato", "elevation": 0.0, "min": -0.65, "max": 5.31},
+    "p4": {"label": "Piano 4 · Primo", "elevation": 5.72, "min": 5.07, "max": 10.51},
+    "p5": {"label": "Piano 5 · Secondo", "elevation": 11.12, "min": 10.47, "max": 15.06},
+    "p6": {"label": "Piano 6 · Torretta inferiore", "elevation": 15.32, "min": 14.67, "max": 17.87},
+    "p7": {"label": "Piano 7 · Torretta superiore", "elevation": 18.16, "min": 17.51, "max": 26.4}
+  },
+  "location": {"latitude": 41.9063479, "longitude": 12.4876595, "timeZone": "Europe/Rome", "enuToModelDegrees": 51.821},
+  "georeference": {
+    "status": "Approximate registration for display and sun studies; not survey control.",
+    "projected": {"crs": "EPSG:3004 Monte Mario / Italy zone 2", "origin_E": 2311625.6825, "origin_N": 4642440.9653, "model_y_grid_azimuth_degrees": 53.499887},
+    "vertical": {"datum": "Regione Lazio CTRN 2002 heights (provisional)", "origin_height_m": 68.55, "sigma_m": 0.3}
+  },
+  "savedViews": [],
+  "notes": {
+    "common": ["Archive study exported from the native Revit model; not a measured survey.", "Local metric coordinates; approximate registration in model_georeference.json, not survey control."],
+    "building": ["Villa only (VM_Building = VIL)."],
+    "surroundings": ["Portineria, street gate, Dependance, constructed site and garden, terrain and neighbouring masses."]
+  },
+  "caveats": null,
+  "forbiddenPatterns": ["david", "releases/Revit"]
+}

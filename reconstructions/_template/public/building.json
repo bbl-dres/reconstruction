@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "replace-building-id",
+  "name": "BUILDING-NAME",
+  "place": "Town, Switzerland",
+  "models": "models/",
+  "about": "about.html",
+  "links": [
+    { "label": "View on GitHub", "href": "https://github.com/bbl-dres/reconstruction" }
+  ],
+  "downloads": "https://github.com/bbl-dres/reconstruction/tree/main/reconstructions/replace-building-id/public",
+  "walkStarts": {
+    "entrance": { "label": "Entrance", "position": [0, 1.6, 5], "target": [0, 1.6, 0] }
+  },
+  "pipeline": {
+    "title": "BUILDING-NAME",
+    "timeZone": "Europe/Zurich",
+    "ifcName": "BUILDING-NAME",
+    "profiles": { "building": "profiles/building.json", "surroundings": "profiles/surroundings.json" },
+    "levels": [
+      { "id": "ground", "label": "Ground floor", "elevation": 0, "min": -0.5, "max": 3.4 },
+      { "id": "first", "label": "First floor", "elevation": 3.8, "min": 3.4, "max": 7.2 }
+    ]
+  }
+}

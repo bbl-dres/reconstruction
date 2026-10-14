@@ -1,0 +1,21 @@
+{
+  "recipe": {
+    "codec": "meshoptimizer-1.2.0",
+    "extension": "EXT_meshopt_compression",
+    "lossless": true,
+    "pipelineSha256": "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc",
+    "gzipLevel": 6
+  },
+  "recipeScope": "Current importer recipe. Historical pipeline hashes are recorded per version; assets are unchanged and their delivery hashes verified.",
+  "models": [
+    {
+      "version": "v027",
+      "originalBytes": 368854440,
+      "meshoptBytes": 325163964,
+      "transferBytes": 111217215,
+      "pipelineSha256": [
+        "15ac4f97aa669e0f8ec1e13b1917062bf107a3097d6e890340015a6d3e6ac7cc"
+      ]
+    }
+  ]
+}

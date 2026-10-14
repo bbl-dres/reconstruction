@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "modelId": "villa-maraini-v014",
+  "status": "Approximate registration for display and sun studies; not survey control.",
+  "frame": "East, North, Up (ENU)",
+  "origin_wgs84": [
+    12.4876595,
+    41.9063479,
+    68.55
+  ],
+  "origin_note": "WGS84 longitude/latitude of the model origin (Revit internal origin = Revit site location). The third value is the provisional CTRN 2002 height of P3 (orthometric, Genova 1942 levelling), not an ellipsoidal height.",
+  "architectural_rotation_degrees": 51.821,
+  "rotation_note": "Rotation of ENU vectors into the model XY plane, as used by the viewer (catalog location.enuToModelDegrees): the true azimuth of model +Y. Grid azimuth 53.4999 deg minus meridian convergence 1.678 deg. Translation does not affect sunlight.",
+  "model_frame": {
+    "description": "Revit internal coordinates of the Villa Maraini model (internal origin = booklet frame origin of the plan control); metres; P3 finished floor = 0.00.",
+    "gltf_axes": "glTF x = Revit X, glTF y = Revit Z (up), glTF z = -Revit Y.",
+    "recentered": false
+  },
+  "projected": {
+    "crs": "EPSG:3004 Monte Mario / Italy zone 2",
+    "origin_E": 2311625.6825,
+    "origin_N": 4642440.9653,
+    "model_y_grid_azimuth_degrees": 53.499887,
+    "meridian_convergence_degrees": -1.678007,
+    "formula": "X = glTF x, Y = -glTF z (metres); a = model_y_grid_azimuth_degrees; E = origin_E + X*cos(a) + Y*sin(a); N = origin_N - X*sin(a) + Y*cos(a)",
+    "scale": "No grid scale factor applied (factor about 0.9996 at this longitude; < 0.05 m across the site)."
+  },
+  "vertical": {
+    "datum": "Regione Lazio CTRN 2002 heights (provisional tie, VM-D064 / QS decision D1)",
+    "p3_finished_floor_m": 68.55,
+    "sigma_m": 0.3,
+    "formula": "H = glTF y + 68.55"
+  },
+  "accuracy": {
+    "horizontal_m_95": 0.5,
+    "azimuth_degrees": 0.6,
+    "vertical_m_1sigma": 0.3,
+    "basis": "Approximate fit to the CTRN 2002 building outlines (main-roof steps, RMS 0.25 m) and eight vertical tie groups (median 68.55, SD 0.30). Field control pending."
+  },
+  "control_points": [
+    {
+      "name": "model origin (Revit internal origin, P3 finished floor)",
+      "gltf": [
+        0,
+        0,
+        0
+      ],
+      "epsg3004": [
+        2311625.683,
+        4642440.965
+      ],
+      "height_ctrn2002_m": 68.55,
+      "wgs84_lon_lat": [
+        12.48765945,
+        41.90634791
+      ]
+    },
+    {
+      "name": "20 m along model +X",
+      "gltf": [
+        20,
+        0,
+        0
+      ],
+      "epsg3004": [
+        2311637.579,
+        4642424.888
+      ],
+      "height_ctrn2002_m": 68.55,
+      "wgs84_lon_lat": [
+        12.48780842,
+        41.90620639
+      ]
+    },
+    {
+      "name": "20 m along model +Y (glTF -z)",
+      "gltf": [
+        0,
+        0,
+        -20
+      ],
+      "epsg3004": [
+        2311641.76,
+        4642452.862
+      ],
+      "height_ctrn2002_m": 68.55,
+      "wgs84_lon_lat": [
+        12.4878489,
+        41.90645919
+      ]
+    },
+    {
+      "name": "10 m above the origin",
+      "gltf": [
+        0,
+        10,
+        0
+      ],
+      "epsg3004": [
+        2311625.683,
+        4642440.965
+      ],
+      "height_ctrn2002_m": 78.55,
+      "wgs84_lon_lat": [
+        12.48765945,
+        41.90634791
+      ]
+    }
+  ],
+  "relation_to_v013": {
+    "description": "v013 (Blender) used its own local frame. V14 point (X, Y) in the Revit frame equals v013 Blender (Xb, Yb) = R(-1.8816149 deg) * (X, Y) + (1.953023, -0.341997); heights unchanged except the street-pinned domain (D1, -2.286 m)."
+  },
+  "sources": [
+    "Revit shared coordinates (stage s13) and Project Information VM_Georeference / VM_VerticalDatum",
+    "Regione Lazio CTRN 2002 1:5000 (CC BY 4.0) building outlines and spot heights"
+  ]
+}

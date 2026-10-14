@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title id="title">Am Römerholz — research in progress</title><desc id="desc">Original typographic project card without building geometry or third-party imagery.</desc>
+<rect width="1200" height="800" fill="#1b2520"/>
+<path d="M72 92H1128M72 708H1128" stroke="#526858"/>
+<circle cx="1098" cy="93" r="8" fill="#b9cba4"/>
+<text x="74" y="161" font-family="Arial,sans-serif" font-size="22" fill="#b9cba4" letter-spacing="5">WINTERTHUR · SWITZERLAND</text>
+<text x="70" y="365" font-family="Georgia,serif" font-size="104" fill="#f1f1e9">Am Römerholz</text>
+<text x="76" y="431" font-family="Arial,sans-serif" font-size="34" fill="#bdc9be">Sammlung Oskar Reinhart</text>
+<text x="76" y="628" font-family="Arial,sans-serif" font-size="22" fill="#b9cba4" letter-spacing="3">RESEARCH IN PROGRESS</text>
+<text x="76" y="749" font-family="Arial,sans-serif" font-size="18" fill="#839787">47.511305 N · 8.731823 E</text>
+</svg>
+

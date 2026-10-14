@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 2,
+  "coordinates": "WGS84 (EPSG:4326), decimal degrees",
+  "translations": "English in title, place and summary; translations.de, .fr and .it override any of them, and a missing one falls back to English",
+  "facts": "Language-neutral, never translated: buildingType (kebab-case id for filtering, not shown), country (ISO 3166-1 alpha-2), survey (BIM or Splat), authoringTool (product name), codingAgent (model name as the building's records give it; null where they do not), builtPeriod ([first year, last year]; last year null where the sources give only an origin), federalSince (year the Confederation became the owner) and federalAcquisition (built, purchase, bequest or donation), both null where no source confirms them, sources (pages that confirm the history and ownership in the summary). Cards show country, survey, authoringTool and codingAgent as chips in that order, then tags",
+  "tags": "Feature tags in one English form, never translated: 3D viewer, IFC download, Tour archive, Experiment, Research phase",
+  "reconstructions": [
+    {
+      "id": "bundeshaus",
+      "title": "Bundeshaus",
+      "place": "Bern",
+      "summary": "The Swiss Parliament Building in Bern, built 1894–1902. Modelled from publicly available data: photographs, plans (Swiss Federal Archives or on request) and the public virtual tour.",
+      "href": "reconstructions/bundeshaus/",
+      "preview": {
+        "src": "gallery/assets/bundeshaus.jpg",
+        "alt": ""
+      },
+      "buildingType": "parliament-building",
+      "country": "CH",
+      "survey": "BIM",
+      "authoringTool": "Blender",
+      "codingAgent": "ChatGPT Astra",
+      "builtPeriod": [1894, 1902],
+      "federalSince": null,
+      "federalAcquisition": null,
+      "tags": [
+        "3D viewer",
+        "IFC download"
+      ],
+      "translations": {
+        "de": {
+          "summary": "Das Parlamentsgebäude in Bern, erbaut 1894–1902. Modelliert aus öffentlich zugänglichen Daten: Fotografien, Pläne (Schweizerisches Bundesarchiv oder auf Anfrage) und der öffentliche virtuelle Rundgang."
+        },
+        "fr": {
+          "title": "Palais fédéral",
+          "place": "Berne",
+          "summary": "Le Palais du Parlement à Berne, construit de 1894 à 1902. Modélisé à partir de données accessibles au public : photographies, plans (Archives fédérales suisses ou sur demande) et visite virtuelle publique."
+        },
+        "it": {
+          "title": "Palazzo federale",
+          "place": "Berna",
+          "summary": "Il Palazzo del Parlamento a Berna, costruito tra il 1894 e il 1902. Modellato a partire da dati accessibili al pubblico: fotografie, piante (Archivio federale svizzero o su richiesta) e il tour virtuale pubblico."
+        }
+      },
+      "location": {
+        "lat": 46.946774,
+        "lon": 7.444192,
+        "address": "Bundesplatz 3, 3011 Bern",
+        "source": "swisstopo SearchServer (api3.geo.admin.ch), address point 2242547_0, retrieved 2026-10-03"
+      },
+      "sources": [
+        "https://www.parlament.ch/de/%C3%BCber-das-parlament/parlamentsgebaeude",
+        "https://www.parlament.ch/centers/documents/de/broschuere-A5-d.pdf"
+      ]
+    },
+    {
+      "id": "von-wattenwyl-haus",
+      "title": "Beatrice von Wattenwyl-Haus",
+      "place": "Bern",
+      "summary": "Patrician townhouse in Bern’s old town (from 1446), where the Federal Council receives its guests; federal property since 1934. Gaussian splat trained on the public 360° tour.",
+      "href": "reconstructions/von-wattenwyl-haus/",
+      "preview": {
+        "src": "gallery/assets/von-wattenwyl-haus.jpg",
+        "fallback": "gallery/assets/von-wattenwyl-haus.svg",
+        "alt": "",
+        "note": "Rendered from the splat viewer, which is derived from the commissioned Matterport tour; the drawing is shown where the render is absent."
+      },
+      "buildingType": "townhouse",
+      "country": "CH",
+      "survey": "Splat",
+      "authoringTool": "LichtFeld Studio",
+      "codingAgent": null,
+      "builtPeriod": [1446, null],
+      "federalSince": 1934,
+      "federalAcquisition": "bequest",
+      "tags": [
+        "Experiment",
+        "Tour archive"
+      ],
+      "translations": {
+        "de": {
+          "summary": "Patrizierhaus in der Berner Altstadt (ab 1446), in dem der Bundesrat seine Gäste empfängt; seit 1934 im Besitz des Bundes. Gaussian Splat aus den Panoramen des öffentlichen 360°-Rundgangs."
+        },
+        "fr": {
+          "place": "Berne",
+          "summary": "Maison patricienne de la vieille ville de Berne (dès 1446), où le Conseil fédéral reçoit ses hôtes ; propriété fédérale depuis 1934. Splat gaussien entraîné sur la visite publique à 360°."
+        },
+        "it": {
+          "place": "Berna",
+          "summary": "Casa patrizia nel centro storico di Berna (dal 1446), dove il Consiglio federale riceve i suoi ospiti; proprietà federale dal 1934. Splat gaussiano addestrato sul tour pubblico a 360°."
+        }
+      },
+      "location": {
+        "lat": 46.947468,
+        "lon": 7.452771,
+        "address": "Junkerngasse 59, 3011 Bern",
+        "source": "swisstopo SearchServer (api3.geo.admin.ch), address point 1230190_0, retrieved 2026-10-03"
+      },
+      "sources": [
+        "https://www.admin.ch/de/residenzen-des-bundesrates",
+        "https://www.bbl.admin.ch/dam/de/sd-web/kdngNewNIDEq/20120901_Bern%20Junkerngasse%2059%2C%20Sanierung%20Beatrice%20von%20Wattenwyl-Haus_DE.pdf"
+      ]
+    },
+    {
+      "id": "landgut-lohn",
+      "title": "Landgut Lohn",
+      "place": "Kehrsatz",
+      "summary": "The Federal Council’s country residence in Kehrsatz, built 1782/83; federal property since 1942. Modelled from publicly available data: plans (Swiss Federal Archives or on request), swisstopo LiDAR and the public 360° tour.",
+      "href": "reconstructions/landgut-lohn/",
+      "preview": {
+        "src": "gallery/assets/landgut-lohn.jpg",
+        "alt": "",
+        "note": "Capture of the viewer, model v008, with its surroundings."
+      },
+      "buildingType": "country-residence",
+      "country": "CH",
+      "survey": "BIM",
+      "authoringTool": "Blender",
+      "codingAgent": null,
+      "builtPeriod": [1782, 1783],
+      "federalSince": 1942,
+      "federalAcquisition": "bequest",
+      "tags": [
+        "3D viewer",
+        "IFC download"
+      ],
+      "translations": {
+        "de": {
+          "summary": "Der Landsitz des Bundesrats in Kehrsatz, erbaut 1782/83; seit 1942 im Besitz des Bundes. Modelliert aus öffentlich zugänglichen Daten: Pläne (Schweizerisches Bundesarchiv oder auf Anfrage), swisstopo-LiDAR und der öffentliche 360°-Rundgang."
+        },
+        "fr": {
+          "summary": "La résidence de campagne du Conseil fédéral à Kehrsatz, construite en 1782/83 ; propriété fédérale depuis 1942. Modélisée à partir de données accessibles au public : plans (Archives fédérales suisses ou sur demande), LiDAR de swisstopo et visite publique à 360°."
+        },
+        "it": {
+          "summary": "La residenza di campagna del Consiglio federale a Kehrsatz, costruita nel 1782/83; proprietà federale dal 1942. Modellata a partire da dati accessibili al pubblico: piante (Archivio federale svizzero o su richiesta), LiDAR di swisstopo e il tour pubblico a 360°."
+        }
+      },
+      "location": {
+        "lat": 46.908749,
+        "lon": 7.474555,
+        "address": "Lohnweg 2, 3122 Kehrsatz",
+        "source": "swisstopo SearchServer (api3.geo.admin.ch), address point 1412548_0, retrieved 2026-10-05"
+      },
+      "sources": [
+        "https://www.admin.ch/de/residenzen-des-bundesrates"
+      ]
+    },
+    {
+      "id": "villa-maraini",
+      "title": "Villa Maraini",
+      "place": "Rome",
+      "summary": "Villa on the Pincio in Rome, built 1903–1905, seat of the Swiss Institute; federal property since 1946. Modelled from publicly available data: plans from the Swiss Federal Archives, photographs and open geodata.",
+      "href": "reconstructions/villa-maraini/",
+      "preview": {
+        "src": "gallery/assets/villa-maraini.jpg",
+        "alt": "",
+        "note": "Capture of the viewer, model v014 (native Revit LOD 300 model), with its surroundings."
+      },
+      "buildingType": "villa",
+      "country": "IT",
+      "survey": "BIM",
+      "authoringTool": "Revit",
+      "codingAgent": "Claude Opus 5.5",
+      "builtPeriod": [1903, 1905],
+      "federalSince": 1946,
+      "federalAcquisition": "donation",
+      "tags": [
+        "3D viewer"
+      ],
+      "translations": {
+        "de": {
+          "place": "Rom",
+          "summary": "Villa auf dem Pincio in Rom, erbaut 1903–1905, Sitz des Schweizerischen Instituts; seit 1946 im Besitz des Bundes. Modelliert aus öffentlich zugänglichen Daten: Pläne aus dem Schweizerischen Bundesarchiv, Fotografien und offene Geodaten."
+        },
+        "fr": {
+          "place": "Rome",
+          "summary": "Villa sur le Pincio à Rome, construite de 1903 à 1905, siège de l’Institut suisse ; propriété fédérale depuis 1946. Modélisée à partir de données accessibles au public : plans des Archives fédérales suisses, photographies et géodonnées ouvertes."
+        },
+        "it": {
+          "place": "Roma",
+          "summary": "Villa sul Pincio a Roma, costruita tra il 1903 e il 1905, sede dell’Istituto Svizzero; proprietà federale dal 1946. Modellata a partire da dati accessibili al pubblico: piante dell’Archivio federale svizzero, fotografie e geodati aperti."
+        }
+      },
+      "location": {
+        "lat": 41.906773,
+        "lon": 12.487714,
+        "address": "Via Ludovisi 48, 00187 Roma, Italy",
+        "source": "Roma Capitale / Turismo Roma, https://www.turismoroma.it/en/node/2150, retrieved 2026-10-08; approximate visitor point, not survey control"
+      },
+      "sources": [
+        "https://hls-dhs-dss.ch/de/articles/046086/"
+      ]
+    },
+    {
+      "id": "roemerholz",
+      "title": "Sammlung Oskar Reinhart «Am Römerholz»",
+      "place": "Winterthur",
+      "summary": "Oskar Reinhart’s villa in Winterthur (1915–1918) with its picture gallery, a museum since 1970; federal property since 1966. Research phase, modelled from publicly available data: plans (Swiss Federal Archives or on request) and open geodata.",
+      "href": "reconstructions/roemerholz/",
+      "preview": {
+        "src": "gallery/assets/roemerholz.jpg",
+        "alt": ""
+      },
+      "buildingType": "museum",
+      "country": "CH",
+      "survey": "BIM",
+      "authoringTool": "Revit",
+      "codingAgent": "Claude Opus 5.5",
+      "builtPeriod": [1915, 1918],
+      "federalSince": 1966,
+      "federalAcquisition": "bequest",
+      "tags": [
+        "Research phase"
+      ],
+      "translations": {
+        "de": {
+          "summary": "Oskar Reinharts Villa in Winterthur (1915–1918) mit Bildergalerie, seit 1970 Museum; seit 1966 im Besitz des Bundes. Recherchephase, modelliert aus öffentlich zugänglichen Daten: Pläne (Schweizerisches Bundesarchiv oder auf Anfrage) und offene Geodaten."
+        },
+        "fr": {
+          "title": "Collection Oskar Reinhart «Am Römerholz»",
+          "place": "Winterthour",
+          "summary": "La villa d’Oskar Reinhart à Winterthour (1915–1918) et sa galerie de tableaux, musée depuis 1970 ; propriété fédérale depuis 1966. Phase de recherche, modélisée à partir de données accessibles au public : plans (Archives fédérales suisses ou sur demande) et géodonnées ouvertes."
+        },
+        "it": {
+          "title": "Collezione Oskar Reinhart «Am Römerholz»",
+          "summary": "La villa di Oskar Reinhart a Winterthur (1915–1918) con la sua galleria di quadri, museo dal 1970; proprietà federale dal 1966. Fase di ricerca, modellata a partire da dati accessibili al pubblico: piante (Archivio federale svizzero o su richiesta) e geodati aperti."
+        }
+      },
+      "location": {
+        "lat": 47.511305,
+        "lon": 8.731823,
+        "address": "Haldenstrasse 95, 8400 Winterthur, Switzerland",
+        "source": "swisstopo geo.admin.ch MapServer/find, GWR layer ch.bfs.gebaeude_wohnungs_register, exact EGID 1150994, feature 1150994_0, retrieved 2026-10-08; map pin, not survey control"
+      },
+      "sources": [
+        "https://www.roemerholz.ch/en/the-original-building",
+        "https://www.roemerholz.ch/en/the-collector",
+        "https://www.admin.ch/de/newnsb/NFFwkKwmiADBDWgCkx-Oo"
+      ]
+    }
+  ]
+}

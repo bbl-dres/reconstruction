@@ -1,0 +1,17 @@
+{
+  "id": "bundeshaus-v003-surroundings",
+  "title": "Bundeshaus Bern — surroundings",
+  "includeCollectionPrefixes": ["00 |", "01 |", "01b |"],
+  "collectionRoles": {
+    "00 |": "terrain",
+    "01 |": "context",
+    "01b |": "context"
+  },
+  "notes": [
+    "Terrain, public realm, neighboring measured buildings and reconstructed wing facades from the same v003 source as building.glb.",
+    "Coordinates and scale are unchanged so the two GLBs align without repositioning.",
+    "The terrain includes its embedded aerial image; procedural materials use constant Principled fallbacks.",
+    "This asset is optional visual context. Neighboring interiors and walking collisions are not supplied.",
+    "Source geometry and image attribution remain in the original model's research/SOURCE_REGISTER.md."
+  ]
+}

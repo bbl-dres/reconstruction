@@ -1,0 +1,486 @@
+{
+  "schemaVersion": 1,
+  "modelId": "villa-maraini-v014",
+  "coordinates": "gltf-y-up-meters",
+  "views": [
+    {
+      "id": "exterior",
+      "title": "Villa and garden front",
+      "description": "The villa with its tower and entrance canopy among the pines.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          -50,
+          40,
+          -50
+        ],
+        "target": [
+          -3,
+          7,
+          0
+        ]
+      },
+      "start": true
+    },
+    {
+      "id": "dollhouse-p1",
+      "title": "Piano 1 · Interrato",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p1",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p2",
+      "title": "Piano 2 · Seminterrato",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p2",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p3",
+      "title": "Piano 3 · Rialzato",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p3",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p4",
+      "title": "Piano 4 · Primo",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p4",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p5",
+      "title": "Piano 5 · Secondo",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p5",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p6",
+      "title": "Piano 6 · Torretta inferiore",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p6",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "dollhouse-p7",
+      "title": "Piano 7 · Torretta superiore",
+      "description": "Revit storey: walls, doors and rooms from the functional booklet; heights and thin partitions partly inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p7",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "plan-p3",
+      "title": "Piano rialzato plan",
+      "description": "Revit walls aligned per facade plane, doors and windows of the piano rialzato; archive study, not a survey.",
+      "camera": {
+        "mode": "plan",
+        "level": "p3",
+        "frame": "level"
+      }
+    },
+    {
+      "id": "site-context",
+      "title": "Villa and hill",
+      "description": "Constructed site and the Lazio 5 m terrain with schematic neighbouring masses (OSM/GBA heights, CC BY-NC 4.0). Vertical tie provisional.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          143.379,
+          125.0,
+          160.0365
+        ],
+        "target": [
+          -1.9632,
+          -1.0,
+          -0.2777
+        ]
+      }
+    },
+    {
+      "id": "tower-review",
+      "title": "Tower and roof detail",
+      "description": "Tower roof at 24.11 m, roof balustrades with urn pedestals and tower consoles; details inferred from photographs.",
+      "camera": {
+        "mode": "orbit",
+        "position": [
+          -28.0,
+          30.0,
+          32.0
+        ],
+        "target": [
+          -6.0,
+          19.0,
+          5.0
+        ]
+      }
+    },
+    {
+      "id": "ceremonial-stair",
+      "title": "Ceremonial stair study",
+      "description": "Native Revit stair from the earlier tread study; exact risers and headroom remain inferred.",
+      "camera": {
+        "mode": "dollhouse",
+        "level": "p3",
+        "position": [
+          9.0,
+          15.0,
+          -1.0
+        ],
+        "target": [
+          0.0,
+          3.0,
+          -8.0
+        ]
+      }
+    },
+    {
+      "id": "winter-garden-detail",
+      "title": "Winter garden and terrace",
+      "description": "Winter-garden arch and terrace balustrade; profiles and heights inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          20.0,
+          8.0,
+          27.0
+        ],
+        "target": [
+          9.0,
+          2.6,
+          11.5
+        ]
+      }
+    },
+    {
+      "id": "winter-garden-interior",
+      "title": "Inside the winter garden",
+      "description": "Arched end windows and the giant arch; joinery details inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          8.8,
+          2.4,
+          6.65
+        ],
+        "target": [
+          8.85,
+          2.48,
+          13.3
+        ]
+      }
+    },
+    {
+      "id": "stair-hall-interior",
+      "title": "Inside the stair hall",
+      "description": "Stair-hall order, lanterns and rear glazing; ornament simplified.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -0.0,
+          1.65,
+          -1.5
+        ],
+        "target": [
+          0.0,
+          3.5,
+          -6.5
+        ]
+      }
+    },
+    {
+      "id": "entrance-facade",
+      "title": "Entrance facade and canopy",
+      "description": "Entrance front with the iron-and-glass canopy, portal and window surrounds (LOD 300 decoration).",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          25.0,
+          15.0,
+          -48.0
+        ],
+        "target": [
+          0.0,
+          8.0,
+          -8.0
+        ]
+      }
+    },
+    {
+      "id": "garden-loggia",
+      "title": "Garden loggia and columns",
+      "description": "Loggia order and split garden stair; relative levels and details inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          9.0,
+          7.0,
+          29.0
+        ],
+        "target": [
+          -0.0,
+          3.0,
+          11.0
+        ]
+      }
+    },
+    {
+      "id": "garden-site",
+      "title": "Garden and stairs",
+      "description": "Garden terraces and site stairs from the historical garden plan; curved flights drawn as straight chords.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          40.0,
+          25.0,
+          58.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          15.0
+        ]
+      }
+    },
+    {
+      "id": "entrance-court",
+      "title": "Entrance court and retaining wall",
+      "description": "Court, steps and retaining walls of the constructed site; levels inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -28.0,
+          20.0,
+          -44.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          -17.0
+        ]
+      }
+    },
+    {
+      "id": "winding-frontage-stair",
+      "title": "Winding frontage stair",
+      "description": "Site stairs between the Portineria terrace and the garden; risers inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -45.6808,
+          17.714,
+          -51.8701
+        ],
+        "target": [
+          -15.6785,
+          -5.786,
+          -21.839
+        ]
+      }
+    },
+    {
+      "id": "vehicle-gate-drive",
+      "title": "Vehicle gate and carriageway",
+      "description": "Street gate (3.50 m photo-scaled opening, wickets, piers) and the drive.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          58.1975,
+          36.714,
+          -57.2838
+        ],
+        "target": [
+          10.7014,
+          -5.286,
+          -10.6991
+        ]
+      }
+    },
+    {
+      "id": "perimeter-retaining-wall",
+      "title": "Perimeter retaining enclosure",
+      "description": "Retaining and enclosure walls of the site, with the corner Dependance masses.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          91.3847,
+          38.0,
+          69.695
+        ],
+        "target": [
+          5.4927,
+          -3.0,
+          13.4849
+        ]
+      }
+    },
+    {
+      "id": "main-stair-descent",
+      "title": "Main stair and lower vestibule",
+      "description": "Descent from the piano rialzato to the lower vestibule; risers inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -0.0,
+          1.6,
+          -1.7
+        ],
+        "target": [
+          -0.0,
+          -0.4,
+          -9.3
+        ]
+      }
+    },
+    {
+      "id": "west-entrance-door",
+      "title": "Garden entrance door",
+      "description": "Garden door behind the open loggia.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          1.45,
+          7.0,
+          30.0
+        ],
+        "target": [
+          0.2,
+          3.2,
+          6.8
+        ]
+      }
+    },
+    {
+      "id": "side-facade-bim",
+      "title": "Side facade",
+      "description": "Facade planes aligned per storey with separate decoration families.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          39.3966,
+          6.4465,
+          0.9036
+        ],
+        "target": [
+          7.8935,
+          5.1367,
+          -2.6904
+        ]
+      }
+    },
+    {
+      "id": "portineria",
+      "title": "Portineria and street entrance",
+      "description": "Portineria with altana and terrace (surroundings model); datum shift D1 applied, vertical tie provisional.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          -52.8083,
+          13.714,
+          -55.6381
+        ],
+        "target": [
+          -26.6726,
+          -4.286,
+          -21.4778
+        ]
+      }
+    },
+    {
+      "id": "street-context",
+      "title": "Streets and neighbouring roofs",
+      "description": "Neighbouring buildings as schematic masses (OSM footprints; GBA, Google Earth and OSM heights). Approximate context.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          155.7546,
+          96.0,
+          -11.4623
+        ],
+        "target": [
+          1.265,
+          -8.0,
+          6.62
+        ]
+      }
+    },
+    {
+      "id": "court-ground",
+      "title": "Entrance court and lower garden routes",
+      "description": "Court and garden routes of the constructed site; hidden route dimensions inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          57.1323,
+          34.0,
+          -59.2499
+        ],
+        "target": [
+          -20.052,
+          -5.0,
+          -2.685
+        ]
+      }
+    },
+    {
+      "id": "roof-details",
+      "title": "Roof stair enclosure and chimney",
+      "description": "Roof enclosure, chimney and balustrades; heights and materials inferred.",
+      "camera": {
+        "mode": "orbit",
+        "level": "all",
+        "position": [
+          37.0,
+          43.0,
+          -30.0
+        ],
+        "target": [
+          0.0,
+          16.0,
+          -1.0
+        ]
+      }
+    }
+  ],
+  "pointsOfInterest": [],
+  "objects": []
+}

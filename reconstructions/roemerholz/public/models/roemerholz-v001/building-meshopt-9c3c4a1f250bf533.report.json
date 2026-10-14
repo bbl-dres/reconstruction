@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "roemerholz-building",
+  "title": "Sammlung Oskar Reinhart «Am Römerholz» v001 - building (Revit)",
+  "asset": "building-meshopt-9c3c4a1f250bf533.glb",
+  "source": {
+    "file": "roemerholz.rvt (open Revit 2027 session)",
+    "identity": "SHA-256 of the raw Revit export payload (building and surroundings geometry, placements, metadata)",
+    "sha256": "e3b62f08adbe4d7b952fe082268521e395c8dbd69a7c152be9e5fba80d98b43f"
+  },
+  "conversion": {
+    "method": "Revit CustomExporter / IExportContext (pyRevit, IronPython) -> numpy GLB writer",
+    "exporterSha256": "b53ba323db0a6a6ca39446bcf1948b55e1b7fb4836437232020cbe7359ce88bc",
+    "metadataSha256": "0326cf03c4370f710b2d8ca6d29ab5eed7509a929131c89b3bd59a7b8e47e0a1",
+    "builderSha256": "a33d6481c903a69314efb317e91a91f7739173db6a8e57cd27b96d62888391af",
+    "viewsSha256": "955f7a247886ebdda1d4ca9a93cc746d3cde5523a1900ccd4535b826fe255d0b",
+    "levelOfDetail": 6
+  },
+  "revitVersion": "2027",
+  "coordinates": {
+    "units": "metres",
+    "sourceUp": "Z",
+    "exportUp": "Y",
+    "mapping": "Revit internal (X, Y, Z) feet -> glTF (X, Z, -Y) * 0.3048",
+    "recentered": false
+  },
+  "selection": {
+    "view": "RH Export - building",
+    "elements": 1336,
+    "categories": {
+      "Ceilings": 77,
+      "Curtain Panels": 9,
+      "Doors": 171,
+      "Floors": 39,
+      "Furniture": 57,
+      "Generic Models": 149,
+      "Lighting Fixtures": 27,
+      "Mechanical Equipment": 10,
+      "Railings": 13,
+      "Roofs": 44,
+      "Specialty Equipment": 2,
+      "Stairs": 10,
+      "Top Rails": 13,
+      "Walls": 583,
+      "Windows": 132
+    },
+    "vmBuilding": {
+      "GAL": 258,
+      "LINK": 223,
+      "VIL": 855
+    },
+    "skippedByExporter": {
+      "unresolved": 17,
+      "exclude": 10
+    },
+    "licences": {},
+    "boundsGltf": {
+      "min": [
+        -51.58000183105469,
+        -4.859999656677246,
+        -28.094999313354492
+      ],
+      "max": [
+        30.64702606201172,
+        19.149999990463257,
+        12.118999481201172
+      ]
+    }
+  },
+  "sharedGeometry": {
+    "symbolGeometries": 360,
+    "placements": 1347,
+    "note": "Family instances with the same Revit SymbolGeometryId share one glTF mesh per material; element-specific geometry is world-baked."
+  },
+  "notes": [
+    "Reconstruction from the 2025 documentation drawings, older plans and public geodata; not a measured survey.",
+    "Local metric coordinates; registration in model_georeference.json, not survey control.",
+    "Terrain © swisstopo (swissALTI3D); surrounding buildings © swisstopo (swissBUILDINGS3D 2.0).",
+    "Villa, gallery and linking additions (RH_Building = VIL, GAL, LINK)."
+  ],
+  "validation": "GLB packaging, ID uniqueness, BIM registry recomposition and viewer loading checks: tools/revit/export/validate.mjs and the release report.",
+  "glb": {
+    "bytes": 5663252,
+    "sha256": "659ac047b8551364b6118a6adaaf0ed915834b6ff1a240c9a9e2c1c48e8d34fd",
+    "nodes": 1783,
+    "meshNodes": 1783,
+    "uniqueMeshes": 1334,
+    "renderedPrimitives": 1783,
+    "trianglesAcrossInstances": 90123,
+    "materials": 56,
+    "embeddedImages": 0,
+    "taggedMeshNodes": 1783,
+    "dollhouseHiddenMeshNodes": 0,
+    "extensionsUsed": [
+      "EXT_meshopt_compression"
+    ]
+  },
+  "optimization": {
+    "originalAsset": "building-e3b62f08adbe-c2d33e7e2956.glb",
+    "originalSha256": "c2d33e7e2956ca71f590c71a5eae3a6f36ec678fb2c4769e71fe402e758aa584",
+    "recipe": {
+      "codec": "meshoptimizer-1.2.0",
+      "extension": "EXT_meshopt_compression",
+      "lossless": true,
+      "pipelineSha256": "60161c2c55b67031205dd1dfd582b6119b70ed2e787cb00a69b44713577d1bff",
+      "gzipLevel": 6
+    },
+    "compressedViews": 152,
+    "verifiedViews": 4002,
+    "lossless": true,
+    "storageStrategy": "transfer-size",
+    "originalBytes": 5936428,
+    "bytes": 5663252,
+    "deliveryEncoding": "identity",
+    "gzipBytes": 704078,
+    "gzipSha256": "57723e31bbb1c84356e17fd6ee02756b5e7798b2ef72349d1eb496fa4869651a"
+  }
+}

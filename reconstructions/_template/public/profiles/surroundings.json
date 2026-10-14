@@ -1,0 +1,7 @@
+{
+  "id": "replace-building-id-surroundings",
+  "title": "BUILDING-NAME surroundings",
+  "includeCollectionPrefixes": ["Context"],
+  "collectionRoles": { "Context": "context" },
+  "notes": ["Terrain and neighbouring buildings from public geodata (e.g. swissALTI3D, swissBUILDINGS3D)."]
+}

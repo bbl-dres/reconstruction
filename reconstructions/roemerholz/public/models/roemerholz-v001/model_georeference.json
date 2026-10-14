@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "modelId": "roemerholz-v001",
+  "status": "Registration for display and sun studies from the plan → LV95 fit (0.10 m, 0.02°) and the stated floor datum; not survey control (RH-D005, RH-D007, RH-D009).",
+  "projected": {
+    "crs": "EPSG:2056 CH1903+ / LV95",
+    "origin_E": 2697410.0,
+    "origin_N": 1263080.0,
+    "model_y_grid_azimuth_degrees": 26.4506
+  },
+  "vertical": {
+    "datum": "LN02 (assumed; sheets state m ü.M.)",
+    "origin_height_m": 495.82,
+    "sigma_m": 0.05
+  },
+  "frame": "East, North, Up (ENU)",
+  "origin_wgs84": [
+    8.73176271,
+    47.51124634,
+    495.82
+  ],
+  "architectural_rotation_degrees": 27.3949,
+  "model_frame": {
+    "description": "Revit internal coordinates in metres, glTF Y up; Ebene 00 / EG finished floor ±0.00 = 495.82 m ü.M. (RH-D005); model axes follow the building (RH-D009); see model_georeference.json.",
+    "gltf_axes": "glTF x = Revit X, glTF y = Revit Z (up), glTF z = -Revit Y.",
+    "recentered": false
+  },
+  "control_points": [
+    {
+      "name": "model origin",
+      "gltf": [
+        0,
+        0,
+        0
+      ],
+      "projected": [
+        2697410.0,
+        1263080.0
+      ],
+      "height_m": 495.82
+    },
+    {
+      "name": "20 m along model +X",
+      "gltf": [
+        20,
+        0,
+        0
+      ],
+      "projected": [
+        2697427.906,
+        1263071.091
+      ],
+      "height_m": 495.82
+    },
+    {
+      "name": "20 m along model +Y (glTF -z)",
+      "gltf": [
+        0,
+        0,
+        -20
+      ],
+      "projected": [
+        2697418.909,
+        1263097.906
+      ],
+      "height_m": 495.82
+    },
+    {
+      "name": "10 m above the origin",
+      "gltf": [
+        0,
+        10,
+        0
+      ],
+      "projected": [
+        2697410.0,
+        1263080.0
+      ],
+      "height_m": 505.82
+    }
+  ]
+}

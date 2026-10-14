@@ -1,0 +1,14 @@
+{
+  "id": "roemerholz-surroundings",
+  "title": "Römerholz surroundings",
+  "includeCollectionPrefixes": [
+    "Context"
+  ],
+  "collectionRoles": {
+    "Context": "context"
+  },
+  "notes": [
+    "Establish dated terrain and roof data, LV95 control, height datum and rights before building context."
+  ]
+}
+
